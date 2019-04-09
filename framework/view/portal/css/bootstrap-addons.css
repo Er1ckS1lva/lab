@@ -1,0 +1,137 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 28/08/2018, 11:01:08
+    Author     : rafael
+*/
+.table tbody>tr>td{
+    vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+
+    /*    .text-left-xs {
+            text-align: left;
+        }
+        .text-center-xs {
+            text-align: center;
+        }
+        .text-right-xs {
+            text-align: right;
+        }
+        .text-justify-xs {
+            text-align: justify;
+        }
+        
+        .container-group-xs {
+            margin-bottom: 15px
+        }*/
+
+    .panel-login{margin-top: 5%;}
+    .display-4{font-size: 36px;}
+    .geral{padding-bottom: 80px}
+    
+    .color-1{background: #1abc9c; color: #ffffff;}
+    .color-2{background: #16a085; color: #ffffff;}
+    .color-3{background: #2ecc71; color: #ffffff;}
+    .color-4{background: #27ae60; color: #ffffff;}
+    .color-5{background: #3498db; color: #ffffff;}
+    .color-6{background: #2980b9; color: #ffffff;}
+    .color-7{background: #9b59b6; color: #ffffff;}
+    .color-8{background: #8e44ad; color: #ffffff;}
+    .color-9{background: #34495e; color: #ffffff;}
+    .color-10{background: #2c3e50; color: #ffffff;}
+    .color-11{background: #f1c40f}
+    .color-12{background: #f39c12}
+    .color-13{background: #e67e22; color: #ffffff;}
+    .color-14{background: #d35400; color: #ffffff;}
+    .color-15{background: #e74c3c; color: #ffffff;}
+    .color-16{background: #c0392b; color: #ffffff;}
+    .color-17{background: #ecf0f1}
+    .color-18{background: #bdc3c7}
+    .color-19{background: #95a5a6}
+    .color-20{background: #7f8c8d; color: #ffffff;}
+    
+    .w-50{width: 100% !important;}
+    
+}
+@media (min-width: 768px) and (max-width: 991px) {
+
+    /*    .text-left-sm {
+            text-align: left;
+        }
+        .text-center-sm {
+            text-align: center;
+        }
+        .text-right-sm {
+            text-align: right;
+        }
+        .text-justify-sm {
+            text-align: justify;
+        }
+        
+        .container-group-sm {
+            margin-bottom: 15px
+        }*/
+
+    .panel-login{margin-top: 15%;}
+    .w-50{width: 100% !important}
+
+    .color-1{background: #1abc9c; color: #ffffff;}
+    .color-2{background: #16a085; color: #ffffff;}
+    .color-3{background: #2ecc71; color: #ffffff;}
+    .color-4{background: #27ae60; color: #ffffff;}
+    .color-5{background: #3498db; color: #ffffff;}
+    .color-6{background: #2980b9; color: #ffffff;}
+    .color-7{background: #9b59b6; color: #ffffff;}
+    .color-8{background: #8e44ad; color: #ffffff;}
+    .color-9{background: #34495e; color: #ffffff;}
+    .color-10{background: #2c3e50; color: #ffffff;}
+    .color-11{background: #f1c40f}
+    .color-12{background: #f39c12}
+    .color-13{background: #e67e22; color: #ffffff;}
+    .color-14{background: #d35400; color: #ffffff;}
+    .color-15{background: #e74c3c; color: #ffffff;}
+    .color-16{background: #c0392b; color: #ffffff;}
+    .color-17{background: #ecf0f1}
+    .color-18{background: #bdc3c7}
+    .color-19{background: #95a5a6}
+    .color-20{background: #7f8c8d; color: #ffffff;}
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+
+    /*    .text-left-md {
+            text-align: left;
+        }
+        .text-center-md {
+            text-align: center;
+        }
+        .text-right-md {
+            text-align: right;
+        }
+        .text-justify-md {
+            text-align: justify;
+        }*/
+    .w-50{width: 100% !important}
+
+}
+@media (min-width: 1200px) {
+
+    /*    .text-left-lg {
+            text-align: left;
+        }
+        .text-center-lg {
+            text-align: center;
+        }
+        .text-right-lg {
+            text-align: right;
+        }
+        .text-justify-lg {
+            text-align: justify;
+        }*/
+
+
+}

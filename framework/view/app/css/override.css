@@ -1,0 +1,10 @@
+.overflow_table{
+	width: 100%; 
+	overflow-x: auto;
+}
+
+.ui-autocomplete{
+    z-index: 1100;
+    overflow-y: scroll;
+    max-height: 50%;
+}

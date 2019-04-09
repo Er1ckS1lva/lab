@@ -1,0 +1,130 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 28/08/2018, 10:11:29
+    Author     : rafael
+*/
+h1, h2, h3, h4, h5, h6 {color: #456AAD;}
+a{text-decoration: none !important; color: #0E4097;}
+.btn-link{text-decoration: none !important; color: #0E4097;}
+
+.azul{color: #0E4097}
+.azulf{color: #456AAD}
+.cinza{color: #EEF0F1}
+.cinzab{color: #f5f5f5}
+.cinzaborda{color: #e3e3e3}
+
+.geral{padding-bottom: 50px}
+
+/*PAGINA LOGIN*/
+.panel-login{margin-top: 5%;}
+.btn-primary{background: #0E4097; border-color: #0E4097;}
+
+/*PÁGINA PRINCIPAL*/
+/*CABEÇALHO*/
+.cabecalho{background: #EEF0F1;}
+.cabecalho .link-quem-somos{margin: 0 30px}
+.bg-menu{background: #456AAD; padding-top: 5px; padding-bottom: 5px}
+.bg-menu a{color: #ffffff}
+/*CONTEÚDO*/
+
+/*RODAPÉ*/
+.rodape{background: #0E4097; position: fixed; bottom: 0; width: 100%; color: #ffffff; padding: 15px 0}
+
+/*PÁGINA INTERNA*/
+.pagina-interna{margin: 15px 0;}
+
+/*PÁGINA HOME*/
+.bloco-tema{background: #f5f5f5; padding: 30px; position: relative}
+.bloco-tema i{font-size: 48px;}
+.bloco-tema span{font-size: 24px;}
+.bloco-tema {
+    transition-duration: 1s; 
+    -webkit-transition-duration: 1s; 
+    -moz-transition-duration: 1s; 
+    -o-transition-duration: 1s;
+}
+.bloco-tema .img-atividade img{
+    -webkit-transition: height 2s;
+    -moz-transition: height 2s;
+    -o-transition: height 2s;
+    transition: height 2s;
+}
+.bloco-tema .img-atividade img:hover{
+    -webkit-transition: height 2s;
+    -moz-transition: height 2s;
+    -o-transition: height 2s;
+    transition: height 2s;
+}
+.bloco-tema .img-atividade img{object-fit: cover; width: 200px; height: 100px}
+.bloco-tema:hover .img-atividade img{
+    object-fit: contain; 
+    width: 200px; 
+    height: auto; 
+    transform: scale(1.0);
+    -webkit-transition: height 2s;
+    -moz-transition: height 2s;
+    -o-transition: height 2s;
+    transition: height 2s;
+}
+
+/*CAROUSEL*/
+.owl-carousel .img-cover{object-fit: cover; width: 200px; height: 110px;}
+
+.owl-item .item{background: #1abc9c; padding: 5px; height: 180px}
+.owl-item .item img{object-fit: cover; height: 110px}
+.owl-item .item h3{color: #ffffff; font-size: 16px}
+
+/*.bloco-tema{ transition-duration: .2s; -webkit-transition-duration: .2s; -moz-transition-duration: .2s;  -o-transition-duration: .2s;}
+*/.bloco-tema:hover{transform: scale(1.05)}
+.color-1:hover{background: #1abc9c; color: #ffffff;}
+.color-2:hover{background: #16a085; color: #ffffff;}
+.color-3:hover{background: #2ecc71; color: #ffffff;}
+.color-4:hover{background: #27ae60; color: #ffffff;}
+.color-5:hover{background: #3498db; color: #ffffff;}
+.color-6:hover{background: #2980b9; color: #ffffff;}
+.color-7:hover{background: #9b59b6; color: #ffffff;}
+.color-8:hover{background: #8e44ad; color: #ffffff;}
+.color-9:hover{background: #34495e; color: #ffffff;}
+.color-10:hover{background: #2c3e50; color: #ffffff;}
+.color-11:hover{background: #f1c40f}
+.color-12:hover{background: #f39c12}
+.color-13:hover{background: #e67e22; color: #ffffff;}
+.color-14:hover{background: #d35400; color: #ffffff;}
+.color-15:hover{background: #e74c3c; color: #ffffff;}
+.color-16:hover{background: #c0392b; color: #ffffff;}
+.color-17:hover{background: #ecf0f1}
+.color-18:hover{background: #bdc3c7}
+.color-19:hover{background: #95a5a6}
+.color-20:hover{background: #7f8c8d; color: #ffffff;}
+
+/*PÁGINA ROTEIRO*/
+.controle-atividade{border: 1px solid #e3e3e3; padding: 5px 15px}
+.controle-atividade i{margin: 0 15px}
+.controle-atividade div{cursor: pointer}
+.controle-atividade .btn-record{color: #e74c3c}
+.pagina-atividade .titulo-atividade {padding-bottom: 15px;}
+
+/*PÁGINA DE ATIVIDADE */
+.btn-microfone{border: 1px solid #e3e3e3; padding: 15px 22px; border-radius: 50%; cursor: pointer; transition-duration: .2s; -webkit-transition-duration: .2s; -moz-transition-duration: .2s; -o-transition-duration: .2s;}
+.btn-microfone:hover{transform: scale(1.1)}
+
+#smartwizard, #smartwizard-atividade{display: flex; flex-direction: column-reverse}
+
+.owl-carousel .owl-nav button span{padding: 0 15px; font-size: 30px}
+
+.btns-right button{white-space: normal}
+
+.h-100{height: 100% !important}
+
+.camera-portal {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    
+}
