@@ -1,0 +1,32 @@
+RewriteEngine On 
+Options +SymLinksIfOwnerMatch  -Indexes
+RewriteRule ^\.htaccess$ - [F] 
+RewriteCond %{SCRIPT_FILENAME} !index.php 
+
+RewriteRule ^admin(/)?$ index.php?action=Usuario.home [NC,L,QSA]
+
+RewriteRule ^admin/recuperarSenha/([a-z|A-Z|0-9|@|\.]*)/([a-z|A-Z|0-9]*)(/)?$ index.php?action=Usuario.recuperarSenha&email=$1&hash=$2 [NC,L,QSA]
+RewriteRule ^admin/logout(/)?$ index.php?action=Usuario.logout [NC,L,QSA]
+
+# modulos
+RewriteRule ^seguranca(/)?$ index.php?action=Defaultview.index&module=seguranca [NC,L,QSA]
+RewriteRule ^laboratoriovirtual(/)?$ index.php?action=Defaultview.index&module=laboratoriovirtual [NC,L,QSA]
+RewriteRule ^relatorio(/)?$ index.php?action=Defaultview.index&module=relatorio [NC,L,QSA]
+# acaba modulos
+
+#portal
+RewriteRule ^$ index.php?action=Portal.home [NC,L,QSA]
+RewriteRule ^pagina/([0-9]*)(/)?$ index.php?action=Portal.showPagina&idPagina=$1 [NC,L,QSA]
+RewriteRule ^atividade/([0-9]*)(/)?$ index.php?action=Portal.allAtividade&idTema=$1 [NC,L,QSA]
+RewriteRule ^atividade/([0-9]*)/([0-9]*)(/)?$ index.php?action=Portal.allAtividade&idTema=$1&idAtividade=$2 [NC,L,QSA]
+RewriteRule ^login(/)?$ index.php?action=Portal.login [NC,L,QSA]
+RewriteRule ^logout(/)?$ index.php?action=Portal.logout [NC,L,QSA]
+RewriteRule ^conta(/)?$ index.php?action=Portal.criarConta [NC,L,QSA]
+RewriteRule ^recuperarSenha/([a-z|A-Z|0-9|@|\.]*)/([a-z|A-Z|0-9]*)(/)?$ index.php?action=Portal.recuperarSenha&email=$1&hash=$2 [NC,L,QSA]
+RewriteRule ^criarContaConfirma/([a-z|A-Z|0-9|@|\.]*)/([a-z|A-Z|0-9]*)(/)?$ index.php?action=Portal.criarContaConfirma&email=$1&hash=$2 [NC,L,QSA]
+#acaba portal
+
+# regras gerais
+RewriteRule ^([a-z]+)/([a-z]+)/([a-z]+)/([0-9]*)(/)?$ index.php?action=$2.$3&id=$4&module=$1 [NC,L,QSA]
+RewriteRule ^([a-z]+)/([a-z]+)/([a-z]+)(/)?$ index.php?action=$2.$3&module=$1 [NC,L,QSA]
+RewriteRule ^([a-z]+)/([a-z]+)(/)?$ index.php?action=$2.admFilter&module=$1 [NC,L,QSA]
