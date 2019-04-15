@@ -46,7 +46,7 @@ class AtividadeControllerParent {
         if($this->auth() === FALSE)
             return $this->view;
         
-        $orderSql = ControllerUtil::orderFunction($this->request, $this->response, 'id DESC', $orderPageLinks);
+        $orderSql = ControllerUtil::orderFunction($this->request, $this->response, 'ordem ASC', $orderPageLinks);
         
         $orderPageConditions = '';
         

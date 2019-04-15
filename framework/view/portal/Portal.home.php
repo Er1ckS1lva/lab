@@ -3,7 +3,7 @@
     <head>
         <!--CONFIGURAÇÃO HEAD-->
         <?php include dirname(__FILE__) . "/inc/head.php"; ?>
-        <title>Laboratório Virtual</title>
+        <title><?php echo Lang::GERAL_tituloUfu ?></title>
         <!--CONFIGURAÇÃO CSS-->
         <?php include dirname(__FILE__) . "/inc/config_css.php"; ?>
     </head>
@@ -44,7 +44,7 @@
                                     ?>
                                     <a href="<?php echo URL . "atividade/" . $oTema->getId() ?>" onmouseover="reproduzir(this)">
                                         <div class="item d-flex flex-column <?php echo 'color-' . rand(1, 20) ?>">
-                                            <img src="<?= MediaUtil::getLinkForFileNameById("Tema/imagemCapa", $oTema->getId()) ?>" class="" alt="imagem do tema <?php echo $oTema->getTitulo(); ?>" />
+                                            <img src="<?= MediaUtil::getLinkForFileNameById("Tema/imagemCapa", $oTema->getId()) ?>" class="" alt="<?php echo $oTema->getTitulo(); ?>" />
                                             <h3 class="text-center"><?php echo $oTema->getTitulo(); ?></h3>
                                         </div>
                                     </a>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 mb-3 btns-right text-center">
-                            <button class="btn btn-outline-danger btn-lg">Talk to Theresa or Marcus</button>
+                            <?php include dirname(__FILE__) . "/inc/buttons.php"; ?>
                         </div>
                     </div>
                 </div>

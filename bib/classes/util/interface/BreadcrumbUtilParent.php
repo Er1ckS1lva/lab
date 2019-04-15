@@ -24,7 +24,7 @@ class BreadcrumbUtilParent {
             $migalhas = array();
             if ($host)
                 foreach ($host as $h) {
-                    if ($h && $h != 'urano2' && $h != 'clientes' && $h != $modulo) {
+                    if ($h && $h != 'laboratoriovirtual_ufu' && $h != 'clientes' && $h != $modulo) {
                         $migalhas[$h] = ucfirst($h);
                     }
                 }
@@ -87,7 +87,7 @@ class BreadcrumbUtilParent {
 
         $current_home = "";
         switch ($niveis) {
-			case "N":
+            case "N":
                 $this->migalhas = $aLinksMigalha;
                 break;
             case 0:
@@ -104,7 +104,7 @@ class BreadcrumbUtilParent {
                     $classe => "{$entityName}",
                     $link_metodo => $titulo
                 );
-                break;            
+                break;
         }
 
         $marcador = '';
@@ -115,18 +115,18 @@ class BreadcrumbUtilParent {
         $pao = array();
         $URL_RAIZ = $this->url_raiz;
         if (isset($this->migalhas)) {
-			if ($niveis !== "N") {
-				$pao[] = "<li><a href='" . URL . "' title='Ir para a tela inicial' >Início</a></li> ";
-				
-				# BEGIN adicionado modulo
-				$oModuloMenuAction = new ModuloMenuAction();
-				if(isset($_REQUEST["module"]) && $_REQUEST["module"]){
-					$oModulo = $oModuloMenuAction->selectByNome($_REQUEST["module"], array("descricao"));            
-					$pao[] = "<li><a href='" . $URL_RAIZ . "' class='{$current_home}' title='Ir para {$oModulo["descricao"]}' >" . ($oModulo["descricao"]) . "</a></li> ";
-				}
-				# END adicionado modulo
-			}
-            
+            if ($niveis !== "N") {
+                $pao[] = "<li><a href='" . URL . "admin' title='Ir para a tela inicial' >Início</a></li> ";
+
+                # BEGIN adicionado modulo
+                $oModuloMenuAction = new ModuloMenuAction();
+                if (isset($_REQUEST["module"]) && $_REQUEST["module"]) {
+                    $oModulo = $oModuloMenuAction->selectByNome($_REQUEST["module"], array("descricao"));
+                    $pao[] = "<li><a href='" . $URL_RAIZ . "' class='{$current_home}' title='Ir para {$oModulo["descricao"]}' >" . ($oModulo["descricao"]) . "</a></li> ";
+                }
+                # END adicionado modulo
+            }
+
             foreach ($this->migalhas as $link => $chamada) {
                 if ($this->concatenaLink) {
                     $URL_RAIZ .= "{$link}/"; // concatena os niveis

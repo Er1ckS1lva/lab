@@ -14,6 +14,36 @@ class AlunoAction extends AlunoActionParent {
         return true;
     }
 
+    // BEGIN parent
+    public static function getComboBoxForSexo($v = NULL, $tabindex = "", $emptyDefaultText = false, $events = "", $name = 'sexo') {
+        if ($emptyDefaultText && $_SESSION['lang'] == 'en-us') {
+            $emptyDefaultText = "-Select-";
+        }
+
+        $valores = AlunoAction::getValuesForSexo();
+        $select = '<select ' . $events . ' id="' . $name . '" name="' . $name . '" tabindex="' . $tabindex . '" class="form-control input-sm">';
+        if ($emptyDefaultText) {
+            $select .= "<option value=''>{$emptyDefaultText}</option>";
+        }
+        foreach ($valores as $key => $value) {
+            $selected = '';
+            if (($v) == ($key))
+                $selected = 'selected';
+            $select .= "<option value='{$key}' {$selected}>{$value}</option>";
+        }
+        $select .= "</select>";
+        return $select;
+    }
+
+    public static function getValuesForSexo() {
+        if ($_SESSION['lang'] == 'en-us') {
+            return array('F' => 'Female', 'M' => 'Male');
+        }
+        return parent::getValuesForSexo();
+    }
+
+    // END parent
+
     public function confirmarCadastro($id) {
         $oAluno = $this->em->find('Aluno', array('id' => $id));
         $oAluno->setModerado('S');
@@ -36,60 +66,60 @@ class AlunoAction extends AlunoActionParent {
 
     public function validateCriaConta(&$request) {
         if ($request->get("nome") == '') {
-            throw new Exception("Por favor, preencha o campo Nome!");
+            throw new Exception(Lang::SISTEMA_validaNome);
         }
         if ($request->get("cpf") == '') {
-            throw new Exception("Por favor, selecione o CPF!");
+            throw new Exception(Lang::SISTEMA_validaCpf);
         } else {
             $request->set('cpf', Util::unMaskCpf($request->get('cpf')));
             if (!Util::validaCpf($request->get("cpf"))) {
-                throw new Exception("Por favor, preencha um CPF válido!");
+                throw new Exception(Lang::SISTEMA_validaCpfValido);
             }
         }
         if ($request->get("senha") == '') {
-            throw new Exception("Por favor, preencha o campo Senha!");
+            throw new Exception(Lang::SISTEMA_validaSenha);
         }
         if ($request->get("senhaConf") == '') {
-            throw new Exception("Por favor, preencha o campo Confirmar Senha!");
+            throw new Exception(Lang::SISTEMA_validaSenhaConf);
         }
         if ($request->get("login") == '') {
-            throw new Exception("Por favor, preencha o campo Usuário!");
+            throw new Exception(Lang::SISTEMA_validaLogin);
         }
         if ($request->get("email") == '') {
-            throw new Exception("Por favor, preencha o campo Email!");
+            throw new Exception(Lang::SISTEMA_validaEmail);
         } else {
             if (!Util::validaEmail($request->get("email"))) {
-                throw new Exception("Por favor, informe o campo E-mail corretamente!");
+                throw new Exception(Lang::SISTEMA_validaEmailValido);
             }
         }
         if ($request->get("dataNascimento") == '') {
-            throw new Exception("Por favor, preencha o campo Data de Nascimento!");
+            throw new Exception(Lang::SISTEMA_validaDataNascimento);
         } else {
 
             if (!Validate::validateDate($request->get("dataNascimento"))) {
-                throw new Exception("Formato inválido do campo Data de Nascimento!");
+                throw new Exception(Lang::SISTEMA_validaDataNascimentoValido);
             } else {
                 $request->set('dataNascimento', Util::transformaData($request->get('dataNascimento'), 'normal2mysql'));
             }
         }
 
         if ($request->get("sexo") == '') {
-            throw new Exception("Por favor, selecione o Sexo!");
+            throw new Exception(Lang::SISTEMA_validaSexo);
         }
         if ($request->get("cidade") == '') {
-            throw new Exception("Por favor, preencha o campo Cidade!");
+            throw new Exception(Lang::SISTEMA_validaCidade);
         }
         if ($request->get("estado") == '') {
-            throw new Exception("Por favor, preencha o campo Estado!");
+            throw new Exception(Lang::SISTEMA_validaEstado);
         }
         if ($request->get("instituicaoEnsino") == '') {
-            throw new Exception("Por favor, preencha o campo Instituição de Ensino!");
+            throw new Exception(Lang::SISTEMA_validaInstituicao);
         }
         if (strlen($request->get("senha")) < 6) {
-            throw new Exception("Por favor, sua Senha Atual tem que ter no mínimo 6 dígitos!");
+            throw new Exception(Lang::SISTEMA_validaSenhaTamanho);
         }
         if ($request->get("senha") != $request->get("senhaConf")) {
-            throw new Exception("Senhas não conferem!");
+            throw new Exception(Lang::SISTEMA_validaSenhaCompara);
         } else {
             $request->set("senha", sha1($request->get("senha")));
         }
@@ -104,7 +134,7 @@ class AlunoAction extends AlunoActionParent {
 
         $oAluno = $this->selectByEmail($request->get("email"));
         if ($oAluno) {
-            throw new Exception("O email informado já está cadastrado no sistema!");
+            throw new Exception(Lang::SISTEMA_validaEmail);
         }
 
         return true;
@@ -114,16 +144,13 @@ class AlunoAction extends AlunoActionParent {
         try {
             $oUsuario = $this->selectByEmail($request->get("email"));
         } catch (Exception $e) {
-            throw new Exception("O usuário não existe. Verifique o seu E-mail e tente novamente.");
+            throw new Exception(Lang::SISTEMA_recuperarSenhaValidaEmail);
         }
         if (!$oUsuario) {
-            throw new Exception("O usuário não existe. Verifique o seu E-mail e tente novamente.");
+            throw new Exception(Lang::SISTEMA_recuperarSenhaValidaUsuario);
         }
         if ($oUsuario->getAtivo() != "S") {
-            throw new Exception("Este login está desativado."
-            . "<p>Por favor, se você acabou de efetuar cadastro, confirme seu endereço de e-mail clicando no link que lhe foi enviado.</p>"
-            . "<p>Caso já tenha efetuado o cadastro e este não seja seu primeiro acesso, entre em contato com o suporte para obter mais informações.</p>"
-            );
+            throw new Exception(Lang::SISTEMA_recuperarSenhaValidaInativo);
         }
 
         $recuperaSenhaHash = Util::geraHash();
@@ -142,8 +169,10 @@ class AlunoAction extends AlunoActionParent {
             $this->em->beginTransaction();
             $query->execute();
 
-            $title = "Recuperar senha - " . APPLICATION_NAME;
-            $body = "Clique <a href='" . $url_redirect . "' style='text-decoration: underline;' target='_blank'>aqui</a> para recuperar a sua senha!";
+            $title = Lang::SISTEMA_recuperarSenhaTitulo . " - " . APPLICATION_NAME;
+            $link = "<a href='" . $url_redirect . "' style='text-decoration: underline;' target='_blank'>";
+            $body = str_replace("%LINK_ABRE%", $link, Lang::SISTEMA_recuperarSenhaCorpo);
+            $body = str_replace("%LINK_FECHA%", "</a>", $body);
             $aEmail = array($oUsuario->getEmail() => $oUsuario->getNome());
             Util::mailSystem($title, $body, $aEmail, true);
 
@@ -187,8 +216,8 @@ class AlunoAction extends AlunoActionParent {
               } */
 
             try {
-                $title = "Criação de Conta - " . APPLICATION_NAME;
-                $body = "Foi realizado uma solicitação de cadastro no laboratório virtual.";
+                $title = Lang::SISTEMA_contaTitulo . " - " . APPLICATION_NAME;
+                $body = Lang::SISTEMA_contaCorpo;
                 $aEmail = array(EMAIL_MODERADOR => NOME_MODERADOR);
                 Util::mailSystem($title, $body, $aEmail, true);
 
@@ -222,10 +251,10 @@ class AlunoAction extends AlunoActionParent {
     public function validateCriarContaHash(&$request) {
         $oAluno = $this->selectByEmail($request->get("email"));
         if (!$oAluno) {
-            throw new Exception("URL inválida, repita o processo e siga as orientações do seu e-mail.");
+            throw new Exception(Lang::SISTEMA_validaHash);
         }
         if ($oAluno->getCriarContaHash() != $request->get("hash")) {
-            throw new Exception("URL inválida, repita o processo e siga as orientações do seu e-mail.");
+            throw new Exception(Lang::SISTEMA_validaHash);
         }
 
         $request->set("id", $oAluno->getId());
@@ -254,15 +283,15 @@ class AlunoAction extends AlunoActionParent {
 
     public function validateLogin(&$request) {
         if ($request->get("login") == '') {
-            throw new Exception("Por favor, preencha o campo Usuário!");
+            throw new Exception(Lang::SISTEMA_validaLogin);
         }
         if ($request->get("loginFacial")) {
             if ($request->get("aFotoUpload")) {
-                throw new Exception("Por favor, bata uma foto foto");
+                throw new Exception(Lang::SISTEMA_validaFoto);
             }
         } else {
             if ($request->get("senha") == '') {
-                throw new Exception("Por favor, preencha o campo Senha!");
+                throw new Exception(Lang::SISTEMA_validaSenha);
             }
         }
         return true;
@@ -272,36 +301,31 @@ class AlunoAction extends AlunoActionParent {
         try {
             $oAluno = $this->selectByLogin($request->get("login"));
         } catch (Exception $e) {
-            throw new Exception("O login ou a senha inserida está incorreto.");
+            throw new Exception(Lang::SISTEMA_validaLogar);
         }
         if (!$oAluno) {
-            throw new Exception("O login ou a senha inserida está incorreto.");
+            throw new Exception(Lang::SISTEMA_validaLogar);
         }
         if ($oAluno->getAtivo() != "S") {
-            throw new Exception("Este login está desativado."
-            . "<p>Por favor, se você acabou de efetuar cadastro, confirme seu endereço de e-mail clicando no link que lhe foi enviado.</p>"
-            . "<p>Caso já tenha efetuado o cadastro e este não seja seu primeiro acesso, entre em contato com o suporte para obter mais informações.</p>"
-            );
+            throw new Exception(Lang::SISTEMA_recuperarSenhaValidaInativo);
         }
         if ($oAluno->getModerado() != "S") {
-            throw new Exception("Este login está aguardado ativação."
-            . "<p>Por favor, se você acabou de efetuar cadastro, aguarde 24 horas.</p>"
-            );
+            throw new Exception(Lang::SISTEMA_validaAlunoModerado);
         }
 
         if ($request->get('loginFacial')) {
             $foto = $request->get('afotoUpload');
             $output = shell_exec("python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings upload/encodings/{$oAluno->getId()}/encodings.pickle --image {$foto['tmp_name']} --login {$oAluno->getLogin()}");
-            
+
             $aRetorno = json_decode($output, true);
-            if($aRetorno['loginSuccess']){
+            if ($aRetorno['loginSuccess']) {
                 return true;
             } else {
-                throw new Exception("Seu rosto não foi reconhecido! Tente usar a senha!");
+                throw new Exception(Lang::SISTEMA_validaReconhecimento);
             }
         } else {
             if ($oAluno->getSenha() != sha1($request->get("senha"))) {
-                throw new Exception("O login ou a senha inserido está incorreto.");
+                throw new Exception(Lang::SISTEMA_validaLogar);
             }
         }
 
@@ -339,13 +363,13 @@ class AlunoAction extends AlunoActionParent {
     public function defineCookieRemember($oAluno, $request) {
         if ($request->get("remember")) {
             $dias = time() + 172800; // 48 horas
-            setcookie("login_digitado" . SESSION_NAME, $oAluno->getLogin(), $dias, "/");
+            setcookie("login_digitado2" . SESSION_NAME, $oAluno->getLogin(), $dias, "/");
             if ($_SERVER['SERVER_NAME'] === "localhost" || $_SERVER['SERVER_NAME'] === "127.0.0.1") # grava a senha local - PARA NUNCA MAIS DIGITAR DE NOVO
-                setcookie("senha_digitado" . SESSION_NAME, $request->get("senha"), $dias, "/");
+                setcookie("senha_digitado2" . SESSION_NAME, $request->get("senha"), $dias, "/");
         } else {
             $del = time() - 3600; // del agora
-            setcookie("login_digitado" . SESSION_NAME, $oAluno->getLogin(), $del, "/");
-            setcookie("senha_digitado" . SESSION_NAME, "", $del, "/");
+            setcookie("login_digitado2" . SESSION_NAME, $oAluno->getLogin(), $del, "/");
+            setcookie("senha_digitado2" . SESSION_NAME, "", $del, "/");
         }
     }
 
@@ -365,7 +389,7 @@ class AlunoAction extends AlunoActionParent {
 
     public function alunoAutenticado($isOnlyAuthenticated = false) {
         if (!isset($_SESSION['serAlunoSessao'])) {
-            $this->setMsg("Faça Login para acessar esta página.");
+            $this->setMsg(Lang::SISTEMA_alunoAutenticado);
             return false;
         } else {
             return true;
@@ -374,20 +398,20 @@ class AlunoAction extends AlunoActionParent {
 
     public function validateSolicitaRecuperaSenha(&$request) {
         if ($request->get("email") == '') {
-            throw new Exception("Por favor, preencha o campo E-mail!");
+            throw new Exception(Lang::SISTEMA_validaEmail);
         }
         if (!Util::validaEmail($request->get("email"))) {
-            throw new Exception("Por favor, informe o E-mail corretamente!");
+            throw new Exception(Lang::SISTEMA_validaEmailValido);
         }
 
         $reCaptcha = $request->get("g-recaptcha-response");
         if ($reCaptcha == "") {
-            throw new Exception("Por favor, preencha o reCaptcha!");
+            throw new Exception(Lang::SISTEMA_validaCaptcha);
         }
         $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . RECAPTCHA_PRIVATE_KEY . "&response=" . $reCaptcha . "&remoteip=" . $_SERVER["REMOTE_ADDR"]);
         $responseKeys = json_decode($response, true);
         if (intval($responseKeys["success"]) !== 1) {
-            throw new Exception("Por favor, preencha o reCaptcha corretamente!");
+            throw new Exception(Lang::SISTEMA_validaCaptchaValido);
         }
 
         return true;
@@ -396,16 +420,16 @@ class AlunoAction extends AlunoActionParent {
     public function validateRecuperarSenhaHash(&$request) {
         $oAluno = $this->selectByEmail($request->get("email"));
         if (!$oAluno) {
-            throw new Exception("URL inválida, repita o processo e siga as orientações do seu e-mail.");
+            throw new Exception(Lang::SISTEMA_validaHash);
         }
         if ($oAluno->getRecuperaSenhaHash() != $request->get("hash")) {
-            throw new Exception("URL inválida, repita o processo e siga as orientações do seu e-mail.");
+            throw new Exception(Lang::SISTEMA_validaHash);
         }
 
         $data = ($oAluno->getRecuperaSenhaData()->format('c'));
         $diferenca = Util::diferencaDataEmDias(Util::transformaData($data), date("d/m/Y"));
         if ($diferenca > 1) {
-            throw new Exception("URL inválida, repita o processo e siga as orientações do seu e-mail.");
+            throw new Exception(Lang::SISTEMA_validaHash);
         }
         $request->set("id", $oAluno->getId());
         return true;
@@ -413,15 +437,15 @@ class AlunoAction extends AlunoActionParent {
 
     public function validaterRecuperarSenha(&$request) {
         if (!$request->get("novaSenha")) {
-            throw new Exception("Por favor, preencha o campo Nova Senha!");
+            throw new Exception(Lang::SISTEMA_validaNovaSenha);
         }
 
         if (strlen($request->get("novaSenha")) < 6) {
-            throw new Exception("Por favor, sua Nova Senha tem que ter no mínimo 6 dígitos!");
+            throw new Exception(Lang::SISTEMA_validaNovaSenhaTamanho);
         }
 
         if ($request->get("novaSenha") != $request->get("novaSenhaConf")) {
-            throw new Exception("Senhas não coincidem!");
+            throw new Exception(Lang::SISTEMA_validaNovaSenhaCompara);
         }
 
         $request->set("novaSenha", sha1($request->get("novaSenha")));

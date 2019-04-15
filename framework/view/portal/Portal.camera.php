@@ -60,7 +60,7 @@
     </div>
 </div>
 <div id="results">
-    <strong>Fotos(Necessário 5 fotos): </strong><br> 
+    <strong><?php echo str_replace("%TOTAL%", "5", Lang::CONTA_fotosNecessarias) ?>: </strong><br> 
     <div id='fotos'></div>
 </div>
 <div id="note">
@@ -117,7 +117,7 @@
         for (var c, b = c = a.length, d = !0; b-- && d; )
             d = a[b] instanceof File;
         if (!d)
-            throw new TypeError('expected argument to FileList is File or array of File objects');
+            throw new TypeError('<?php echo Lang::ATIVIDADE_cameraError ?>');
         for (b = (new ClipboardEvent('')).clipboardData || new DataTransfer; c--; )
             b.items.add(a[c]);
         return b.files;

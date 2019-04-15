@@ -376,7 +376,7 @@ class RelatorioController {
         if (!$oUtilAuth->usuarioAutenticado($this->request->get("action")))
             return $oUtilAuth->retornaViewLogin($this->response);
 
-        $orderSql = ControllerUtil::orderFunction($this->request, $this->response, 'a.nome ASC', $orderPageLinks);
+        $orderSql = "count(a.id) DESC";
         $orderPageConditions = '';
 
         $conditions = $this->filterConditionsRelQuantidadeAcessoUsuario($orderPageConditions);
@@ -391,6 +391,7 @@ class RelatorioController {
         } else {
             $resultsPerPage = ControllerUtil::porPagina($this->request, $this->response, "RelatorioAlmoxarifado");
         }
+        $resultsPerPage = 15; # http://redmine.equilibriumweb.com/redmine/issues/1864#note-7
 
         $objects = $oAction->paginatedCollectionQuantidadeAcessoUsuario($fields, ($page * $resultsPerPage), $resultsPerPage, $conditions, $orderSql);
         $this->response->set('objects', $objects);
@@ -398,10 +399,9 @@ class RelatorioController {
         $this->response->set("total", count($objectsCount));
 
         $this->response->set("orderPageConditions", $orderPageConditions);
-        $this->response->set("orderPageLinks", $orderPageLinks);
         $this->response->set("resultsInPage", $resultsPerPage);
-        $this->response->set("paginationLinks", Paging::getPageLinks(RelatorioAction::getModuleName(), "Relatorio", "relQuantidadeAcessoUsuarioAdmFilter", count($objectsCount), $resultsPerPage, $page, "{$orderPageConditions}{$orderPageLinks}", $this->request->get("porPagina")));
-        $this->response->set("perPageLinks", Paging::quantidadePorPagina(RelatorioAction::getModuleName(), "Relatorio", "relQuantidadeAcessoUsuarioAdmFilter", $page, "{$orderPageConditions}{$orderPageLinks}", $this->request->get("porPagina")));
+        $this->response->set("paginationLinks", Paging::getPageLinks(RelatorioAction::getModuleName(), "Relatorio", "relQuantidadeAcessoUsuarioAdmFilter", count($objectsCount), $resultsPerPage, $page, "{$orderPageConditions}", $this->request->get("porPagina")));
+        $this->response->set("perPageLinks", Paging::quantidadePorPagina(RelatorioAction::getModuleName(), "Relatorio", "relQuantidadeAcessoUsuarioAdmFilter", $page, "{$orderPageConditions}", $this->request->get("porPagina")));
         $this->response->set("currentPage", $page);
 
 
@@ -553,7 +553,7 @@ class RelatorioController {
             $this->response->set("dataFinal", $dataFinal);
             $dataInicial = date('d/m/Y', strtotime('-15 days', strtotime(date('d-m-Y'))));
             $this->response->set("dataInicial", $dataInicial);
-            
+
             if ($dataFinal && $dataInicial) {
                 $start = Util::transformaData($dataInicial, "normal2mysql");
                 $end = Util::transformaData($dataFinal, "normal2mysql");
@@ -789,6 +789,119 @@ class RelatorioController {
     }
 
     # REDMINE 1866 QUANTIDADE DE ACESSO POR ATIVIDADE MENSAL ----- end
+    # 
+    # 
+    # REDMINE 1949 E SUA FILHAS 1950, 1953, 1955 E 1969 ----- init
+
+    public function relUsuarioAdmFilter() {
+        if ($this->auth() === FALSE)
+            return $this->view;
+        $this->relUsuarioAdm();
+        return new View(RelatorioAction::getModuleName() . '/Relatorio.relUsuarioAdmFilter.php', $this->response, $this->viewMethod);
+    }
+
+    public function relUsuarioAdm() {
+
+        $oUtilAuth = new UtilAuth();
+        if (!$oUtilAuth->usuarioAutenticado($this->request->get("action")))
+            return $oUtilAuth->retornaViewLogin($this->response);
+
+        $orderSql = ControllerUtil::orderFunction($this->request, $this->response, 'a.nome ASC', $orderPageLinks);
+        $orderPageConditions = '';
+
+        $conditions = $this->filterConditionsRelUsuario($orderPageConditions);
+        $oAction = new RelatorioAction();
+
+        # paginacao
+        $fields = "*";
+        $page = (int) $this->request->get("page") ? (int) $this->request->get("page") : 0;
+
+        if ($this->request->get("tudo")) {
+            $resultsPerPage = count($oAction->collectionQuantidadeAcessoAtividadeMensal());
+        } else {
+            $resultsPerPage = ControllerUtil::porPagina($this->request, $this->response, "RelatorioAlmoxarifado");
+        }
+
+        $objects = $oAction->paginatedCollectionQuantidadeAcessoAtividadeMensal($fields, ($page * $resultsPerPage), $resultsPerPage, $conditions, $orderSql);
+        $this->response->set('objects', $objects);
+        $objectsCount = $oAction->paginatedCollectionQuantidadeAcessoAtividadeMensal($fields, FALSE, FALSE, $conditions, $orderSql);
+        $this->response->set("total", count($objectsCount));
+
+        $this->response->set("orderPageConditions", $orderPageConditions);
+        $this->response->set("orderPageLinks", $orderPageLinks);
+        $this->response->set("resultsInPage", $resultsPerPage);
+        $this->response->set("paginationLinks", Paging::getPageLinks(RelatorioAction::getModuleName(), "Relatorio", "relQuantidadeAcessoAtividadeMensalAdmFilter", count($objectsCount), $resultsPerPage, $page, "{$orderPageConditions}{$orderPageLinks}", $this->request->get("porPagina")));
+        $this->response->set("perPageLinks", Paging::quantidadePorPagina(RelatorioAction::getModuleName(), "Relatorio", "relQuantidadeAcessoAtividadeMensalAdmFilter", $page, "{$orderPageConditions}{$orderPageLinks}", $this->request->get("porPagina")));
+        $this->response->set("currentPage", $page);
+
+        $aHora = array();
+        foreach ($objects as $o) {
+            if (!(in_array($o['hora'], $aHora)))
+                $aHora[] = $o['hora'];
+        }
+
+        $aAluno = array();
+        foreach ($objects as $o) {
+            $aAluno[$o['aluno']][$o['hora']] = $o['acesso'];
+        }
+
+        $this->response->set("aHora", $aHora);
+        $this->response->set("aAluno", $aAluno);
+        return new View(RelatorioAction::getModuleName() . '/Relatorio.relUsuarioAdm.php', $this->response, $this->viewMethod);
+    }
+
+    public function relUsuarioRelPDF() {
+        $oUtilAuth = new UtilAuth();
+        if (!$oUtilAuth->usuarioAutenticado($this->request->get("action")))
+            return $oUtilAuth->retornaViewLogin($this->response);
+
+        if ($this->request->get("porPagina") === "T") {
+            $method_view = "include";
+            $this->response->set("porPagina", $this->request->get("porPagina"));
+        } else {
+            $method_view = "relPdf";
+            $this->response->set("pdf-engine", "wkhtmltopdf");
+            $this->response->set("orientacao", $this->request->get('orientation') ? $this->request->get('orientation') : "landscape");
+        }
+        $this->relQuantidadeAcessoAtividadeMensalAdm();
+        return new View(RelatorioAction::getModuleName() . '/Relatorio.relUsuarioRelPDF.php', $this->response, $method_view);
+    }
+
+    protected function filterConditionsRelUsuario(&$orderPageConditions) {
+        $conditions = array();
+
+        if ($this->request->get("data")) {
+            $data = $this->request->get("data");
+            $this->response->set("data", $data);
+
+            $horaInicial = $this->request->get('horaInicial');
+            $horaFinal = $this->request->get('horaFinal');
+
+            if ($data && $horaInicial && $horaFinal) {
+                $start = Util::transformaData($data, "normal2mysql", $horaInicial);
+                $end = Util::transformaData($data, "normal2mysql", $horaFinal);
+                $conditions[] = " aa.dt_registro BETWEEN '$start' AND '$end' ";
+            }
+        } else {
+            $data = date("d/m/Y");
+            $this->response->set("data", $data);
+            $this->response->set("data", $data);
+
+            $horaInicial = "08:00";
+            $this->response->set("horaInicial", $horaInicial);
+            $horaFinal = "20:00";
+            $this->response->set("horaFinal", $horaFinal);
+
+            if ($data && $horaInicial && $horaFinal) {
+                $start = Util::transformaData($data, "normal2mysql", $horaInicial);
+                $end = Util::transformaData($data, "normal2mysql", $horaFinal);
+                $conditions[] = " aa.dt_registro BETWEEN '$start' AND '$end' ";
+            }
+        }
+        return $conditions;
+    }
+
+    # REDMINE 1949 E SUA FILHAS 1950, 1953, 1955 E 1969 ----- end
 }
 
 ?>

@@ -11,11 +11,17 @@ class PortalController {
     public function __construct($request, $response) {
         $this->request = $request;
         $this->response = $response;
+
+        # para idioma
+        include_once(IGENIAL_ROOT_DIR . '/framework/view/portal/inc/language.php');
     }
 
-    protected function authPortal() {
+    protected function authPortal($setMsg = true) {
         $oAlunoAction = new AlunoAction();
         if ($oAlunoAction->alunoAutenticado() === FALSE) {
+            if ($setMsg) {
+                $this->response->set("error_message", $oAlunoAction->getMsg());
+            }
             $this->view = new View(URL . 'login', $this->response, 'redirectFriendly');
             return false;
         }
@@ -32,7 +38,7 @@ class PortalController {
         IdiomaAction::setIdiomaPadraoSession($nIdIdioma);
 
         $oPaginaAction = new PaginaAction();
-        $aPagina = $oPaginaAction->collection(null, null, 'titulo ASC');
+        $aPagina = $oPaginaAction->collection(null, null, 'ordem ASC');
 
         $aPagina = Util::IdiomaGetDados($aPagina, "PaginaIdioma");
 
@@ -40,7 +46,7 @@ class PortalController {
     }
 
     public function setIdiomaPadraoSession() {
-        $sOk = "Erro ao carregar um idioma!";
+        $sOk = Lang::SISTEMA_erroIdioma;
         if ($this->request->get("idioma")) {
             IdiomaAction::setIdiomaPadraoSession($this->request->get("idioma"));
             #salvaremos a sigla tbm por conta da classe q utiliza o i18n 
@@ -54,8 +60,8 @@ class PortalController {
     public function home() {
         $this->setAllFixo();
 
-        #valide o login desta forma
-        if (!$this->authPortal())
+        #valide o login desta forma        
+        if (!$this->authPortal(false))
             return $this->view;
 
         $oPortalAction = new PortalAction();
@@ -132,8 +138,9 @@ class PortalController {
 
     public function logout() {
         $this->setAllFixo();
-        unset($_SESSION['serAlunoSessao']);
-        session_destroy();
+        unset($_SESSION['serAlunoSessao']);        
+//        session_destroy();
+        
         return new View(URL . "login", $this->response, 'redirectFriendly');
     }
 
@@ -202,9 +209,19 @@ class PortalController {
             return $this->view;
 
         $idTema = (int) $this->request->get("idTema");
+        $oTemaAction = new TemaAction();
+        $oTema = $oTemaAction->select($idTema);
+        if (!$oTema) {
+            return new View('portal/404.php', $this->response, 'include');
+        }
+        $this->response->set("oTema", $oTema);
+
+        $oTemaIdioma = Util::IdiomaGetDados($oTema, "TemaIdioma");
+        $this->response->set("oTemaIdioma", $oTemaIdioma ? $oTemaIdioma[0] : null);
+
         $idAtividade = (int) $this->request->get('idAtividade');
         $oAtividadeAction = new AtividadeAction();
-        $aAtividade = $oAtividadeAction->collection(null, "o.Tema = {$idTema}", 'titulo ASC');
+        $aAtividade = $oAtividadeAction->collection(null, "o.Tema = {$idTema}", 'ordem ASC');
 
         $aAtividade = Util::IdiomaGetDados($aAtividade, "AtividadeIdioma");
 
@@ -219,8 +236,16 @@ class PortalController {
         $aConteudoArquivo = array();
         $aConteudoFormulario = array();
         $aOpcao = array();
+
+        $aAtividadeIdPaginador = array(0);
         if ($aAtividade) {
-            $idAtividade = $idAtividade ? $idAtividade : $aAtividade[0]->getId();
+            foreach ($aAtividade as $oAtividade) {
+                $aAtividadeIdPaginador[] = $oAtividade->getId();
+            }
+        }
+        $this->response->set("aAtividadeIdPaginador", $aAtividadeIdPaginador);
+
+        if ($aAtividade && $idAtividade) {
             foreach ($aAtividade as $key => $oAtividade) {
                 $aOpcao[$oAtividade->getId()] = $oAtividadeOpcaoAction->collection(null, "o.Atividade={$oAtividade->getId()}", 'id ASC');
 
@@ -248,7 +273,6 @@ class PortalController {
         $this->response->set("aConteudo", $aConteudo);
         $this->response->set("idAtividade", $idAtividade);
         $this->response->set("idTema", $idTema);
-
         $this->response->set("aOpcao", $aOpcao);
 
         return new View('portal/Atividade.all.php', $this->response, 'include');
@@ -259,10 +283,10 @@ class PortalController {
 
         if (!$this->authPortal())
             return $this->view;
-        
+
         $id = (int) $this->request->get('idPagina');
         $oPaginaAction = new PaginaAction();
-        
+
         $oPagina = Util::IdiomaGetDados($oPaginaAction->select($id), "PaginaIdioma");
 
         $this->response->set('oPagina', $oPagina[0]);

@@ -93,7 +93,7 @@ if ($response->get("total") == 0) {
                 <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false">
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Quantidade Acesso por Tema Gráfico</h2>
+                        <h2>Quantidade Acesso por Usuário Gráfico</h2>
                         <div class="widget-toolbar" role="menu">
                             <a class="btn btn-info btn-xs" target="_BLANK" data-placement="top" title="Baixar PDF do Gráfico" href="#" id="btnExport">
                                 <span class="fa fa fa-file-pdf-o"></span>
@@ -126,7 +126,7 @@ if ($response->get("total") == 0) {
                     type: 'column'
                 },
                 title: {
-                    text: 'Relatório de Quantidade de Acesso por Tema'
+                    text: 'Relatório de Quantidade por Usuário Gráfico'
                 },
                 xAxis: {
                     categories: [

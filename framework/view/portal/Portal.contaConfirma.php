@@ -8,7 +8,7 @@ and open the template in the editor.
     <head>
         <!--CONFIGURAÇÃO HEAD-->
         <?php include dirname(__FILE__) . "/inc/head.php"; ?>
-        <title>Conta - Laboratório Virtual</title>
+        <title><?php echo Lang::GERAL_conta ?> - <?php echo Lang::GERAL_tituloUfu ?></title>
         <!--CONFIGURAÇÃO CSS-->
         <?php include dirname(__FILE__) . "/inc/config_css.php"; ?>
 
@@ -25,10 +25,9 @@ and open the template in the editor.
                             <header class="d-flex flex-column flex-md-row justify-content-between align-items-center my-3">
                                 <div class="logo d-flex flex-column flex-md-row align-items-center">
                                     <a href="<?php echo URL ?>"><img src="<?= URL_PORTAL ?>img/logo-small.png" alt="logo" class="" /></a>
-                                    <a href="interna.php" class="link-quem-somos">Quem somos</a>
                                 </div>
                                 <?php if (isset($_SESSION['serAlunoSessao'])) {
-                                    ?><div class="usuario-logado">Bem vindo(a): <?php echo $_SESSION['alunoNome'] ?> | <a href="<?= URL ?>logout">Sair</a></div>
+                                    ?><div class="usuario-logado">Bem vindo(a): <?php echo $_SESSION['alunoNome'] ?> | <a href="<?= URL ?>logout"><?php echo Lang::GERAL_logout ?></a></div>
                                 <?php } ?>
                             </header>
                         </div>
@@ -47,9 +46,9 @@ and open the template in the editor.
                                 } else {
                                     ?>
 
-                                    SUA CONTA FOI CONFIRMADA, VOCÊ JÁ PODE ACESSAR O SISTEMA!
+                                    <?php echo Lang::confirmaConta ?>
                                     <div>
-                                        <a href="<?php echo URL . "login/" ?>" tabindex="<?= ++$tabindex ?>" class="btn btn-danger">Acessar o Sistema</a>
+                                        <a href="<?php echo URL . "login/" ?>" tabindex="<?= ++$tabindex ?>" class="btn btn-danger"><?php echo Lang::CONTA_login ?></a>
                                     </div>
                                 <?php } ?>
                             </div>

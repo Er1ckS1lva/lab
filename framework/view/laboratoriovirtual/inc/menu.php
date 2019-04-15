@@ -33,7 +33,7 @@ if (isset($this->aModules[$sUrlEstou])) {
             </li>
             
             <li class="submenu" entity="Pagina">
-                <a href="<?= $sUrlEstou ?>Pagina"><i class="fa fa-user"></i> <span>Página</span></a>
+                <a href="<?= $sUrlEstou ?>Pagina"><i class="fa fa-columns"></i> <span>Página</span></a>
             </li>
         </ul>
     </li>

@@ -88,6 +88,13 @@
                                 </label>
                             </section>
 
+                            <section>
+                                <label class="label" for="ordem">Ordem (quanto menor mais relevante)</label>
+                                <label class="input">
+                                    <input class="form-control" onkeyup="formatar(this, '9999999999')" onkeypress="formatarIntContinue(this);" type="text" id="ordem" name="ordem" maxlength='11' mask='inteiro' tabindex='<?= ( ++$tabindex) ?>' value=''/>
+                                </label>
+                            </section>
+
 
                             <section>
                                 <label class="label" for="descricao">Descrição</label>
@@ -237,11 +244,11 @@
                                 <div id="Atividade-conteudo-model"  style="display: none;">
                                     <div class="panel panel-default conteudo-model">
                                         <div class="panel-heading" role="tab" id="headingOne">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#Atividade-conteudo-append" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Arquivo Multimídia (<span class="nome text-success">Novo</span>)
-                                            </a>
-                                        </h4>
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#Atividade-conteudo-append" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Arquivo Multimídia (<span class="nome text-success">Novo</span>)
+                                                </a>
+                                            </h4>
                                         </div>
                                         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                             <div class="panel-body padding-10">

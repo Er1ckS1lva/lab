@@ -73,8 +73,8 @@ class AtividadeController extends AtividadeControllerParent {
         $aConteudoArquivo = array();
         $oConteudoArquivoAction = new ConteudoArquivoAction();
         $oConteudoFormularioAction = new ConteudoFormularioAction();
+        $aConteudoFormulario = array();
         if ($aConteudo) {
-            $aConteudoFormulario = array();
             foreach ($aConteudo as $key => $oConteudo) {
                 $aConteudoArquivo[$oConteudo->getId()] = $oConteudoArquivoAction->select($oConteudo->getId());
                 $aConteudoFormulario[$oConteudo->getId()] = $oConteudoFormularioAction->selectByConteudo($oConteudo->getId());

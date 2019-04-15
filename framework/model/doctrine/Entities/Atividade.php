@@ -31,6 +31,10 @@ class Atividade {
     * @Column(name="log_del", type="string", length=1, nullable=FALSE ,unique=FALSE, columnDefinition="Log deleção")
     **/
     protected $logDel;
+    /** 
+    * @Column(name="ordem", type="integer", length=11, nullable=TRUE ,unique=FALSE, columnDefinition="Ordem")
+    **/
+    protected $ordem;
 
 
     public function getId() {
@@ -79,6 +83,13 @@ class Atividade {
         if($logDel) {
         $this->logDel = $logDel;
         }
+    }
+
+    public function getOrdem() {
+        return $this->ordem;
+    }
+    public function setOrdem($ordem) {
+        $this->ordem = $ordem;
     }
 
 

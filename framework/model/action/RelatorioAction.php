@@ -431,8 +431,8 @@ class RelatorioAction {
 
         return $aObj;
     }
-    
-     public function paginatedCollectionQuantidadeAcessoTemaPeriodo($fieldsToSelect = "*", $page = 0, $resultsPerPage = 10, $conditions = null, $order = null) {
+
+    public function paginatedCollectionQuantidadeAcessoTemaPeriodo($fieldsToSelect = "*", $page = 0, $resultsPerPage = 10, $conditions = null, $order = null) {
         $conditions_join = join($conditions, " AND ");
         $sql = "
                 SELECT te.titulo as tema, count(te.id) as acesso
@@ -491,6 +491,67 @@ class RelatorioAction {
 
         return $aObj;
     }
+
+    public function paginatedCollectionUsuario($fieldsToSelect = "*", $page = 0, $resultsPerPage = 10, $conditions = null, $order = null) {
+        $conditions_join = join($conditions, " AND ");
+        $sql = "
+                SELECT te.titulo as tema, count(te.id) as acesso
+                FROM aluno_acesso aa
+                INNER JOIN atividade ati ON(ati.id=aa.id_atividade)
+                LEFT JOIN tema te ON(te.id=ati.id_tema)
+               ";
+        if ($conditions_join) {
+            $sql .= " WHERE {$conditions_join} ";
+        }
+
+        $sql .= " GROUP BY te.id ";
+
+        if ($order)
+            $sql .= " ORDER BY {$order} ";
+
+
+        if ($page !== FALSE && $resultsPerPage !== FALSE) {
+            $sql .= " LIMIT {$page}, {$resultsPerPage} ";
+        }
+//        Util::debug($sql);
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $aObj = $stmt->fetchAll();
+
+        return $aObj;
+    }
+
+    public function collectionUsuario($fieldsToSelect = "*", $conditions = NULL, $order = NULL, $limit = FALSE) {
+        $conditions_join = join($conditions, " AND ");
+        $sql = "
+                SELECT aa.*, a.nome aluno, ati.titulo atividade, te.titulo tema
+                FROM aluno_acesso aa
+                INNER JOIN aluno a ON(a.id=aa.id_aluno)
+                LEFT JOIN atividade ati ON(ati.id=aa.id_atividade)
+                LEFT JOIN atividade te ON(te.id=ati.id_tema)
+               ";
+        if ($conditions_join) {
+            $sql .= " WHERE {$conditions_join} ";
+        }
+
+        $sql .= " GROUP BY te.id ";
+
+        if ($order)
+            $sql .= " ORDER BY {$order} ";
+
+        if ($page !== FALSE && $resultsPerPage !== FALSE) {
+            $sql .= " LIMIT {$page}, {$resultsPerPage} ";
+        }
+        #Util::debug($sql);
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $aObj = $stmt->fetchAll();
+
+        return $aObj;
+    }
+
 }
 
 ?>

@@ -8,7 +8,7 @@ and open the template in the editor.
     <head>
         <!--CONFIGURAÇÃO HEAD-->
         <?php include dirname(__FILE__) . "/inc/head.php"; ?>
-        <title>Conta - Laboratório Virtual</title>
+        <title><?php echo Lang::GERAL_conta ?> - <?php echo Lang::GERAL_tituloUfu ?></title>
         <!--CONFIGURAÇÃO CSS-->
         <?php include dirname(__FILE__) . "/inc/config_css.php"; ?>
         <?php include dirname(__FILE__) . "/inc/config_js.php"; ?>
@@ -49,50 +49,50 @@ and open the template in the editor.
                         <div class="row">
                             <div class="col pagina-interna">
                                 <form class="smart-form" method="post" action="<?= URL ?>index.php?action=Portal.criarContaSubmit" id="frm" name="frm" onsubmit="return false;" autocomplete="off" enctype='multipart/form-data' >
-                                    <label class="label" for="nome"><?php echo Lang::nome; ?></label>
+                                    <label class="label" for="nome"><?php echo Lang::CONTA_nome; ?></label>
                                     <input class="form-control"  type="text" id="titulo" name="nome" maxlength='255' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label"><?php echo Lang::email; ?></label>
+                                    <label class="label"><?php echo Lang::CONTA_email; ?></label>
                                     <input class="form-control" type="text" id="email" name="email" maxlength='255' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label" for="dataNascimento"><?php echo Lang::dataNascimento; ?></label>
+                                    <label class="label" for="dataNascimento"><?php echo Lang::CONTA_dataNascimento; ?></label>
                                     <input class="form-control data"  type="text" id="dataNascimento" name="dataNascimento" maxlength='10' mask='date' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label" for="sexo"><?php echo Lang::sexo; ?></label>
+                                    <label class="label" for="sexo"><?php echo Lang::CONTA_sexo; ?></label>
                                     <!--<label class="input">-->
-                                    <?= AlunoAction::getComboBoxForSexo(null, ( ++$tabindex)); ?>
+                                    <?= AlunoAction::getComboBoxForSexo(null, ( ++$tabindex), "-Selecione-"); ?>
                                     <!--</label>-->
 
-                                    <label class="label" for="CPF"><?php echo Lang::cpf; ?></label>
+                                    <label class="label" for="CPF"><?php echo Lang::CONTA_cpf; ?></label>
                                     <input class="form-control cpf"  type="text" id="cpf" name="cpf" maxlength='14'tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label" for="cidade"><?php echo Lang::cidade; ?></label>
+                                    <label class="label" for="cidade"><?php echo Lang::CONTA_cidade; ?></label>
                                     <input class="form-control"  type="text" id="cidade" name="cidade" maxlength='100' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label" for="estado"><?php echo Lang::estado; ?></label>
+                                    <label class="label" for="estado"><?php echo Lang::CONTA_estado; ?></label>
                                     <input class="form-control"  type="text" id="estado" name="estado" maxlength='100' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label" for="nacionalidade"><?php echo Lang::nacionalidade; ?></label>
+                                    <label class="label" for="nacionalidade"><?php echo Lang::CONTA_nacionalidade; ?></label>
                                     <input class="form-control"  type="text" id="nacionalidade" name="nacionalidade" maxlength='100' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label" for="instituicaoEnsino"><?php echo Lang::instituicaoEnsino; ?></label>
+                                    <label class="label" for="instituicaoEnsino"><?php echo Lang::CONTA_instituicaoEnsino; ?></label>
                                     <input class="form-control"  type="text" id="instituicaoEnsino" name="instituicaoEnsino" maxlength='150' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label" for="curso"><?php echo Lang::curso; ?></label>
+                                    <label class="label" for="curso"><?php echo Lang::CONTA_curso; ?></label>
                                     <input class="form-control"  type="text" id="curso" name="curso" maxlength='150' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label"><?php echo Lang::login; ?></label>
+                                    <label class="label"><?php echo Lang::CONTA_login; ?></label>
                                     <input class="form-control"  type="text" id="login" name="login" maxlength='20' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
 
-                                    <label class="label"><?php echo Lang::senha; ?></label>
+                                    <label class="label"><?php echo Lang::CONTA_senha; ?></label>
                                     <input class="form-control"  type="password" id="senha" name="senha" maxlength='256' mask='' validate='1' tabindex='<?= ( ++$tabindex) ?>' value=''/>
 
-                                    <label class="label"><?php echo Lang::confirmarSenha; ?></label>
+                                    <label class="label"><?php echo Lang::CONTA_confirmarSenha; ?></label>
                                     <input class="form-control"  type="password" id="senhaConf" name="senhaConf" maxlength='256' mask='' validate='1' tabindex='<?= ( ++$tabindex) ?>' value=''/>
                                     <br/>
 
                                     <input class="" value="S" onchange="carregaCamera(this);" type="checkbox" id="loginFacial" name="loginFacial" tabindex='<?= ( ++$tabindex) ?>' />
-                                    <label class="label"><?php echo Lang::loginFacial; ?></label>
+                                    <label class="label"><?php echo Lang::CONTA_loginFacial; ?></label>
                                     <br/>
                                     <div id="camera" style="display: none">
                                         <?php include dirname(__FILE__) . "/Portal.camera.php"; ?>
@@ -105,8 +105,8 @@ and open the template in the editor.
                                     </div>
                                     <br/>
                                     <div>
-                                        <button class="btn btn-primary" onclick="criarContaSubmit(this);" tabindex="<?= ++$tabindex ?>" ><?php echo Lang::enviar; ?></button>
-                                        <a href="<?php echo URL . "login/" ?>" tabindex="<?= ++$tabindex ?>" class="btn btn-danger"><?php echo Lang::voltar; ?></a>
+                                        <button class="btn btn-primary" onclick="criarContaSubmit(this);" tabindex="<?= ++$tabindex ?>" ><?php echo Lang::CONTA_enviar; ?></button>
+                                        <a href="<?php echo URL . "login/" ?>" tabindex="<?= ++$tabindex ?>" class="btn btn-danger"><?php echo Lang::GERAL_voltar; ?></a>
                                     </div>
                                 </form>
                             </div>
@@ -127,7 +127,7 @@ and open the template in the editor.
                     </div>
                     <div class="modal-footer">
                         <!--<a id="btn_ok" class="btn btn-primary ok">Sim</a>-->
-                        <a class="btn btn-primary" data-dismiss="modal">ok</a>
+                        <a class="btn btn-primary" data-dismiss="modal">Ok</a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

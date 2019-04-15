@@ -29,13 +29,21 @@
                             </section>
 
 
-                            <section>
-                                <label class="label" for="target">Target</label>
-                                <label class="input">
-                                    <?= PaginaAction::getComboBoxForTarget(null, ( ++$tabindex)); ?>
+                            <div class="row">
+                                <section class="col col-6">
+                                    <label class="label" for="target">Outra página</label>
+                                    <label class="input">
+                                        <?= PaginaAction::getComboBoxForTarget(null, ( ++$tabindex)); ?>
 
-                                </label>
-                            </section>
+                                    </label>
+                                </section>
+                                <section class="col col-6">
+                                    <label class="label" for="ordem">Ordem (quanto menor mais a esquerda)</label>
+                                    <label class="input">
+                                        <input class="form-control" onkeyup="formatar(this, '9999999999')" onkeypress="formatarIntContinue(this);" type="text" id="ordem" name="ordem" maxlength='11' mask='inteiro' tabindex='<?= ( ++$tabindex) ?>' value=''/>
+                                    </label>
+                                </section>
+                            </div>
 
 
                         </fieldset>

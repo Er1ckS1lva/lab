@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Aceite</h5>
+                <h5 class="modal-title"><?php echo Lang::GERAL_aceite ?></h5>
                 <button type="button" id="noaceite" class="close" onclick="aceitaTermo(this); return false" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="aceite" class="btn btn-primary" onclick="aceitaTermo(this); return false">Aceito</button>
-                <button type="button" id="noaceite" class="btn btn-secondary" data-dismiss="modal" onclick="aceitaTermo(this); return false">Não aceito</button>
+                <button type="button" id="aceite" class="btn btn-primary" onclick="aceitaTermo(this); return false"><?php echo Lang::GERAL_aceite ?></button>
+                <button type="button" id="noaceite" class="btn btn-secondary" data-dismiss="modal" onclick="aceitaTermo(this); return false"><?php echo Lang::GERAL_desaceite ?></button>
             </div>
         </div>
     </div>

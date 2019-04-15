@@ -137,7 +137,7 @@ class AtividadeAction extends AtividadeActionParent {
     }
 
     protected function editTransaction($oAtividade, $request) {
-        Util::debug($request, false);
+//        Util::debug($request, false);
         $oConteudoAction = new ConteudoAction($this->em);
         $tituloConteudoEdit = $request->get('tituloConteudoEdit') ? $request->get('tituloConteudoEdit') : array();
 

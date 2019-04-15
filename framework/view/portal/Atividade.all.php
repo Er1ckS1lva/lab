@@ -4,36 +4,74 @@
         <?php include dirname(__FILE__) . "/inc/head.php"; ?>
         <?php include dirname(__FILE__) . "/inc/config_js.php"; ?>
 
-        <title>Atividade - Laboratório Virtual</title>
+        <title><?php echo Lang::GERAL_atividade ?> - <?php echo Lang::GERAL_tituloUfu ?></title>
         <!--CONFIGURAÇÃO CSS-->
         <?php include dirname(__FILE__) . "/inc/config_css.php"; ?>
     </head>
 
 
-    <body>
-        <script type="text/javascript">
-
-        </script>
+    <body>        
         <div class="geral">
 
             <?php include dirname(__FILE__) . "/inc/header.php"; ?>
 
-            <!--<div id="">-->
             <?php
+            $oTema = $response->get("oTema");
+            $oTemaIdioma = $response->get("oTemaIdioma");
+
             $aAtividade = $response->get("aAtividade");
             $idAtividade = $response->get('idAtividade');
+            ?>
 
-            if ($aAtividade) {
-                ?>
-                <div id="tabs-list" class="sw-main sw-theme-default">
+            <div id="tabs-list" class="sw-main sw-theme-default">
+                <?php if ($idAtividade === 0) { ?>
+                    <div class="tab-content">
+                        <?php include dirname(__FILE__) . "/Atividade.all.paginador.php"; ?>
+                        <div class="tab-pane <?php echo 0 == $idAtividade ? 'active' : ''; ?> " id="atividade0">
+                            <div class="pagina-atividade my-4">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <?php if ($oTemaIdioma) { ?>
+                                                    <h1 class="titulo-atividade"><?php echo $oTemaIdioma->getTitulo(); ?></h1>
+                                                <?php } else { ?>
+                                                    <h1 class="titulo-atividade"><?php echo $oTema->getTitulo(); ?></h1>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-3">
+                                            <?php
+                                            if ($oTemaIdioma) {
+                                                echo $oTemaIdioma->getDescricao();
+                                            } else {
+                                                echo $oTema->getDescricao();
+                                            }
+                                            ?>
+                                        </div>
+
+                                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 btns-right text-center">
+                                            <?php include dirname(__FILE__) . "/inc/buttons.php"; ?>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php include dirname(__FILE__) . "/Atividade.all.paginador.php"; ?>
+                    </div>
+
+                <?php } ?>
+                <?php if ($aAtividade) { ?>
+
                     <?php
                     $aConteudo = $response->get('aConteudo');
                     $aConteudoArquivo = $response->get('aConteudoArquivo');
                     $aConteudoFormulario = $response->get('aConteudoFormulario');
-                    $qtd_ativi = count($aAtividade) - 1;
                     foreach ($aAtividade as $key => $oAtividade) {
                         ?>
-
                         <?php
                         if ($oAtividade->getId() == $idAtividade) {
                             ?>
@@ -127,12 +165,14 @@
                                                                             <?php } else if ($aConteudoFormulario[$oConteudo->getId()]->getTipo() == "MEI") {
                                                                                 ?>
                                                                                 <label class="radio">
-                                                                                    <?php foreach ($aFormularioOpcao as $key => $oFO) {
-                                                                                        ?>
-                                                                                        <input type="radio" name="formulario_opcao">
-                                                                                        <i><?php echo $oFO->getValor(); ?></i>
-                                                                                        <br/>
-                                                                                    <?php }
+                                                                                    <?php
+                                                                                    if ($aFormularioOpcao)
+                                                                                        foreach ($aFormularioOpcao as $key => $oFO) {
+                                                                                            ?>
+                                                                                            <input type="radio" name="formulario_opcao">
+                                                                                            <i><?php echo $oFO->getValor(); ?></i>
+                                                                                            <br/>
+                                                                                        <?php }
                                                                                     ?>
                                                                                 </label>
                                                                             <?php } else if ($aConteudoFormulario[$oConteudo->getId()]->getTipo() == "TXT") {
@@ -150,8 +190,8 @@
 
                                                             <?php if (count($aConteudo[$oAtividade->getId()]) > 1) { ?>
                                                                 <div class=center>
-                                                                    <span class="prev"><a href=#><< Prev</a></span>
-                                                                    <span class="next" style="margin-left:20px"><a href=#>Next >></a></span>
+                                                                    <span class="prev"><a href=#><< <?php echo Lang::ATIVIDADE_anterior ?></a></span>
+                                                                    <span class="next" style="margin-left:20px"><a href=#><?php echo Lang::ATIVIDADE_posterior ?> >></a></span>
                                                                 </div>
                                                             <?php } ?>
 
@@ -204,17 +244,11 @@
                                                         ?>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 btns-right text-center">
-                                                    <div class="mb-3">
-                                                        <button class="btn btn-outline-danger btn-lg">Talk to Theresa or Marcus</button>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <button class="btn btn-outline-success btn-lg">Online dictionary</button>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <button class="btn btn-outline-info btn-lg">Library</button>
-                                                    </div>
+                                                    <?php include dirname(__FILE__) . "/inc/buttons.php"; ?>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -224,36 +258,43 @@
                             <?php
                         }
                     }
+                } else {
                     ?>
-                    <ul class="nav nav-tabs step-anchor" id="myTab"  role="tablist">
-                        <?php
+                    <br><h3><?php echo Lang::ATIVIDADE_nenhum ?></h3><br>
+                <?php } ?>
+
+                <ul class="nav nav-tabs step-anchor" id="myTab"  role="tablist">
+                    <li class="nav-item <?php echo 0 == $idAtividade ? 'active' : ''; ?>" >
+                        <a class="nav-link <?php echo 0 == $idAtividade ? 'active' : ''; ?> " style="cursor: pointer;" 
+                           id="home-tab" data-toggle="tab" onclick="Reload(0)" 
+                           href="#atividade0">
+                            <?php echo LANG::ATIVIDADE_intro ?> <br /><small><?php echo $oTema->getTitulo(); ?></small>
+                        </a>
+                    </li>
+                    <?php
+                    if ($aAtividade) {
                         foreach ($aAtividade as $key => $oAtividade) {
                             ?>
                             <li class="nav-item <?php echo $oAtividade->getId() == $idAtividade ? 'active' : ''; ?>" >
                                 <a class="nav-link <?php echo $oAtividade->getId() == $idAtividade ? 'active' : ''; ?> " style="cursor: pointer;" 
                                    id="home-tab" data-toggle="tab" onclick="Reload(<?php echo $oAtividade->getId(); ?>)" 
                                    href="#atividade<?php echo $oAtividade->getId() ?>">
-                                    Atividade <?php echo $key + 1 ?><br /><small><?php echo $oAtividade->getTitulo(); ?></small>
+                                    <?php echo Lang::GERAL_atividade?> <?php echo $key + 1 ?><br /><small><?php echo $oAtividade->getTitulo(); ?></small>
                                 </a>
                             </li>
                         <?php } ?>
-                    </ul>
-                </div>
+                    <?php } ?>
+                </ul>
 
-
-            <?php } else { ?>
-                <br><h3><?php echo "Não há atividades para esse tema." ?></h3><br>
-            <?php } ?>
+            </div>            
         </div>
 
         <hr />
 
+        <?php include dirname(__FILE__) . "/inc/footer.php"; ?>
+        <script type="text/javascript">
 
-    </div>
-    <?php include dirname(__FILE__) . "/inc/footer.php"; ?>
-    <script type="text/javascript">
-
-        //            $(document).ready(function () {
+            //            $(document).ready(function () {
 <?php /*
   if ($_REQUEST['p'] == 'tab1') {
   ?>
@@ -261,33 +302,33 @@
   <?php
   } */
 ?>
-        //        $(document).ready(function () {
-        //
-        //            $('#tabs-list').click(function () {
-        //                newurl = window.location.href.split("#")[0];
-        //                window.location.href = newurl.split("?")[0] + "?idAtividade=1";
-        //            });
-        //        });
+            //        $(document).ready(function () {
+            //
+            //            $('#tabs-list').click(function () {
+            //                newurl = window.location.href.split("#")[0];
+            //                window.location.href = newurl.split("?")[0] + "?idAtividade=1";
+            //            });
+            //        });
 
-        // Seta uma função global que valida se o usuário tentar sair da página
-        function setUpBeforeUnload() {
-            window.onbeforeunload = function () {
-                return "Você tem certeza que deseja sair da atividade?";
-            };
-        }
-
-        $('a#href-logout').click(function (evt) {
-            if (confirm("Você tem certeza que deseja sair do sistema (e da atividade)?")) {
-                window.location.href = "<?= URL ?>logout";
+            // Seta uma função global que valida se o usuário tentar sair da página
+            function setUpBeforeUnload() {
+                window.onbeforeunload = function () {
+                    return "<?php echo Lang::ATIVIDADE_sairAtividade?>";
+                };
             }
-        }).attr('href', "#");
 
-        function Reload(idAtividade) {
-            newurl = window.location.href.split("#")[0];
-            window.location.href = newurl.split("?")[0] + "?idAtividade=" + idAtividade;
-        }
+            $('a#href-logout').click(function (evt) {
+                if (confirm("<?php echo Lang::ATIVIDADE_sairAtividadeSistema?>")) {
+                    window.location.href = "<?= URL ?>logout";
+                }
+            }).attr('href', "#");
 
-//        </script>
+            function Reload(idAtividade) {
+                newurl = window.location.href.split("#")[0];
+                window.location.href = newurl.split("?")[0] + "?idAtividade=" + idAtividade;
+            }
 
-</body>
+            //        </script>
+
+    </body>
 </html>

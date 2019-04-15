@@ -45,7 +45,8 @@ if ($response->get("total") == 0) {
                                     </th>
                                     <th><a href="?order=titulo<?= $allFilters ?>">Título</a></th>
                                     <th><a href="?order=conteudo<?= $allFilters ?>">Conteúdo</a></th>
-                                    <th><a href="?order=target<?= $allFilters ?>">Target</a></th>
+                                    <th><a href="?order=target<?= $allFilters ?>">Outra página</a></th>
+                                    <th><a href="?order=ordem<?= $allFilters ?>">Ordem</a></th>
                                     <th width="" colspan="2" class="acao">Ações</th>
                                 </tr>
                             </thead>
@@ -60,6 +61,7 @@ if ($response->get("total") == 0) {
                                             </a>
                                         </td>
                                         <td><?= PaginaAction::getValueForTarget($o->getTarget()); ?></td>
+                                        <td><?= $o->getOrdem() ?></td>
                                         <td class="edicao">
                                             <a href="<?php echo URL_APP ?><?= $this->module ?>/Pagina/edit/<?php echo $o->getId() ?>" class="btn btn-default btn-small">
                                                 <i class="fa fa-edit"></i> Editar

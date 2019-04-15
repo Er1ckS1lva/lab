@@ -10,7 +10,7 @@ and open the template in the editor.
         <?php include dirname(__FILE__) . "/inc/head.php"; ?>
         <?php include dirname(__FILE__) . "/inc/config_js.php"; ?>
 
-        <title>Atividade - Laboratório Virtual</title>
+        <title><?php echo Lang::GERAL_tituloUfu ?></title>
         <!--CONFIGURAÇÃO CSS-->
         <?php include dirname(__FILE__) . "/inc/config_css.php"; ?>
     </head>
@@ -46,7 +46,7 @@ and open the template in the editor.
                         </div>
                     <?php } else {
                         ?>
-                        <br><h3><?php echo "Página não econtrada!" ?></h3><br>
+                        <br><h3><?php echo Lang::GERAL_pagina404 ?>!</h3><br>
                     <?php } ?>
                 </div>
             </div>

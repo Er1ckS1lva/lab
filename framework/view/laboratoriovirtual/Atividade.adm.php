@@ -47,6 +47,7 @@ if ($response->get("total") == 0) {
                                     <th><a href="?order=titulo<?= $allFilters ?>">Título</a></th>
                                     <th><a href="?order=descricao<?= $allFilters ?>">Descrição</a></th>
                                     <th><a href="?order=tipo<?= $allFilters ?>">Tipo</a></th>
+                                    <th><a href="?order=ordem<?= $allFilters ?>">Ordem</a></th>
                                     <th width="" colspan="2" class="acao">Ações</th>
                                 </tr>
                             </thead>
@@ -66,6 +67,7 @@ if ($response->get("total") == 0) {
                                                 <?= AtividadeAction::getValueForTipo($o->getTipo()); ?>
                                             <!--</a>-->
                                         </td>
+                                        <td><?= $o->getOrdem() ?></td>
                                         <td class="edicao">
                                             <a href="<?php echo URL_APP ?><?= $this->module ?>/Atividade/edit/<?php echo $o->getId() ?>" class="btn btn-default btn-small">
                                                 <i class="fa fa-edit"></i> Editar

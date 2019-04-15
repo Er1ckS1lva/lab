@@ -36,13 +36,13 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
     }
 }
 	if ($request->get("target") == '') {
-            throw new Exception("Por favor, informe o campo Target!");
+            throw new Exception("Por favor, informe o campo Outra página!");
         }
 
 
 if(isset($aFieldsStructure["target"]) && !isset($aFieldsStructure["target"]["isFk"]) && $aFieldsStructure["target"]["length"]){
     if (strlen($request->get("target")) > $aFieldsStructure["target"]["length"]) {
-        $this->setMsg("Por favor, informe o campo Target corretamente, o tamanho do campo é {$aFieldsStructure["target"]["length"]}!");
+        $this->setMsg("Por favor, informe o campo Outra página corretamente, o tamanho do campo é {$aFieldsStructure["target"]["length"]}!");
         return false;
     }
 }
@@ -59,6 +59,7 @@ if(isset($aFieldsStructure["target"]) && !isset($aFieldsStructure["target"]["isF
         $oPagina->setTitulo($titulo);
 	$oPagina->setConteudo($conteudo);
 	$oPagina->setTarget($target);
+	$oPagina->setOrdem($ordem);
 	
         try {
             if ($commitable) {
@@ -104,6 +105,7 @@ if(isset($aFieldsStructure["target"]) && !isset($aFieldsStructure["target"]["isF
         $oPagina->setTitulo($titulo);
 	$oPagina->setConteudo($conteudo);
 	$oPagina->setTarget($target);
+	$oPagina->setOrdem($ordem);
 	
 
         try {
@@ -428,6 +430,7 @@ if(isset($aFieldsStructure["target"]) && !isset($aFieldsStructure["target"]["isF
         $o->setTitulo((isset($v['titulo']) ? $v['titulo'] : NULL));
         $o->setConteudo((isset($v['conteudo']) ? $v['conteudo'] : NULL));
         $o->setTarget((isset($v['target']) ? $v['target'] : NULL));
+        $o->setOrdem((isset($v['ordem']) ? $v['ordem'] : NULL));
         return $o;
     }
 
@@ -437,6 +440,7 @@ if(isset($aFieldsStructure["target"]) && !isset($aFieldsStructure["target"]["isF
         $v['titulo'] = $o->getTitulo();
         $v['conteudo'] = $o->getConteudo();
         $v['target'] = $o->getTarget();
+        $v['ordem'] = $o->getOrdem();
         return $v;
     }
 
@@ -454,6 +458,8 @@ if(isset($aFieldsStructure["target"]) && !isset($aFieldsStructure["target"]["isF
 	$conditions = preg_replace('~^conteudo$~',"conteudo",$conditions);
 	$aFields['target'] = "target";
 	$conditions = preg_replace('~^target$~',"target",$conditions);
+	$aFields['ordem'] = "ordem";
+	$conditions = preg_replace('~^ordem$~',"ordem",$conditions);
         if(!$conditions){
             return $aFields;
         }
@@ -485,6 +491,7 @@ if(isset($aFieldsStructure["target"]) && !isset($aFieldsStructure["target"]["isF
 	$aFields['titulo'] = "str";
 	$aFields['conteudo'] = "editor";
 	$aFields['target'] = "sim/nao";
+	$aFields['ordem'] = "int";
         if($field){
             return $aFields[$field];
         }

@@ -19,7 +19,7 @@ if ($response->get("total") == 0) {
                                 <tr>
                                     <th><a href="?order=titulo<?= $allFilters ?>">Título</a></th>
 <th><a href="?order=conteudo<?= $allFilters ?>">Conteúdo</a></th>
-<th><a href="?order=target<?= $allFilters ?>">Target</a></th>
+<th><a href="?order=target<?= $allFilters ?>">Outra página</a></th>
                                 </tr>
                             </thead>
                             <tbody>

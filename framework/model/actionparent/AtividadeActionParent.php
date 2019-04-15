@@ -61,6 +61,7 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
 	$oAtividade->setDescricao($descricao);
 	$oAtividade->setTipo($tipo);
 	$oAtividade->setLogDel("N");
+	$oAtividade->setOrdem($ordem);
 	
         try {
             if ($commitable) {
@@ -107,6 +108,7 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
 	$oAtividade->setTitulo($titulo);
 	$oAtividade->setDescricao($descricao);
 	$oAtividade->setTipo($tipo);
+	$oAtividade->setOrdem($ordem);
 	
 
         try {
@@ -441,6 +443,7 @@ if($order == 'Tema') {
         $o->setDescricao((isset($v['descricao']) ? $v['descricao'] : NULL));
         $o->setTipo((isset($v['tipo']) ? $v['tipo'] : NULL));
         $o->setLogDel((isset($v['logDel']) ? $v['logDel'] : NULL));
+        $o->setOrdem((isset($v['ordem']) ? $v['ordem'] : NULL));
         return $o;
     }
 
@@ -452,6 +455,7 @@ if($order == 'Tema') {
         $v['descricao'] = $o->getDescricao();
         $v['tipo'] = $o->getTipo();
         $v['logDel'] = $o->getLogDel();
+        $v['ordem'] = $o->getOrdem();
         return $v;
     }
 
@@ -473,6 +477,8 @@ if($order == 'Tema') {
 	$conditions = preg_replace('~^tipo$~',"tipo",$conditions);
 	$aFields['logDel'] = "log_del";
 	$conditions = preg_replace('~^logDel$~',"log_del",$conditions);
+	$aFields['ordem'] = "ordem";
+	$conditions = preg_replace('~^ordem$~',"ordem",$conditions);
         if(!$conditions){
             return $aFields;
         }
@@ -506,6 +512,7 @@ if($order == 'Tema') {
 	$aFields['descricao'] = "editor";
 	$aFields['tipo'] = "sim/nao";
 	$aFields['logDel'] = "log_del";
+	$aFields['ordem'] = "int";
         if($field){
             return $aFields[$field];
         }

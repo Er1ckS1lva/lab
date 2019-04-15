@@ -39,6 +39,7 @@ class Constants {
         define("MESSAGE_CODE_2", "<i class='icon-ok'></i> Cadastro editado com sucesso!");
         define("MESSAGE_CODE_3", "<i class='icon-trash'></i> Registro excluído!");
         define("MESSAGE_CODE_4", "<i class='icon-trash'></i> Registro(s) excluído(s)!");
+        define("MESSAGE_CODE_5", "<i class='icon-ok'></i> Cadastro confirmado com sucesso!");
     }
 
     private function definePathConstants() {
@@ -95,6 +96,9 @@ class Constants {
 
         define("URL_PORTAL", URL . "framework/view/portal/");
         define("URL_CRIAR_CONTA_CONFIRMA", URL_APP . "/criarContaConfirma/");
+        define("EMAIL_MODERADOR", 'cleidianeagoncalves@gmail.com');
+        define("NOME_MODERADOR", 'Moderador');
+        define("EMAIL_UFU", 'e-mail@ufu.br');
     }
 
 }

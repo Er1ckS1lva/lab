@@ -18,9 +18,13 @@ class Pagina {
     **/
     protected $conteudo;
     /** 
-    * @Column(name="target", type="string", length=1, nullable=FALSE ,unique=FALSE, columnDefinition="Target")
+    * @Column(name="target", type="string", length=1, nullable=FALSE ,unique=FALSE, columnDefinition="Outra página")
     **/
     protected $target;
+    /** 
+    * @Column(name="ordem", type="integer", length=11, nullable=TRUE ,unique=FALSE, columnDefinition="Ordem")
+    **/
+    protected $ordem;
 
 
     public function getId() {
@@ -53,6 +57,13 @@ class Pagina {
         if($target) {
         $this->target = $target;
         }
+    }
+
+    public function getOrdem() {
+        return $this->ordem;
+    }
+    public function setOrdem($ordem) {
+        $this->ordem = $ordem;
     }
 
 

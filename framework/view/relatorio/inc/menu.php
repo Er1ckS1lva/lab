@@ -1,6 +1,6 @@
 
-    <script src="<?= URL_WEBROOT ?>js/highcharts/highcharts.js"></script>
-    <script src="<?= URL_WEBROOT ?>js/highcharts/exporting.js"></script>
+<script src="<?= URL_WEBROOT ?>js/highcharts/highcharts.js"></script>
+<script src="<?= URL_WEBROOT ?>js/highcharts/exporting.js"></script>
 <?
 $sUrlEstou = URL_APP . $this->module . "/";
 # senao foi setado é porque não tem permissão na View
@@ -41,6 +41,10 @@ if (isset($this->aModules[$sUrlEstou])) {
 
             <li class="submenu" entity="Relatorio">
                 <a href="<?= $sUrlEstou ?>Relatorio/relQuantidadeAcessoUsuarioHoraAdmFilter"><i class="fa fa-clock-o"></i> <span>Quantidade de Acesso por Usuário por Hora</span></a>
+            </li>
+
+            <li class="submenu" entity="Relatorio">
+                <a href="<?= $sUrlEstou ?>Relatorio/relUsuarioAdmFilter"><i class="fa fa-sign-in"></i> <span>Usuário</span></a>
             </li>
         </ul>
     </li>
