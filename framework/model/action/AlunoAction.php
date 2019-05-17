@@ -128,10 +128,14 @@ class AlunoAction extends AlunoActionParent {
         $request->set("ativo", "S");
         $request->set("aceiteTermo", "N");
         $request->set("moderado", "N");
-
+        
+        $request->set("dtCadastro", date("Y-m-d H:i:s"));
+        if (!$request->get("loginFacial")) {
+            $request->set("loginFacial", "N");
+        }
+//        Util::Debug($request);
 
         #verifica se o email ja está cadastrado
-
         $oAluno = $this->selectByEmail($request->get("email"));
         if ($oAluno) {
             throw new Exception(Lang::SISTEMA_validaEmail);

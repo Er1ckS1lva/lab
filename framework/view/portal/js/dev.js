@@ -20,13 +20,13 @@ function criarContaSubmit(botao) {
 //            $('#dynamicModal').modal('toggle');
                 $('#dynamicModal').modal();
                 $("#dynamicModal").show();
-                $(".modal-body").html('<p id="dynamicModalBody">Aguarde...</p>');
+                $("#dynamicModal .modal-body").html('<p id="dynamicModalBody">Aguarde...</p>');
             },
             success: function (serverResponse) {
                 if (serverResponse.status == 'OK') {
                     $(window.location).attr('href', URL_NOVA);
-                } else {
-                    $(".modal-body").html('<p id="dynamicModalBody"> ' + serverResponse.status + '</p>');
+                } else {                    
+                    $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse.status + '</p>');
                     $("#senha").val('').focus();
                 }
             },

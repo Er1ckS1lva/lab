@@ -46,6 +46,10 @@ if (isset($this->aModules[$sUrlEstou])) {
             <li class="submenu" entity="Relatorio">
                 <a href="<?= $sUrlEstou ?>Relatorio/relUsuarioAdmFilter"><i class="fa fa-sign-in"></i> <span>Usuário</span></a>
             </li>
+            
+            <li class="submenu" entity="Relatorio">
+                <a href="<?= $sUrlEstou ?>Relatorio/laboratorioAdmFilter"><i class="fa fa-check-square-o"></i> <span>Laboratório</span></a>
+            </li>
         </ul>
     </li>
 

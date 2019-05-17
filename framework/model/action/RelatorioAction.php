@@ -84,6 +84,146 @@ class RelatorioAction {
         return $select;
     }
 
+    // BEGIN QUERIES GERAIS PARAMETIZADAS
+    public function collectionNative($table, $fieldsToSelect = "*", $conditions = NULL, $joins = array(), $order = NULL, $groupBy = NULL, $limit = FALSE) {
+        $fields = is_array($fieldsToSelect) ? $fieldsToSelect : array($fieldsToSelect);
+        $sql = "SELECT " . implode(", ", $fields) . "
+                FROM {$table} o ";
+
+        if ($joins) {
+            foreach ($joins as $join) {
+                $sql .= " {$join["type"]} JOIN {$join["table"]} {$join["alias"]} ON {$join["joinConditions"]} ";
+            }
+        }
+
+        if ($conditions) {
+            $aConditions = is_array($conditions) ? $conditions : array($conditions);
+            $sql .= " WHERE " . (join(" AND ", $aConditions));
+        }
+
+        if ($groupBy) {
+            $sql .= " GROUP BY {$groupBy} ";
+        }
+
+        if ($order) {
+            $sql .= " ORDER BY {$order} ";
+        }
+
+        if ($limit !== FALSE) {
+            $sql .= " LIMIT {$limit} ";
+        }
+//        Util::Debug(nl2br($sql));
+
+        try {
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $objects = $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw($e);
+        }
+        return $objects;
+    }
+
+    public function selectNative($table, $fieldsToSelect = "*", $conditions = NULL, $joins = array(), $order = NULL, $groupBy = NULL, $limit = FALSE) {
+        $fields = is_array($fieldsToSelect) ? $fieldsToSelect : array($fieldsToSelect);
+        $sql = "SELECT " . implode(", ", $fields) . "
+                FROM {$table} o ";
+
+        if ($joins) {
+            foreach ($joins as $join) {
+                $sql .= " {$join["type"]} JOIN {$join["table"]} {$join["alias"]} ON {$join["joinConditions"]} ";
+            }
+        }
+
+        if ($conditions) {
+            $aConditions = is_array($conditions) ? $conditions : array($conditions);
+            $sql .= " WHERE " . (join(" AND ", $aConditions));
+        }
+
+        if ($groupBy) {
+            $sql .= " GROUP BY {$groupBy} ";
+        }
+
+        if ($order) {
+            $sql .= " ORDER BY {$order} ";
+        }
+
+        if ($limit !== FALSE) {
+            $sql .= " LIMIT {$limit} ";
+        }
+//        Util::Debug(nl2br($sql));
+
+        try {
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $objects = $stmt->fetch();
+        } catch (Exception $e) {
+            throw($e);
+        }
+        return $objects;
+    }
+
+    public function paginatedCollectionNative($table, $fieldsToSelect = "*", $conditions = array(), $joins = array(), $orderBy = NULL, $groupBy = NULL, $limit = NULL, $page = 0) {
+        $fields = is_array($fieldsToSelect) ? $fieldsToSelect : array($fieldsToSelect);
+        $sql = "SELECT " . implode(", ", $fields) . "
+                FROM {$table} o ";
+
+        if ($joins) {
+            foreach ($joins as $join) {
+                $sql .= " {$join["type"]} JOIN {$join["table"]} {$join["alias"]} ON {$join["joinConditions"]} ";
+            }
+        }
+
+        if ($conditions) {
+            $aConditions = is_array($conditions) ? $conditions : array($conditions);
+            $sql .= " WHERE " . (join(" AND ", $aConditions));
+        }
+
+        if ($groupBy) {
+            $sql .= " GROUP BY {$groupBy} ";
+        }
+
+        if ($orderBy) {
+            $sql .= " ORDER BY {$orderBy} ";
+        }
+
+        if ($limit) {
+            $pageIni = ($page * $limit);
+            $sql .= " LIMIT {$pageIni}, {$limit} ";
+        }
+
+//        Util::Debug(nl2br($sql));
+
+        try {
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $objects = $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw($e);
+        }
+        return $objects;
+    }
+
+    public function totalRegistros($conditions = NULL) {
+        # METODO POR ENQUANTO PARA LABORATORIO
+        /* @var $query \Doctrine\ORM\QueryBuilder */
+
+        $qb = $this->em->createQueryBuilder();
+        $query = $qb->select('count(o)')->from('Laboratorio', 'o');
+
+        if ($conditions) {
+            $aConditions = is_array($conditions) ? $conditions : array($conditions);
+            foreach ($aConditions as $condition) {
+                $query->andWhere($condition);
+            }
+        }
+
+        $aTotal = $query->getQuery()->execute();
+        return $aTotal[0][1];
+    }
+
+    // END QUERIES GERAIS PARAMETIZADAS
+
     public function paginatedCollectionLogAcesso($fieldsToSelect = "*", $page = 0, $resultsPerPage = 10, $conditions = null, $order = null) {
         $conditions_join = join($conditions, " AND ");
         $sql = "
@@ -495,16 +635,11 @@ class RelatorioAction {
     public function paginatedCollectionUsuario($fieldsToSelect = "*", $page = 0, $resultsPerPage = 10, $conditions = null, $order = null) {
         $conditions_join = join($conditions, " AND ");
         $sql = "
-                SELECT te.titulo as tema, count(te.id) as acesso
-                FROM aluno_acesso aa
-                INNER JOIN atividade ati ON(ati.id=aa.id_atividade)
-                LEFT JOIN tema te ON(te.id=ati.id_tema)
+                SELECT * FROM aluno a
                ";
         if ($conditions_join) {
             $sql .= " WHERE {$conditions_join} ";
         }
-
-        $sql .= " GROUP BY te.id ";
 
         if ($order)
             $sql .= " ORDER BY {$order} ";
@@ -513,7 +648,7 @@ class RelatorioAction {
         if ($page !== FALSE && $resultsPerPage !== FALSE) {
             $sql .= " LIMIT {$page}, {$resultsPerPage} ";
         }
-//        Util::debug($sql);
+
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
@@ -525,20 +660,15 @@ class RelatorioAction {
     public function collectionUsuario($fieldsToSelect = "*", $conditions = NULL, $order = NULL, $limit = FALSE) {
         $conditions_join = join($conditions, " AND ");
         $sql = "
-                SELECT aa.*, a.nome aluno, ati.titulo atividade, te.titulo tema
-                FROM aluno_acesso aa
-                INNER JOIN aluno a ON(a.id=aa.id_aluno)
-                LEFT JOIN atividade ati ON(ati.id=aa.id_atividade)
-                LEFT JOIN atividade te ON(te.id=ati.id_tema)
+                SELECT * FROM aluno a
                ";
         if ($conditions_join) {
             $sql .= " WHERE {$conditions_join} ";
         }
 
-        $sql .= " GROUP BY te.id ";
-
         if ($order)
             $sql .= " ORDER BY {$order} ";
+
 
         if ($page !== FALSE && $resultsPerPage !== FALSE) {
             $sql .= " LIMIT {$page}, {$resultsPerPage} ";
@@ -550,6 +680,71 @@ class RelatorioAction {
         $aObj = $stmt->fetchAll();
 
         return $aObj;
+    }
+
+    public function colletionUsuarioDetalhe($id, $div = NULL) {
+        $sql = "";
+        switch ($div) {
+            case 'div_matricula':
+                $sql = "SELECT t.id, t.titulo tema, COUNT(aa.id) qtd_acesso, MIN(aa.dt_registro) primeiro_acesso, MAX(aa.dt_registro) ultimo_acesso
+                        FROM aluno a
+                        LEFT JOIN aluno_acesso aa ON(a.id=aa.id_aluno AND aa.id_atividade IS NOT NULL)
+                        LEFT JOIN atividade ati ON(aa.id_atividade = ati.id)
+                        INNER JOIN tema t ON(ati.id_tema = t.id)
+                        WHERE a.id={$id}
+                        GROUP BY t.id
+                        ORDER BY a.nome ASC";
+                $methodName = "fetchAll";
+                break;
+            case 'div_avaliacao':
+                $sql = "SELECT t.titulo as tema, 100 as escala_nota, COALESCE(avg(aa.score), 0) as media, COALESCE((SELECT avg(subaa.score) as media_tema FROM tema subt
+                        LEFT JOIN atividade suba ON(suba.id_tema = subt.id)
+                        LEFT JOIN aluno_atividade subaa ON(subaa.id_atividade = suba.id)
+                        LEFT JOIN aluno subal ON(subal.id = subaa.id_aluno)
+                        WHERE subt.id=t.id
+                        GROUP BY subt.id), 0) as media_tema
+                        FROM tema t
+                        LEFT JOIN atividade a ON(a.id_tema = t.id)
+                        LEFT JOIN aluno_atividade aa ON(aa.id_atividade = a.id)
+                        LEFT JOIN aluno al ON(al.id = aa.id_aluno)
+                        WHERE al.id={$id}
+                        GROUP BY t.id
+                        ORDER BY t.titulo ASC";
+                $methodName = "fetchAll";
+                break;
+
+            default:
+                $sql = "SELECT a.nome, a.email, a.id, COUNT(aa.id) qtd_acesso, COUNT(distinct ati.id) qtd_atividade, COUNT(distinct t.id) qtd_tema, MIN(aa.dt_registro) primeiro_acesso, MAX(aa.dt_registro) ultimo_acesso
+                FROM aluno a
+                LEFT JOIN aluno_acesso aa ON(a.id=aa.id_aluno)
+                LEFT JOIN atividade ati ON(aa.id_atividade = ati.id)
+                LEFT JOIN tema t ON(ati.id_tema = t.id)
+                WHERE a.id={$id}
+                GROUP BY a.id
+                ORDER BY a.nome ASC";
+                $methodName = "fetch";
+                break;
+        }
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $aObj = $stmt->{$methodName}();
+        return $aObj;
+    }
+
+    public function getTotalScore($id_atividade, $id_aluno) {
+        $sql = "SELECT o.id, o.score
+                FROM aluno_atividade_envios o ";
+        $sql .= " WHERE o.id_aluno = '{$id_aluno}' AND o.id_atividade = '{$id_atividade}' ";
+//        Util::Debug(nl2br($sql));
+
+        try {
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $objects = $stmt->fetch();
+        } catch (Exception $e) {
+            throw($e);
+        }
+        return $objects;
     }
 
 }
