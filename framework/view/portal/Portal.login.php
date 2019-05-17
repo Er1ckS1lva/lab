@@ -159,26 +159,7 @@ and open the template in the editor.
             </script>
         </div>
         <?php include dirname(__FILE__) . "/inc/footer.php"; ?>
-        <script type="text/javascript">
-          var host = 'http://10.1.68.251:3000';
 
-            (function(w, d, s, u) {
-
-                w.RocketChat = function(c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;
-
-                w.RocketChat(function() {
-                    var rc = this;
-                    this.onChatMaximized(function() {
-                        rc.setGuestName("{{ user.username }}");
-                        rc.setGuestEmail("{{ user.email }}");
-                    });
-                });
-
-                var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
-                j.async = true; j.src = host + '/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js';
-                h.parentNode.insertBefore(j, h);
-            })(window, document, 'script', host + '/livechat');
-        </script>
         <!--CONDIGURAÇÃO SCRIPS-->
         <audio id="ufu_audios"></audio>
     </body>

@@ -28,3 +28,26 @@
 <script type="text/javascript" src="<?php echo URL_WEBROOT ?>js/smart/plugin/jquery-form/jquery-form.min.js"></script>
 <!--MASK JQUERY--> 
 <script type="text/javascript" src="<?= URL_PORTAL ?>js/jquery.mask.min.js"></script>
+
+<?php if($oAluno = AlunoAction::recuperaObjetoAluno() !== false) { ?>
+  <script type="text/javascript">
+    var host = 'http://10.1.68.251:3000';
+
+      (function(w, d, s, u) {
+
+          w.RocketChat = function(c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;
+
+          w.RocketChat(function() {
+              var rc = this;
+              this.onChatMaximized(function() {
+                  rc.setGuestName("{{ user.username }}");
+                  rc.setGuestEmail("{{ user.email }}");
+              });
+          });
+
+          var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
+          j.async = true; j.src = host + '/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js';
+          h.parentNode.insertBefore(j, h);
+      })(window, document, 'script', host + '/livechat');
+  </script>
+<?php } ?>
