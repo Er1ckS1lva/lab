@@ -31,7 +31,7 @@
 
 <?php if($oAluno = AlunoAction::recuperaObjetoAluno() !== false) { ?>
   <script type="text/javascript">
-    var host = 'http://10.1.68.251:3000';
+    var host = 'http://200.19.144.7:3000';
 
       (function(w, d, s, u) {
 
