@@ -12,6 +12,7 @@ RewriteRule ^admin/logout(/)?$ index.php?action=Usuario.logout [NC,L,QSA]
 RewriteRule ^seguranca(/)?$ index.php?action=Defaultview.index&module=seguranca [NC,L,QSA]
 RewriteRule ^laboratoriovirtual(/)?$ index.php?action=Defaultview.index&module=laboratoriovirtual [NC,L,QSA]
 RewriteRule ^relatorio(/)?$ index.php?action=Defaultview.index&module=relatorio [NC,L,QSA]
+RewriteRule ^biblioteca(/)?$ index.php?action=Defaultview.index&module=biblioteca [NC,L,QSA]
 # acaba modulos
 
 #portal
