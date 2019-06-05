@@ -31,7 +31,7 @@ class FileUtilParent {
                 self::removeAllFiles(IGENIAL_DIR_UPLOAD . "/$entityPath/", "{$id}_t");
             }
             if(!file_exists(dirname($newname))){
-                mkdir(dirname($newname), "0777", true);
+                mkdir(dirname($newname), 0777, true);
             }
             if (!(copy($_FILES[$field]['tmp_name'], $newname))) {
                 throw new Exception("Atenção: Ocorreu um problema ao copiar o arquivo para a pasta de upload!");
@@ -53,7 +53,7 @@ class FileUtilParent {
                 self::removeAllFiles(IGENIAL_DIR_UPLOAD . "/$entityPath/", "{$id}_t");
             }
             if(!file_exists(dirname($newname))){
-                mkdir(dirname($newname), "0777", true);
+                mkdir(dirname($newname), 0777, true);
             }
             if (!(copy($_FILES[$field]['tmp_name'][$nPosicao], $newname))) {
                 throw new Exception("Atenção: Ocorreu um problema ao copiar o arquivo para a pasta de upload!");
