@@ -17,6 +17,15 @@ class ConteudoAction extends ConteudoActionParent {
     protected function delTransaction($id) {
         $oConteudoArquivoAction = new ConteudoArquivoAction($this->em);
         $oConteudoArquivoAction->delPhysical($id, false);
+
+        $oConteudoFormularioAction = new ConteudoFormularioAction($this->em);
+        $aConteudoFormulario = $oConteudoFormularioAction->collection(array("id"), "o.Conteudo = '{$id}'");
+        if ($aConteudoFormulario) {
+            foreach ($aConteudoFormulario as $oConteudoFormulario) {
+                $id_formulario = ($oConteudoFormulario["id"]);
+                $oConteudoFormularioAction->delPhysical($id_formulario, false);
+            }
+        }
     }
 
 }

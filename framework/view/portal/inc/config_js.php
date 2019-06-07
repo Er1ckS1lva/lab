@@ -29,25 +29,41 @@
 <!--MASK JQUERY--> 
 <script type="text/javascript" src="<?= URL_PORTAL ?>js/jquery.mask.min.js"></script>
 
-<?php if($oAluno = AlunoAction::recuperaObjetoAluno() !== false) { ?>
-  <script type="text/javascript">
-    var host = 'http://labvirtual.ileel.ufu.br:3000';
+<?php if ($oAluno = AlunoAction::recuperaObjetoAluno() !== false) { ?>
+    <script type="text/javascript">
+        var host = 'http://labvirtual.ileel.ufu.br:3000';
+        (function (w, d, s, u) {
 
-      (function(w, d, s, u) {
+            w.RocketChat = function (c) {
+                w.RocketChat._.push(c)
+            };
+            w.RocketChat._ = [];
+            w.RocketChat.url = u;
 
-          w.RocketChat = function(c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;
+            w.RocketChat(function () {
+                var rc = this;
+                this.onChatMaximized(function () {
+                    rc.setGuestName("{{ user.username }}");
+                    rc.setGuestEmail("{{ user.email }}");
+                });
+            });
 
-          w.RocketChat(function() {
-              var rc = this;
-              this.onChatMaximized(function() {
-                  rc.setGuestName("{{ user.username }}");
-                  rc.setGuestEmail("{{ user.email }}");
-              });
-          });
+            var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
+            j.async = true;
+            j.src = host + '/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js';
+            h.parentNode.insertBefore(j, h);
+        })(window, document, 'script', host + '/livechat');
 
-          var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
-          j.async = true; j.src = host + '/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js';
-          h.parentNode.insertBefore(j, h);
-      })(window, document, 'script', host + '/livechat');
-  </script>
+
+
+        // parte dos botoes - devido a declaracao jquery abaixo
+        $(document).ready(function () {
+            $('#button_talkto').click(function () {
+                // para abrir o botao talk to (rocket)
+                $('.rocketchat-widget').attr('data-state', 'opened');
+                $('.rocketchat-widget').css('height', '350px');
+                // queria fazer onclick para manter tudo igual mas ai utilizei somente os elementos acima
+            });
+        });
+    </script>
 <?php } ?>

@@ -363,6 +363,9 @@
                                             $oConteudoArquivo = $aConteudoArquivo[$oConteudo->getId()];
                                             $oConteudoFormulario = $aConteudoFormulario[$oConteudo->getId()]; /* @var $oConteudoFormulario ConteudoFormulario */
                                             ?>
+
+                                            <input type="hidden" value="<?php echo $oConteudoFormulario->getId() ?>" name="aIdFormulario[]" />
+
                                             <div class="panel panel-default conteudo-model">
                                                 <div class="panel-heading" role="tab" id="headingOne">
                                                     <h4 class="panel-title">

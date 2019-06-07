@@ -30,7 +30,7 @@ class AtividadeAction extends AtividadeActionParent {
     }
 
     protected function addTransaction($oAtividade, $request) {
-        
+
         $oConteudoAction = new ConteudoAction($this->em);
         $oConteudoArquivoAction = new ConteudoArquivoAction($this->em);
 
@@ -152,6 +152,8 @@ class AtividadeAction extends AtividadeActionParent {
             $tipoConteudoEdit = $request->get('tipoConteudoEdit');
             $enunciadoConteudoEdit = $request->get('enunciadoConteudoEdit');
 
+            $aIdFormulario = $request->get("aIdFormulario"); # para pegar o id
+
             foreach ($aIdConteudo as $key => $aId) {
                 #excluir/editar conteudo e seus arquivos 
                 if (!key_exists($aId['id'], $tituloConteudoEdit)) {
@@ -177,10 +179,16 @@ class AtividadeAction extends AtividadeActionParent {
 
                     # editar conteudoFormulario
                     $request_formulario = new Request(FALSE);
-                    $request_formulario->set('Conteudo', $oConteudo->getId());
-                    $request_formulario->set('tipo', $tipoConteudoEdit[$aId['id']]);
-                    $request_formulario->set('enunciado', $enunciadoConteudoEdit[$aId['id']]);
-                    $oConteudoFormulario = $oConteudoFormularioAction->edit($request_formulario, false, true);
+
+                    # para pegar o id do conteudo formulario
+                    $id_conteudo_formulario = isset($aIdFormulario[$key]) ? $aIdFormulario[$key] : null;
+                    if ($id_conteudo_formulario) {
+                        $request_formulario->set('id', $id_conteudo_formulario);
+                        $request_formulario->set('Conteudo', $oConteudo->getId());
+                        $request_formulario->set('tipo', $tipoConteudoEdit[$aId['id']]);
+                        $request_formulario->set('enunciado', $enunciadoConteudoEdit[$aId['id']]);
+                        $oConteudoFormulario = $oConteudoFormularioAction->edit($request_formulario, false, true);
+                    }
                 }
             }
         }
