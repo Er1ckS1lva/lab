@@ -1,38 +1,37 @@
-<head>
-    <style>
-        #fotos div {
-            position: relative;
-            float: left;
-            width: 180px;
-            padding: 5px;
-        }
+<style>
+    #fotos div {
+        position: relative;
+        float: left;
+        width: 180px;
+        padding: 5px;
+    }
 
-        .topright {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            font-size: 13px;
-            cursor: pointer;
-            background: 0 0;
-            border: 0;
-            background-color: rgba(60, 60, 60, 0.09);
-        }
+    .topright {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 13px;
+        cursor: pointer;
+        background: 0 0;
+        border: 0;
+        background-color: rgba(60, 60, 60, 0.09);
+    }
 
-        .topright:focus, .topright:hover {
-            background-color: rgba(60, 60, 60, 0.4);
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .topright:focus, .topright:hover {
+        background-color: rgba(60, 60, 60, 0.4);
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-        .my-span {
-            color: #d21414a3;
-        }
+    .my-span {
+        color: #d21414a3;
+    }
 
-        .img-photo { 
-            width: 100%;
-            height: auto;
-        }
-    </style>
+    .img-photo { 
+        width: 100%;
+        height: auto;
+    }
+</style>
 
 <div class="camera-portal">
     <div id="my_camera"></div>
@@ -44,15 +43,6 @@
         }
 
     </style>
-    <script language="JavaScript">
-        Webcam.set({
-            width: 300,
-            height: 220,
-            image_format: 'jpeg',
-            jpeg_quality: 90
-        });
-        Webcam.attach('#my_camera');
-    </script>
 
     <!-- A button for taking snaps -->
     <div id='botao' class="controle-microfone" style="padding-top: 3px;">
@@ -79,9 +69,9 @@
             var blobReal = data_uri_ext;
 
             var block = blobReal.split(";");
-// Get the content type of the image
+            // Get the content type of the image
             var contentType = block[0].split(":")[1];// In this case "image/gif"
-// get the real base64 content of the file
+            // get the real base64 content of the file
             var realData = block[1].split(",")[1];
 
             var blob = b64toBlob(realData, contentType);

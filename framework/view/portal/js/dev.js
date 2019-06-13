@@ -142,13 +142,20 @@ function aceitaTermo(botao) {
     }
 }
 
-
 function carregaCamera(objeto) {
     var loginFacial = objeto.checked;
     if (loginFacial) {
         $("#camera").show();
         $(".password").hide();
+        Webcam.set({
+            width: 300,
+            height: 220,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
     } else {
+        Webcam.reset();
         $("#camera").hide();
         $(".password").show();
     }

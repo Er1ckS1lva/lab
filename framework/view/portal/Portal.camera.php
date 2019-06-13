@@ -44,15 +44,6 @@
         }
 
     </style>
-    <script language="JavaScript">
-        Webcam.set({
-            width: 300,
-            height: 220,
-            image_format: 'jpeg',
-            jpeg_quality: 90
-        });
-        Webcam.attach('#my_camera');
-    </script>
 
     <!-- A button for taking snaps -->
     <div id='botao' class="controle-microfone" style="padding-top: 3px;">

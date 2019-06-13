@@ -96,7 +96,7 @@
                                                                  data-cycle-prev=".prev"
                                                                  data-cycle-next=".next"
                                                                  data-cycle-fx="scrollHorz"
-                                                                 data-cycle-timeout=0
+                                                                 data-cycle-timeout="0"
                                                                  data-cycle-slides="> div"
                                                                  >   
                                                                      <?php
@@ -195,24 +195,13 @@
                                                                 </div>
                                                             <?php } ?>
 
-                                                            <div class="embed-responsive embed-responsive-16by9 mt-5">
-                                                                <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>-->
-                                                            </div>
+                                                            
                                                         </div>
                                                     <?php }
                                                     ?>
                                                     <div class="d-flex flex-column flex-md-row justify-content-around mb-3">
                                                         <div class="controles text-center">
                                                             <div class="controles text-center mb-3">
-                                                                <!--
-                                                                        <h3>Controles</h3>
-                                                                        <div class="controle-atividade d-flex justify-content-around">
-                                                                            <div class="btn-record"><i class="fa fa-circle"></i></div>
-                                                                            <div class="btn-play"><i class="fa fa-play"></i></div>
-                                                                            <div class="btn-pause"><i class="fa fa-pause"></i></div>
-                                                                            <div class="btn-stop"><i class="fa fa-stop"></i></div>
-                                                                        </div>
-                                                                -->
                                                                 <?php
                                                                 if ($oAtividade->getTipo() == "PRC" || $oAtividade->getTipo() == "RPT" || $oAtividade->getTipo() == "EMO") {
                                                                     ?>
@@ -231,14 +220,10 @@
                                                         <?php
                                                         $aOpcao = $response->get('aOpcao');
                                                         if ($aOpcao[$oAtividade->getId()]) {
+                                                            $alfabeto = range('A', 'Z');
                                                             foreach ($aOpcao[$oAtividade->getId()] as $k => $oOpcao) {
-                                                                $alfabeto = range('A', 'Z');
-                                                                ?>
-                                                                <?php
                                                                 echo $alfabeto[$k] . ") " . $oOpcao->getValor();
-                                                                ?>
-                                                                <br>
-                                                                <?
+                                                                echo "<br>";
                                                             }
                                                         }
                                                         ?>
