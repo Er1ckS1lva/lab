@@ -90,6 +90,20 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-3">
+                                                    <div class="texto-atividade">
+                                                        <?php echo $oAtividade->getDescricao(); ?>
+                                                        <?php
+                                                        $aOpcao = $response->get('aOpcao');
+                                                        if ($aOpcao[$oAtividade->getId()]) {
+                                                            $alfabeto = range('A', 'Z');
+                                                            foreach ($aOpcao[$oAtividade->getId()] as $k => $oOpcao) {
+                                                                echo $alfabeto[$k] . ") " . $oOpcao->getValor();
+                                                                echo "<br>";
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                    
                                                     <?php if ($aConteudo[$oAtividade->getId()]) { ?>
                                                         <div class="tipo-atividade lacunas">
                                                             <div class="cycle-slideshow"
@@ -123,11 +137,16 @@
                                                                                 echo '<img class="img-fluid" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
                                                                                 break;
 
+                                                                            case 'image/gif':
+                                                                                echo '<img class="img-fluid" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
+                                                                                break;
+
                                                                             case 'audio/mpeg':
                                                                                 echo '<audio controls="controls" preload="metadata">'
                                                                                 . '<source src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '">'
                                                                                 . '</audio>';
                                                                                 break;
+
 
                                                                             case 'audio/ogg':
                                                                                 echo '<audio controls="controls" preload="metadata">'
@@ -215,19 +234,7 @@
                                                             <!--<input type="text" id="nomeatividade" name="nomeatividade" class="input-atividade" maxlength="1" />--> 
                                                         </div>
                                                     </div>
-                                                    <div class="texto-atividade">
-                                                        <?php echo $oAtividade->getDescricao(); ?>
-                                                        <?php
-                                                        $aOpcao = $response->get('aOpcao');
-                                                        if ($aOpcao[$oAtividade->getId()]) {
-                                                            $alfabeto = range('A', 'Z');
-                                                            foreach ($aOpcao[$oAtividade->getId()] as $k => $oOpcao) {
-                                                                echo $alfabeto[$k] . ") " . $oOpcao->getValor();
-                                                                echo "<br>";
-                                                            }
-                                                        }
-                                                        ?>
-                                                    </div>
+                                                    
                                                 </div>
 
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 btns-right text-center">

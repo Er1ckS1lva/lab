@@ -1,4 +1,4 @@
-<div class="rodape">
+<div class="rodape" style="z-index:100;">
     <div class="container-fluid">
         <div class="row">
             <div class="col">

@@ -76,7 +76,7 @@ class AtividadeAction extends AtividadeActionParent {
                         $request_conteudo->set('Atividade', $oAtividade);
                         $request_conteudo->set('titulo', $tc);
                         $oConteudo = $oConteudoAction->add($request_conteudo, false, true);
-
+                        
                         # inserir ConteudoArquivo
                         $request_arquivo = new Request(FALSE);
                         $request_arquivo->set('arquivo', file_get_contents($arquivoConteudo['tmp_name'][$key]));
@@ -137,7 +137,6 @@ class AtividadeAction extends AtividadeActionParent {
     }
 
     protected function editTransaction($oAtividade, $request) {
-//        Util::debug($request, false);
         $oConteudoAction = new ConteudoAction($this->em);
         $tituloConteudoEdit = $request->get('tituloConteudoEdit') ? $request->get('tituloConteudoEdit') : array();
 
