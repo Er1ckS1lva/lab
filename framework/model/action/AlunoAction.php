@@ -5,6 +5,11 @@ include_once(dirname(__FILE__) . '/../actionparent/AlunoActionParent.php');
 class AlunoAction extends AlunoActionParent {
 
     public function validate(&$request, $edicao = false) {
+
+        if ($request->get('cpf')) {
+            $request->set('cpf', Util::unMaskCpf($request->get('cpf')));
+        }
+
         # validação parent
         $validation = $this->validateParent($request, $edicao);
         if (!$validation) {
@@ -128,13 +133,12 @@ class AlunoAction extends AlunoActionParent {
         $request->set("ativo", "S");
         $request->set("aceiteTermo", "N");
         $request->set("moderado", "N");
-        
+
         $request->set("dtCadastro", date("Y-m-d H:i:s"));
         if (!$request->get("loginFacial")) {
             $request->set("loginFacial", "N");
         }
 //        Util::Debug($request);
-
         #verifica se o email ja está cadastrado
         $oAluno = $this->selectByEmail($request->get("email"));
         if ($oAluno) {
@@ -498,6 +502,38 @@ class AlunoAction extends AlunoActionParent {
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    public function delAtivoInativo($id, $ativo = "N", $commitable = true, $doLog = true) {
+        $oAluno = $this->em->find('Aluno', array('id' => $id));
+        $oAluno->setAtivo($ativo);
+
+
+        try {
+            if ($commitable) {
+                $this->em->beginTransaction();
+            }
+            $this->em->persist($oAluno);
+            $this->em->flush($oAluno);
+
+            if ($doLog) {
+
+                ## LOG BEGIN ##
+                $oLog = new LogAction($this->em);
+                $oLog->register("O", "Ativo/Desativo Aluno com o índice {$id}", FALSE);
+                ## LOG END ##
+            }
+
+            if ($commitable) {
+                $this->em->commit();
+            }
+        } catch (Exception $e) {
+            if ($commitable) {
+                $this->em->rollback();
+            }
+            throw $e;
+        }
+        return true;
     }
 
 }

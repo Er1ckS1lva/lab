@@ -28,7 +28,20 @@ class AlunoController extends AlunoControllerParent {
         }
         return new View('Aluno Confirmado!', $this->response, 'print');
     }
-    
+
+    public function del() {
+        if ($this->auth() === FALSE)
+            return $this->view;
+        try {
+            $id = (int) $this->request->get("id");
+            $oAlunoAction = new AlunoAction();
+            $oAlunoAction->validateDel($id);
+            $oAlunoAction->delAtivoInativo($id);
+        } catch (Exception $ex) {
+            return new View(ExceptionHandler::getMessage($ex), $this->response, 'print');
+        }
+        return new View('OK', $this->response, 'print');
+    }
 
 }
 

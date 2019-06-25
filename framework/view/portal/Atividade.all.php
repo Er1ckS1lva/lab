@@ -130,15 +130,15 @@
                                                                                 break;
 
                                                                             case 'image/jpeg':
-                                                                                echo '<img class="img-fluid" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
+                                                                                echo '<img class="img-fluid image_atividade" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
                                                                                 break;
 
                                                                             case 'image/png':
-                                                                                echo '<img class="img-fluid" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
+                                                                                echo '<img class="img-fluid image_atividade" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
                                                                                 break;
 
                                                                             case 'image/gif':
-                                                                                echo '<img class="img-fluid" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
+                                                                                echo '<img class="img-fluid image_atividade" src="data:' . $aConteudoArquivo[$oConteudo->getId()]->getTipo() . ';base64,' . base64_encode($aConteudoArquivo[$oConteudo->getId()]->getArquivo()) . '" />';
                                                                                 break;
 
                                                                             case 'audio/mpeg':

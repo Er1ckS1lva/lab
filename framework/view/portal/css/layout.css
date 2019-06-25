@@ -128,3 +128,7 @@ a{text-decoration: none !important; color: #0E4097;}
     flex-direction: column;
     
 }
+
+.image_atividade{
+    max-height: 170px;
+}
