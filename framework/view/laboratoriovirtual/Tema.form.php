@@ -45,7 +45,21 @@
                                             <input type="file" id="file" name="imagemCapa"  onchange="$(this).closest('span.button').next('input').val(this.value);" tabindex='<?= ( ++$tabindex) ?>' />
                                             Selecionar
                                         </span>
-                                        <input type="text" placeholder="Selecione o arquivo" readonly="">
+                                        <input type="text" placeholder="Selecione a imagem" readonly="">
+                                    </div>
+                                </label>
+                            </section>
+
+
+                            <section>
+                                <label class="label" for="videoApresentacao">Video de Apresentação (somente mp4 de <?php echo ini_get('upload_max_filesize');?>B)</label>
+                                <label class="input">
+                                    <div class="input input-file">
+                                        <span class="button">
+                                            <input type="file" id="videoApresentacao" name="videoApresentacao"  onchange="$(this).closest('span.button').next('input').val(this.value);" tabindex='<?= ( ++$tabindex) ?>' />
+                                            Selecionar
+                                        </span>
+                                        <input type="text" placeholder="Selecione o vídeo" readonly="">
                                     </div>
                                 </label>
                             </section>
@@ -132,7 +146,7 @@
                             }
                             ?>
                         </div>
-                        
+
                         <footer>
                             <button class="btn btn-primary" onclick="TemaSubmitHandler(this, false);" tabindex="<?= ++$tabindex ?>" ><i class="icon-check icon-white"></i> Salvar</button>
                             <button class="btn btn-primary" onclick="TemaSubmitHandler(this, true);" tabindex="<?= ++$tabindex ?>" ><i class="icon-share icon-white"></i> Salvar e Sair</button>

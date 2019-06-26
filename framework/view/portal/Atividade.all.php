@@ -44,6 +44,18 @@
                                     <div class="row">
                                         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-3">
                                             <?php
+                                            $video = MediaUtil::getLinkForFileNameById("Tema/videoApresentacao", $oTema->getId());
+                                            if ($video !== "javascript: void(0);") {
+                                                ?>
+                                                <? #= $video ?>
+                                                <video controls style="width: 100%">
+                                                    <source src="<?php echo $video ?>" type="video/mp4">
+                                                    <source src="<?php echo $video ?>" type="video/ogg">
+                                                    Seu browser não suporta tag de vídeo
+                                                </video> 
+                                            <?php } ?>
+
+                                            <?php
                                             if ($oTemaIdioma) {
                                                 echo $oTemaIdioma->getDescricao();
                                             } else {
@@ -103,7 +115,7 @@
                                                         }
                                                         ?>
                                                     </div>
-                                                    
+
                                                     <?php if ($aConteudo[$oAtividade->getId()]) { ?>
                                                         <div class="tipo-atividade lacunas">
                                                             <div class="cycle-slideshow"
@@ -214,7 +226,7 @@
                                                                 </div>
                                                             <?php } ?>
 
-                                                            
+
                                                         </div>
                                                     <?php }
                                                     ?>
@@ -234,7 +246,7 @@
                                                             <!--<input type="text" id="nomeatividade" name="nomeatividade" class="input-atividade" maxlength="1" />--> 
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
 
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3 btns-right text-center">
@@ -271,7 +283,7 @@
                                 <a class="nav-link <?php echo $oAtividade->getId() == $idAtividade ? 'active' : ''; ?> " style="cursor: pointer;" 
                                    id="home-tab" data-toggle="tab" onclick="Reload(<?php echo $oAtividade->getId(); ?>)" 
                                    href="#atividade<?php echo $oAtividade->getId() ?>">
-                                    <?php echo Lang::GERAL_atividade?> <?php echo $key + 1 ?><br /><small><?php echo $oAtividade->getTitulo(); ?></small>
+                                    <?php echo Lang::GERAL_atividade ?> <?php echo $key + 1 ?><br /><small><?php echo $oAtividade->getTitulo(); ?></small>
                                 </a>
                             </li>
                         <?php } ?>
@@ -305,12 +317,12 @@
             // Seta uma função global que valida se o usuário tentar sair da página
             function setUpBeforeUnload() {
                 window.onbeforeunload = function () {
-                    return "<?php echo Lang::ATIVIDADE_sairAtividade?>";
+                    return "<?php echo Lang::ATIVIDADE_sairAtividade ?>";
                 };
             }
 
             $('a#href-logout').click(function (evt) {
-                if (confirm("<?php echo Lang::ATIVIDADE_sairAtividadeSistema?>")) {
+                if (confirm("<?php echo Lang::ATIVIDADE_sairAtividadeSistema ?>")) {
                     window.location.href = "<?= URL ?>logout";
                 }
             }).attr('href', "#");

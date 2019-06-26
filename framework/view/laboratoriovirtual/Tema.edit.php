@@ -47,7 +47,7 @@
                                             <input type="file" id="file" name="imagemCapa"  onchange="$(this).closest('span.button').next('input').val(this.value);" tabindex='<?= ( ++$tabindex) ?>' />
                                             Selecionar
                                         </span>
-                                        <input type="text" placeholder="Selecione o arquivo" readonly="">
+                                        <input type="text" placeholder="Selecione a imagem" readonly="">
                                     </div>
                                 </label>
                             </section>
@@ -58,6 +58,39 @@
                                             <i class="fa fa-picture-o"></i> Exibir/Ocultar imagem</button>
                                         <div id="img" style="display: none;">
                                             <img class="img-responsive" src="<?= MediaUtil::getLinkForFileNameById("Tema/imagemCapa", $o->getId()) ?>" />
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </section>
+
+
+                            <section>
+                                <label class="label" for="videoApresentacao">Video de Apresentação (somente mp4 de <?php echo ini_get('upload_max_filesize');?>B)</label>
+                                <label class="input">
+                                    <div class="input input-file">
+                                        <span class="button">
+                                            <input type="file" id="videoApresentacao" name="videoApresentacao"  onchange="$(this).closest('span.button').next('input').val(this.value);" tabindex='<?= ( ++$tabindex) ?>' />
+                                            Selecionar
+                                        </span>
+                                        <input type="text" placeholder="Selecione o vídeo" readonly="">
+                                    </div>
+                                </label>
+                            </section>
+                            <section>
+                                <div>
+                                    <?php if ($video = MediaUtil::getLinkForFileNameById("Tema/videoApresentacao", $o->getId())) { ?>
+                                        <button type="button" class="btn btn-link" onclick="$('#video').slideToggle();">
+                                            <i class="fa fa-video-camera"></i> Exibir/Ocultar vídeo
+                                        </button>
+                                        <div id="video" style="display: none;">
+                                            <?= $video == "javascript: void(0);" ? "Sem vídeo selecionado." : "" ?>
+                                            <?php if ($video !== "javascript: void(0);") { ?>
+                                                <video controls>
+                                                    <source src="<?php echo $video ?>" type="video/mp4">
+                                                    <source src="<?php echo $video ?>" type="video/ogg">
+                                                    Seu browser não suporta tag de vídeo
+                                                </video> 
+                                            <?php } ?>
                                         </div>
                                     <?php } ?>
                                 </div>
