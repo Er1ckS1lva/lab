@@ -91,8 +91,10 @@ and open the template in the editor.
                                     <input class="form-control"  type="password" id="senhaConf" name="senhaConf" maxlength='256' mask='' validate='1' tabindex='<?= ( ++$tabindex) ?>' value=''/>
                                     <br/>
 
-                                    <input class="" value="S" onchange="carregaCamera(this);" type="checkbox" id="loginFacial" name="loginFacial" tabindex='<?= ( ++$tabindex) ?>' />
-                                    <label class="label"><?php echo Lang::CONTA_loginFacial; ?></label>
+                                    <label class="label">
+                                        <input class="" value="S" onchange="carregaCamera(this);" type="checkbox" id="loginFacial" name="loginFacial" tabindex='<?= ( ++$tabindex) ?>' />
+                                        <?php echo Lang::CONTA_loginFacial; ?>
+                                    </label>
                                     <br/>
                                     <div id="camera" style="display: none">
                                         <?php include dirname(__FILE__) . "/Portal.camera.php"; ?>

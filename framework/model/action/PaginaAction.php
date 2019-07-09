@@ -22,7 +22,35 @@ class PaginaAction extends PaginaActionParent {
             }
         }
 
+        $videoApresentacao = $request->get("videoApresentacao");
+        if (isset($videoApresentacao['error']) && $videoApresentacao['error'] != 4) {
+            if ($videoApresentacao['error'] != 0 && $videoApresentacao['size'] <= 0 && !$edicao) {
+                throw new Exception("Por favor, informe o Video de Apresentação!");
+            } elseif ($videoApresentacao['error'] === 0 && $videoApresentacao['size'] > 0) {
+                $filename = basename($videoApresentacao['name']);
+                $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
+                $extensions = $this->recuperaExtensaoVideo();
+                $mimes = $this->recuperaTipoVideo();
+                $fileMaxSizeMB = (int) ini_get('upload_max_filesize');
+                $fileMaxSize = $fileMaxSizeMB * 1024 * 1024; # 10 MB
+                if ($videoApresentacao["size"] > $fileMaxSize) {
+                    throw new Exception("Atenção: Somente arquivos com tamanho máximo de {$fileMaxSizeMB}MB são aceitos para upload!");
+                }
+                if (!in_array($ext, $extensions) || !in_array($videoApresentacao['type'], $mimes)) {
+                    throw new Exception("Atenção: Somente arquivos com a extensão " . join(', ', $extensions) . " são aceitos para upload!");
+                }
+            }
+        }
+
         return true;
+    }
+
+    public static function recuperaExtensaoVideo() {
+        return array('mp4');
+    }
+
+    public static function recuperaTipoVideo() {
+        return array('video/mp4');
     }
 
     protected function addTransaction($oPagina, $request) {
@@ -49,6 +77,11 @@ class PaginaAction extends PaginaActionParent {
                 }
             }
         }
+
+        $videoApresentacao = $request->get("videoApresentacao");
+        if ($videoApresentacao && $videoApresentacao['error'] === 0) {
+            FileUtil::makeFileUpload('Pagina/videoApresentacao', $oPagina->getId(), 'videoApresentacao', true);
+        }
     }
 
     protected function editTransaction($oPagina, $request) {
@@ -59,6 +92,8 @@ class PaginaAction extends PaginaActionParent {
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.Pagina' => $id), $qb);
         $qb->delete()->from("PaginaIdioma", "o")->where($where)->getQuery()->execute();
+
+        FileUtil::removeFile(dirname(__FILE__) . '/../../../upload/Pagina/videoApresentacao', $id);
     }
 
 }

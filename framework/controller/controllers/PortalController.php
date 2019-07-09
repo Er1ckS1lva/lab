@@ -36,6 +36,7 @@ class PortalController {
         $nIdIdioma = IdiomaAction::getIdIdioma();
 
         IdiomaAction::setIdiomaPadraoSession($nIdIdioma);
+        IdiomaAction::setIdiomaSigla($oIdiomaAction->select($nIdIdioma, array('sigla')));
 
         $oPaginaAction = new PaginaAction();
         $aPagina = $oPaginaAction->collection(null, null, 'ordem ASC');

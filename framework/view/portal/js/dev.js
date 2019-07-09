@@ -17,7 +17,6 @@ function criarContaSubmit(botao) {
                 "ajaxRequest": true
             },
             beforeSubmit: function (formData, jqForm, options) {
-//            $('#dynamicModal').modal('toggle');
                 $('#dynamicModal').modal();
                 $("#dynamicModal").show();
                 $("#dynamicModal .modal-body").html('<p id="dynamicModalBody">Aguarde...</p>');
@@ -25,12 +24,13 @@ function criarContaSubmit(botao) {
             success: function (serverResponse) {
                 if (serverResponse.status == 'OK') {
                     $(window.location).attr('href', URL_NOVA);
-                } else {                    
-                    $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse.status + '</p>');
-                    $("#senha").val('').focus();
+                } else {
+                    $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse + '</p>');
                 }
             },
             error: function (serverResponse) {
+                console.log(serverResponse);
+                $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse + '</p>');
             }
         };
         $(form).ajaxSubmit(options);

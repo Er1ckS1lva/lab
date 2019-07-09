@@ -142,7 +142,7 @@ class AlunoAction extends AlunoActionParent {
         #verifica se o email ja está cadastrado
         $oAluno = $this->selectByEmail($request->get("email"));
         if ($oAluno) {
-            throw new Exception(Lang::SISTEMA_validaEmail);
+            throw new Exception(Lang::SISTEMA_validaEmailCadastrado);
         }
 
         return true;
@@ -493,11 +493,18 @@ class AlunoAction extends AlunoActionParent {
                 $afotoUpload = $request->get("afotoUpload");
                 $i = 0;
                 for ($i = 0; $i < count($afotoUpload["name"]); $i++) {
-                    FileUtil::makeFileUploadPosicao("dataset/{$oAluno->getId()}", $i + 1, 'afotoUpload', $i, false);
+//                    FileUtil::makeFileUploadPosicao("dataset/{$oAluno->getId()}", $i + 1, 'afotoUpload', $i, false);
+                    $filename = FileUtil::makeFileUploadPosicaoRoot("dataset/{$oAluno->getId()}", $i + 1, 'afotoUpload', $i, false);
                 }
 
+                $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
+
                 #gerar o pickle
-                $pickle = shell_exec("sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset upload/dataset/1_Fabiano --encodings upload~/encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog");
+//                $pickle = shell_exec("sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset upload/dataset/1_Fabiano --encodings upload~/encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog");
+                $cmd = "sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset dataset/{$oAluno->getId()} --encodings encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/{$oAluno->getId()}/encodings.pickle --image {$oAluno->getId()}.{$ext} --login {$oAluno->getId()}";
+                $pickle = shell_exec($cmd);
+//                echo $cmd;
+//                Util::debug($pickle);
             }
         } catch (Exception $e) {
             throw $e;

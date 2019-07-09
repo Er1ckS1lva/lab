@@ -52,7 +52,7 @@
 
 
                             <section>
-                                <label class="label" for="videoApresentacao">Video de Apresentação (somente mp4 de <?php echo ini_get('upload_max_filesize');?>B)</label>
+                                <label class="label" for="videoApresentacao">Video de Apresentação (somente mp4 de até <?php echo ini_get('upload_max_filesize');?>B)</label>
                                 <label class="input">
                                     <div class="input input-file">
                                         <span class="button">
