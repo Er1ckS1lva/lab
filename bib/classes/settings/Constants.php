@@ -96,7 +96,7 @@ class Constants {
 
         define("URL_PORTAL", URL . "framework/view/portal/");
         define("URL_CRIAR_CONTA_CONFIRMA", URL_APP . "/criarContaConfirma/");
-        define("EMAIL_MODERADOR", 'simonehashiguti@gmail.com');
+        define("EMAIL_MODERADOR", 'simone.hashiguti@ufu.br');
         define("NOME_MODERADOR", 'Moderador');
         define("EMAIL_UFU", 'e-mail@ufu.br');
     }
