@@ -78,6 +78,7 @@ a{text-decoration: none !important; color: #0E4097;}
 .owl-item .item img{object-fit: cover; height: 110px}
 .owl-item .item h3{color: #ffffff; font-size: 16px}
 
+
 /*.bloco-tema{ transition-duration: .2s; -webkit-transition-duration: .2s; -moz-transition-duration: .2s;  -o-transition-duration: .2s;}
 */.bloco-tema:hover{transform: scale(1.05)}
 .color-1:hover{background: #1abc9c; color: #ffffff;}
@@ -114,21 +115,16 @@ a{text-decoration: none !important; color: #0E4097;}
 
 #smartwizard, #smartwizard-atividade{display: flex; flex-direction: column-reverse}
 
+.sw-theme-default > ul.step-anchor > li > a, 
+.sw-theme-default > ul.step-anchor > li > a:hover{
+    color: #555555;
+}
+.sw-theme-default > ul.step-anchor > li.active > a {
+    color: blue !important;
+}
+
 .owl-carousel .owl-nav button span{padding: 0 15px; font-size: 30px}
 
 .btns-right button{white-space: normal}
 
 .h-100{height: 100% !important}
-
-.camera-portal {
-    width: 300px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    
-}
-
-.image_atividade{
-    max-height: 170px;
-}
