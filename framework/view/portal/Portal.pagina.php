@@ -35,8 +35,20 @@ and open the template in the editor.
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col pagina-interna">
+                                <div class="col pagina-interna">                                    
                                     <section>
+                                        <?php
+                                        $video = MediaUtil::getLinkForFileNameById("Pagina/videoApresentacao", $oPagina->getId());
+                                        if ($video !== "javascript: void(0);") {
+                                            ?>
+                                            <? #= $video ?>
+                                            <video controls style="width: 100%">
+                                                <source src="<?php echo $video ?>" type="video/mp4">
+                                                <source src="<?php echo $video ?>" type="video/ogg">
+                                                Seu browser não suporta tag de vídeo
+                                            </video> 
+                                        <?php } ?>
+
                                         <?php
                                         echo $oPagina->getConteudo();
                                         ?>

@@ -79,6 +79,9 @@ class AtividadeAction extends AtividadeActionParent {
                         
                         # inserir ConteudoArquivo
                         $request_arquivo = new Request(FALSE);
+                        if(!file_get_contents($arquivoConteudo['tmp_name'][$key])){
+                            throw new Exception("Por favor, informe o arquivo do conteúdo : " . $key);
+                        }
                         $request_arquivo->set('arquivo', file_get_contents($arquivoConteudo['tmp_name'][$key]));
                         $request_arquivo->set('nome', $arquivoConteudo['name'][$key]);
                         $request_arquivo->set('tipo', $arquivoConteudo['type'][$key]);

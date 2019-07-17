@@ -491,20 +491,21 @@ class AlunoAction extends AlunoActionParent {
         try {
             if ($request->get("loginFacial")) {
                 $afotoUpload = $request->get("afotoUpload");
-                $i = 0;
                 for ($i = 0; $i < count($afotoUpload["name"]); $i++) {
 //                    FileUtil::makeFileUploadPosicao("dataset/{$oAluno->getId()}", $i + 1, 'afotoUpload', $i, false);
+                    # upload extra solicitado pelo caueh em 11/07/2019 as 17:12 (Antonio)
+                    $filenameEncoded = FileUtil::makeFileUploadPosicaoRoot("encodings/{$oAluno->getId()}", $i + 1, 'afotoUpload', $i, false);
+
                     $filename = FileUtil::makeFileUploadPosicaoRoot("dataset/{$oAluno->getId()}", $i + 1, 'afotoUpload', $i, false);
-                }
+                    $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
 
-                $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
-
-                #gerar o pickle
-//                $pickle = shell_exec("sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset upload/dataset/1_Fabiano --encodings upload~/encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog");
-                $cmd = "sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset dataset/{$oAluno->getId()} --encodings encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/{$oAluno->getId()}/encodings.pickle --image {$oAluno->getId()}.{$ext} --login {$oAluno->getId()}";
-                $pickle = shell_exec($cmd);
+                    # gerar o pickle - function que gera o codigo em python
+//                    $pickle = shell_exec("sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset upload/dataset/1_Fabiano --encodings upload~/encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog");
+                    $cmd = "sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset dataset/{$oAluno->getId()} --encodings encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/{$oAluno->getId()}/encodings.pickle --image {$oAluno->getId()}.{$ext} --login {$oAluno->getId()}";
+                    $pickle = shell_exec($cmd);
 //                echo $cmd;
 //                Util::debug($pickle);
+                }
             }
         } catch (Exception $e) {
             throw $e;

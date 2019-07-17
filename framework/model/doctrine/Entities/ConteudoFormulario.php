@@ -20,7 +20,7 @@ class ConteudoFormulario {
     **/
     protected $tipo;
     /** 
-    * @Column(name="enunciado", type="string", length=100, nullable=TRUE ,unique=FALSE, columnDefinition="Enunciado")
+    * @Column(name="enunciado", type="string", length=500, nullable=TRUE ,unique=FALSE, columnDefinition="Enunciado")
     **/
     protected $enunciado;
 

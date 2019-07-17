@@ -20,17 +20,24 @@ function criarContaSubmit(botao) {
                 $('#dynamicModal').modal();
                 $("#dynamicModal").show();
                 $("#dynamicModal .modal-body").html('<p id="dynamicModalBody">Aguarde...</p>');
+                
+                $("#dynamicModal").find(".modal-footer").hide();
+                $(botao).prop("disabled", true);
             },
             success: function (serverResponse) {
                 if (serverResponse.status == 'OK') {
                     $(window.location).attr('href', URL_NOVA);
                 } else {
-                    $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse + '</p>');
+                    $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse.status + '</p>');
                 }
             },
             error: function (serverResponse) {
                 console.log(serverResponse);
-                $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse + '</p>');
+                $("#dynamicModal .modal-body").html('<p id="dynamicModalBody"> ' + serverResponse.status + '</p>');
+            },
+            complete: function(serverResponse){
+                $(botao).prop("disabled", false);
+                $("#dynamicModal").find(".modal-footer").show();
             }
         };
         $(form).ajaxSubmit(options);

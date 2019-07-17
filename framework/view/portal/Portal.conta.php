@@ -119,17 +119,21 @@ and open the template in the editor.
 
         </div>
 
-        <div class="modal fade" id="dynamicModal" tabindex="-1" role="dialog" aria-labelledby="myDynamicModal" aria-hidden="true" data-backdrop="static">
+        <div class="modal fade" id="dynamicModal" tabindex="-1" role="dialog" aria-labelledby="myDynamicModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h3 class="modal-title">Alerta</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <p id="dynamicModalBody"></p>
                     </div>
                     <div class="modal-footer">
                         <!--<a id="btn_ok" class="btn btn-primary ok">Sim</a>-->
-                        <a class="btn btn-primary" data-dismiss="modal">Ok</a>
+                        <a class="btn btn-primary" data-dismiss="modal" style="color:white;">Ok</a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

@@ -488,6 +488,9 @@ if($order == 'Conteudo') {
     
         public static function getValueForTipo($v) {
         switch($v){
+	case 'NOT': 
+		$value = ' ';
+	break;
 	case 'TXT': 
 		$value = 'Caixa de texto';
 	break;
@@ -506,7 +509,7 @@ if($order == 'Conteudo') {
     }
     
     public static function getValuesForTipo() {
-        return array('TXT' => 'Caixa de texto', 'MEI' => 'Múltipla escolha(Individual)', 'MEV' => 'Múltipla escolha(Vários)');
+        return array('NOT' => ' ', 'TXT' => 'Caixa de texto', 'MEI' => 'Múltipla escolha(Individual)', 'MEV' => 'Múltipla escolha(Vários)');
     }
 
     public static function getComboBoxForTipo($v = NULL, $tabindex = "", $emptyDefaultText = false, $events = "", $name = 'tipo') {
