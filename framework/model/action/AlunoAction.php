@@ -323,12 +323,13 @@ class AlunoAction extends AlunoActionParent {
 
         if ($request->get('loginFacial')) {
             $foto = $request->get('afotoUpload');
-            $output = shell_exec("sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings upload/encodings/{$oAluno->getId()}/encodings.pickle --image {$foto['tmp_name']} --login {$oAluno->getId()}");
+//            $cmd = "sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings upload/encodings/{$oAluno->getId()}/encodings.pickle --image {$foto['tmp_name']} --login {$oAluno->getId()}";
+            #2727 abaixo teste estático
+            $cmd = "sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/59/encodings.pickle --image Fabiano.png --login 59";
+            $output = shell_exec($cmd);
 
             $aRetorno = json_decode($output, true);
-            if ($aRetorno['loginSuccess']) {
-                return true;
-            } else {
+            if (!$aRetorno['loginSuccess']) {                
                 throw new Exception(Lang::SISTEMA_validaReconhecimento);
             }
         } else {
