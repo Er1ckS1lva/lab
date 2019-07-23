@@ -80,11 +80,16 @@
                                 <div>
                                     <?php if ($video = MediaUtil::getLinkForFileNameById("Tema/videoApresentacao", $o->getId())) { ?>
                                         <button type="button" class="btn btn-link" onclick="$('#video').slideToggle();">
-                                            <i class="fa fa-video-camera"></i> Exibir/Ocultar vídeo
+                                            <i class="fa fa-video-camera"></i> Exibir/Ocultar vídeo salvo
                                         </button>
+                                        <?= $video == "javascript: void(0);" ? "<label class='note'>Sem vídeo salvo.</label>" : "" ?>
                                         <div id="video" style="display: none;">
-                                            <?= $video == "javascript: void(0);" ? "Sem vídeo selecionado." : "" ?>
                                             <?php if ($video !== "javascript: void(0);") { ?>
+                                                <label class="checkbox">
+                                                    <input type="checkbox" name="exclui_video" value="1" class="" />
+                                                    <i></i>Excluir este vídeo
+                                                </label>
+                                                <br/>                                            
                                                 <video controls>
                                                     <source src="<?php echo $video ?>" type="video/mp4">
                                                     <source src="<?php echo $video ?>" type="video/ogg">

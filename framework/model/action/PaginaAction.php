@@ -85,6 +85,10 @@ class PaginaAction extends PaginaActionParent {
     }
 
     protected function editTransaction($oPagina, $request) {
+        if ($request->get("exclui_video")) {
+            FileUtil::removeFile(dirname(__FILE__) . '/../../../upload/Pagina/videoApresentacao', $oPagina->getId());
+        }
+
         $this->addTransaction($oPagina, $request);
     }
 

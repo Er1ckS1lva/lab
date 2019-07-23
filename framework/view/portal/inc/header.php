@@ -4,11 +4,13 @@
             <div class="col">
                 <header class="d-flex flex-column flex-md-row justify-content-between align-items-center my-3">
                     <div class="logo d-flex flex-column flex-md-row align-items-center">
-                        <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/logo-small.png" alt="logo" class="" /></a>
+                        <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/logo-small.png" alt="logo ufu" class="" width="200" height="46" /></a>
+                        <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/ILEEL.png" alt="logo ileel" class="" width="200" height="46" /></a>
+                        <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/ELLA PNG.png" alt="logo ella" class=""  width="200" height="46" /></a>
                         <h6 class="link-quem-somos">
                             ELLA: English Learning Laboratory
-                            <br>Instituto de Letras e Linguística
-                            <br>Universidade Federal de Uberlândia
+                            <br/>Instituto de Letras e Linguística
+                            <br/>Universidade Federal de Uberlândia
                         </h6>                        
                     </div>
                     <?php if (isset($_SESSION['serAlunoSessao'])) {

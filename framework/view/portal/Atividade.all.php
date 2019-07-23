@@ -183,29 +183,29 @@
                                                                             $aFormularioOpcao = $oFormularioOpcaoAction->collection(null, "o.ConteudoFormulario = {$aConteudoFormulario[$oConteudo->getId()]->getId()}");
                                                                             if ($aConteudoFormulario[$oConteudo->getId()]->getTipo() == "MEV") {
                                                                                 ?>
-                                                                                <label class="radio">
-                                                                                    <?php
-                                                                                    foreach ($aFormularioOpcao as $key => $oFO) {
-                                                                                        ?>
+                                                                                <?php
+                                                                                foreach ($aFormularioOpcao as $key => $oFO) {
+                                                                                    ?>
+                                                                                    <label class="radio">
                                                                                         <input type="checkbox" name="formulario_opcao">
                                                                                         <i><?php echo $oFO->getValor(); ?></i>
-                                                                                        <br/>
-                                                                                    <?php }
-                                                                                    ?>
-                                                                                </label>
+                                                                                    </label>
+                                                                                    <br/>
+                                                                                <?php }
+                                                                                ?>
                                                                             <?php } else if ($aConteudoFormulario[$oConteudo->getId()]->getTipo() == "MEI") {
                                                                                 ?>
-                                                                                <label class="radio">
-                                                                                    <?php
-                                                                                    if ($aFormularioOpcao)
-                                                                                        foreach ($aFormularioOpcao as $key => $oFO) {
-                                                                                            ?>
+                                                                                <?php
+                                                                                if ($aFormularioOpcao)
+                                                                                    foreach ($aFormularioOpcao as $key => $oFO) {
+                                                                                        ?>
+                                                                                        <label class="radio">
                                                                                             <input type="radio" name="formulario_opcao">
                                                                                             <i><?php echo $oFO->getValor(); ?></i>
-                                                                                            <br/>
-                                                                                        <?php }
-                                                                                    ?>
-                                                                                </label>
+                                                                                        </label>
+                                                                                        <br/>
+                                                                                    <?php }
+                                                                                ?>
                                                                             <?php } else if ($aConteudoFormulario[$oConteudo->getId()]->getTipo() == "TXT") {
                                                                                 ?>
                                                                                 <label class="input">

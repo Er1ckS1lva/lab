@@ -91,6 +91,10 @@ class TemaAction extends TemaActionParent {
     }
 
     protected function editTransaction($oTema, $request) {
+        if ($request->get("exclui_video")) {
+            FileUtil::removeFile(dirname(__FILE__) . '/../../../upload/Tema/videoApresentacao', $oTema->getId());
+        }
+        
         $this->addTransaction($oTema, $request);
     }
 
