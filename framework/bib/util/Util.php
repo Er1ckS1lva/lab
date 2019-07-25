@@ -50,6 +50,44 @@ class Util extends UtilParent {
         return unserialize($stdClassObj);
     }
 
+    public static function doLogFile($type) {
+        error_reporting(E_ALL); # volta ao padrao
+        try {
+            $output = shell_exec($type);
+        } catch (Exception $ex) {
+            var_dump($ex);
+        }
+        var_dump($output);
+        $write = ob_get_contents();
+        ob_end_clean();
+
+        # tenta criar o arquivo
+        $new_file = 'log-' . date("dmY") . '.log';
+        $file_name = IGENIAL_ROOT_DIR . "/upload/temp/{$new_file}";
+
+        if (!file_exists($file_name)) {
+            fopen($file_name, 'w+');
+            if ($file_name == false)
+                die("Não foi possível criar o arquivo: {$new_file}.");
+
+            chmod($file_name, 0777);
+            if (!file_put_contents($file_name, PHP_EOL . implode(' ', array(
+                                date("H:i:s") . " -",
+                                "({$type})",
+                                $write,
+                            )), FILE_APPEND)) {
+                exit("Impossivel criar o arquivo '{$file_name}'");
+            }
+        } else {
+            file_put_contents($file_name, PHP_EOL . implode(' ', array(
+                        date("H:i:s") . " -",
+                        "({$type})",
+                        $write,
+                    )), FILE_APPEND);
+        }
+        return $output;
+    }
+
 }
 
 ?>
