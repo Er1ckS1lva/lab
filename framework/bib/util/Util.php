@@ -50,10 +50,15 @@ class Util extends UtilParent {
         return unserialize($stdClassObj);
     }
 
-    public static function doLogFile($type) {
+    public static function doLogFile($cmd) {
         error_reporting(E_ALL); # volta ao padrao
         try {
-            $output = shell_exec($type);
+//            $output = shell_exec($cmd);
+            
+            exec($cmd, $output, $return_var);
+            var_dump($output);
+            var_dump($return_var); 
+            
         } catch (Exception $ex) {
             var_dump($ex);
         }
@@ -73,7 +78,7 @@ class Util extends UtilParent {
             chmod($file_name, 0777);
             if (!file_put_contents($file_name, PHP_EOL . implode(' ', array(
                                 date("H:i:s") . " -",
-                                "({$type})",
+                                "({$cmd})",
                                 $write,
                             )), FILE_APPEND)) {
                 exit("Impossivel criar o arquivo '{$file_name}'");
@@ -81,7 +86,7 @@ class Util extends UtilParent {
         } else {
             file_put_contents($file_name, PHP_EOL . implode(' ', array(
                         date("H:i:s") . " -",
-                        "({$type})",
+                        "({$cmd})",
                         $write,
                     )), FILE_APPEND);
         }

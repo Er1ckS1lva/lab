@@ -14,7 +14,9 @@ class AtividadeController extends AtividadeControllerParent {
         if ($this->request->get('tipo') == "EMO" || $this->request->get('tipo') == "EMI") {
             $arquivo = $this->request->get("data");
             #aqui a gravação será processada pela IA
-            $output = shell_exec("java -cp \"weka.jar:gson-2.6.2.jar:/srv/www/htdocs/VoiceEmotionAnalyzer/VoiceEmotionAnalyzer.jar\" lab.VoiceEmotionAnalyzer {$arquivo['tmp_name']}");
+            $cmd = "java -cp \"weka.jar:gson-2.6.2.jar:/srv/www/htdocs/VoiceEmotionAnalyzer/VoiceEmotionAnalyzer.jar\" lab.VoiceEmotionAnalyzer {$arquivo['tmp_name']}";            
+            $output = Util::doLogFile($cmd);
+            
             $aRetorno = json_decode($output, true);
 //            $aRetorno = json_decode('{"emotionDetection":"angry","emotionsProbabilities":[{"Name":"angry","Valor":0.0},{"Name":"happiness","Valor":0.5},{"Name":"sadness","Valor":0.3333333333333333},{"Name":"surprised","Valor":0.16666666666666666}]}', true);
 
