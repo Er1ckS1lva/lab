@@ -65,26 +65,27 @@ function AtividadeDeleteHandler(action) {
 }
 
 /**
-   * Creates a string that can be used for dynamic id attributes
-   * Example: "id-so7567s1pcpojemi"
-   * @returns {string}
-   */
+ * Creates a string that can be used for dynamic id attributes
+ * Example: "id-so7567s1pcpojemi"
+ * @returns {string}
+ */
 function uniqueId() {
-  return 'id-' + Math.random().toString(36).substr(2, 16);
-};
+    return 'id-' + Math.random().toString(36).substr(2, 16);
+}
+;
 
 function AtividadeAdicionarConteudo() {
     var div = $('#Atividade-conteudo-model').children('.conteudo-model').clone();
     var id = uniqueId();
-    div.find('a[data-toggle="collapse"]').first().attr('href', "#"+id).attr('aria-controls',id);
+    div.find('a[data-toggle="collapse"]').first().attr('href', "#" + id).attr('aria-controls', id);
     div.find('div[role="tabpanel"]').first().attr('id', id);
-    div.find('span.nome').first().attr('id', "span-"+id);
-    div.find('input[name="tituloConteudo[]"]').first().attr('data-id', "#span-"+id);
+    div.find('span.nome').first().attr('id', "span-" + id);
+    div.find('input[name="tituloConteudo[]"]').first().attr('data-id', "#span-" + id);
     $('#Atividade-conteudo-append').append(div);
     countConteudo++;
 }
 
-function AtividadeOnChangeTituloConteudo(e){
+function AtividadeOnChangeTituloConteudo(e) {
     $($(e).data('id')).html(e.value);
 }
 
@@ -100,21 +101,22 @@ function AtividadeAdicionarOpcao() {
 }
 
 function AtividadeSelecionaTipo(tipo) {
-    if ($(tipo).val() == 'PRC')
-        $('#div-opcao').show();
-    else
-        $('#div-opcao').hide();
+    $('.remover_div').hide();
+    switch ($(tipo).val()) {
+        case "PRC":
+            $('#div-opcao').show();
+            break;
+        case "REL":
+            $('#div-relaciona').show();
+            break;
+    }
 }
 
 function AtividadeSelecionaTipoFormulario(tipo, object, clear) {
-
     $conteudo = object;
-
     var conteudo_atual = $conteudo.prevAll().length + 1;
-
     if (clear == 1)
         $conteudo.find('.opcao-conteudo').html('');
-
     if (tipo == "MEI" || tipo == "MEV") {
         if (tipo == "MEI")
             $cl = $("#tipo-mei").clone();
@@ -155,4 +157,44 @@ function AtividadeRecontarConteudo() {
         });
         $count++;
     });
+}
+
+var countColuna = 0;
+function AtividadeAdicionarColuna(aIdIdioma) {
+    countColuna = $('#coluna').val();
+
+    countColuna++; // o controle é para todos os IDIOMAS - ENTAO SE ADICIONAR UM VAI PARA TODOS, SE APAGAR UM APAGA TODOS DAQUELA POSICAO
+    $('#coluna').val(countColuna);
+    var aIdioma = aIdIdioma.split("_"); // para cada idioma
+    $('.Atividade-coluna-append').each(function (i) {
+        $clone = $('#Atividade-coluna-model').children('div.row').clone();
+        $($clone).attr("rel", "div_coluna_" + countColuna);
+        $($clone).find(".numero_coluna").html(countColuna);
+
+        // coluna A
+        $($clone).find("#aColunaTmp_tipo1").attr("name", "aColunaTmp[" + aIdioma[i] + "][tipo1][]");
+        $($clone).find("#aColunaTmp_TEX1").attr("name", "aColunaTmp[" + aIdioma[i] + "][TEX1][]");
+        $($clone).find("#aColunaTmp_IMG1").attr("name", "aColunaTmp[" + aIdioma[i] + "][IMG1][]");
+        $($clone).find("#aColunaTmp_VID1").attr("name", "aColunaTmp[" + aIdioma[i] + "][VID1][]");
+
+        // coluna B
+        $($clone).find("#aColunaTmp_tipo2").attr("name", "aColunaTmp[" + aIdioma[i] + "][tipo2][]");
+        $($clone).find("#aColunaTmp_TEX2").attr("name", "aColunaTmp[" + aIdioma[i] + "][TEX2][]");
+        $($clone).find("#aColunaTmp_IMG2").attr("name", "aColunaTmp[" + aIdioma[i] + "][IMG2][]");
+        $($clone).find("#aColunaTmp_VID2").attr("name", "aColunaTmp[" + aIdioma[i] + "][VID2][]");
+
+        $(this).append($clone.show());
+    });
+}
+
+function AtividadeDelColuna(that) {
+    var classe = $(that).closest('div.row').attr("rel");
+    $('[rel="' + classe + '"]').remove();
+
+    $('#coluna').val(--countColuna);
+}
+
+function AtividadeColunaTipo(that) {
+    $(that).parent().parent().parent().find('#tipos').find('.escondeTipo').hide();
+    $(that).parent().parent().parent().find('#tipos').find('#div-' + $(that).val()).show();
 }

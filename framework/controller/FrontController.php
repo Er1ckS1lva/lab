@@ -24,6 +24,8 @@ include_once(dirname(__FILE__).'/../model/action/FormularioOpcaoAction.php');
 include_once(dirname(__FILE__).'/controllers/AlunoController.php');
 include_once(dirname(__FILE__).'/../model/action/AlunoAtividadeAction.php');
 include_once(dirname(__FILE__).'/../model/action/AlunoAtividadeEnviosAction.php');
+include_once(dirname(__FILE__).'/../model/action/AtividadeColunaAction.php');
+include_once(dirname(__FILE__).'/../model/action/AtividadeColunaArquivoAction.php');
 include_once(dirname(__FILE__).'/controllers/IdiomaController.php');
 include_once(dirname(__FILE__).'/controllers/PaginaController.php');
 include_once(dirname(__FILE__).'/../model/action/PaginaIdiomaAction.php');

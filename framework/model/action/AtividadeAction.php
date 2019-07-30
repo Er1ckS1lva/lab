@@ -14,6 +14,83 @@ class AtividadeAction extends AtividadeActionParent {
         $oIdiomaAction = new IdiomaAction();
         $aIdSigla = $oIdiomaAction->getIdSigla(null, null, 'padrao ASC');
 
+
+        if ($request->get("tipo") === "REL") {
+            $aColunaTmp = $_REQUEST["aColunaTmp"]; # $_REQUEST array para niveis
+            $aColunaTmpFiles = $_FILES["aColunaTmp"]; # $_REQUEST array para niveis para arquivos
+            $aColuna = array();
+            foreach ($aColunaTmp as $id_idioma => $oColuna) {
+                for ($i = 0; $i < count($oColuna["tipo1"]); $i++) {
+                    $aColuna[$id_idioma]["coluna"][$i] = array(
+                        "id" => ($oColuna["id"] ? $oColuna["id"][$i] : 0),
+                        "Idioma" => $id_idioma,
+                        "coluna1" => $i + 1,
+                        "coluna2" => $i + 1,
+                        "tipo1" => ($tipo1 = $oColuna["tipo1"][$i]),
+                        "tipo2" => ($tipo2 = $oColuna["tipo2"][$i]),
+                        "coluna1Text" => $oColuna["TEX1"][$i],
+                        "coluna2Text" => $oColuna["TEX2"][$i],
+                    );
+
+                    if ($tipo1 === "IMG") {
+                        $aArquivo1 = array(
+                            "id" => ($oColuna["IMG1ID"][$i] ? $oColuna["IMG1ID"][$i] : 0),
+                            "name" => $aColunaTmpFiles["name"][$id_idioma]["IMG1"][$i],
+                            "type" => $aColunaTmpFiles["type"][$id_idioma]["IMG1"][$i],
+                            "tmp_name" => $aColunaTmpFiles["tmp_name"][$id_idioma]["IMG1"][$i],
+                            "error" => $aColunaTmpFiles["error"][$id_idioma]["IMG1"][$i],
+                            "size" => $aColunaTmpFiles["size"][$id_idioma]["IMG1"][$i],
+                        );
+                        $this->validaImagem($aArquivo1, !$edicao);
+                        $aColuna[$id_idioma]["arquivo1"][$i] = $aArquivo1;
+                    }
+                    if ($tipo2 === "IMG") {
+                        $aArquivo2 = array(
+                            "id" => ($oColuna["IMG2ID"][$i] ? $oColuna["IMG2ID"][$i] : 0),
+                            "name" => $aColunaTmpFiles["name"][$id_idioma]["IMG2"][$i],
+                            "type" => $aColunaTmpFiles["type"][$id_idioma]["IMG2"][$i],
+                            "tmp_name" => $aColunaTmpFiles["tmp_name"][$id_idioma]["IMG2"][$i],
+                            "error" => $aColunaTmpFiles["error"][$id_idioma]["IMG2"][$i],
+                            "size" => $aColunaTmpFiles["size"][$id_idioma]["IMG2"][$i],
+                        );
+                        $this->validaImagem($aArquivo2, !$edicao);
+                        $aColuna[$id_idioma]["arquivo2"][$i] = $aArquivo2;
+                    }
+                    if ($tipo1 === "VID") {
+                        $aArquivo1 = array(
+                            "id" => ($oColuna["VID1ID"][$i] ? $oColuna["VID1ID"][$i] : 0),
+                            "name" => $aColunaTmpFiles["name"][$id_idioma]["VID1"][$i],
+                            "type" => $aColunaTmpFiles["type"][$id_idioma]["VID1"][$i],
+                            "tmp_name" => $aColunaTmpFiles["tmp_name"][$id_idioma]["VID1"][$i],
+                            "error" => $aColunaTmpFiles["error"][$id_idioma]["VID1"][$i],
+                            "size" => $aColunaTmpFiles["size"][$id_idioma]["VID1"][$i],
+                        );
+                        $this->validaVideo($aArquivo1, !$edicao);
+                        $aColuna[$id_idioma]["arquivo1"][$i] = $aArquivo1;
+                    }
+                    if ($tipo2 === "VID") {
+                        $aArquivo2 = array(
+                            "id" => ($oColuna["VID2ID"][$i] ? $oColuna["VID2ID"][$i] : 0),
+                            "name" => $aColunaTmpFiles["name"][$id_idioma]["VID2"][$i],
+                            "type" => $aColunaTmpFiles["type"][$id_idioma]["VID2"][$i],
+                            "tmp_name" => $aColunaTmpFiles["tmp_name"][$id_idioma]["VID2"][$i],
+                            "error" => $aColunaTmpFiles["error"][$id_idioma]["VID2"][$i],
+                            "size" => $aColunaTmpFiles["size"][$id_idioma]["VID2"][$i],
+                        );
+                        $this->validaVideo($aArquivo2, !$edicao);
+                        $aColuna[$id_idioma]["arquivo2"][$i] = $aArquivo2;
+                    }
+                }
+            }
+            foreach ($aColunaTmp as $id_idioma => $oColuna) {
+                if (count($aColuna[$id_idioma]) < 2) {
+                    throw new Exception("Por favor, informe ao menos 2 colunas para esse tipo do idioma: " . $aIdSigla[$id_idioma]);
+                }
+            }
+            $request->set('aColuna', $aColuna);
+        }
+
+
         $aTitulo = $request->get("aTitulo");
         $aDescricao = $request->get("aDescricao");
         foreach ($aTitulo as $nIdIdioma => $oTitulo) {
@@ -30,13 +107,12 @@ class AtividadeAction extends AtividadeActionParent {
     }
 
     protected function addTransaction($oAtividade, $request) {
-
         $oConteudoAction = new ConteudoAction($this->em);
         $oConteudoArquivoAction = new ConteudoArquivoAction($this->em);
 
         # adição de opções
         $aValorOpcao = $request->get('valorOpcao');
-        if ($aValorOpcao) {
+        if ($oAtividade->getTipo() == "PRC" && $aValorOpcao) {
             $aFoneticoOpcao = $request->get('valorFoneticoOpcao');
             $correta = $request->get('corretaOpcao');
             $oAtividadeOpcaoAction = new AtividadeOpcaoAction($this->em);
@@ -57,6 +133,64 @@ class AtividadeAction extends AtividadeActionParent {
             }
         }
 
+
+        # adição de colunas
+        $aColuna = $request->get('aColuna');
+        if ($oAtividade->getTipo() == "REL" && $aColuna) {
+            $oAtividadeColunaAction = new AtividadeColunaAction($this->em);
+            $oAtividadeColunaArquivoAction = new AtividadeColunaArquivoAction($this->em);
+            foreach ($aColuna as $id_idioma => $oColuna) {
+                foreach ($oColuna["coluna"] as $i => $coluna) {
+                    $aArquivo = array();
+                    $request_coluna = new Request(FALSE);
+                    $request_coluna->set("Atividade", $oAtividade->getId());
+                    foreach ($coluna as $k => $v) {
+                        $request_coluna->set($k, $v);
+                    }
+                    if (in_array($request_coluna->get("tipo1"), array("IMG", "VID"))) {
+                        $request_coluna->set("coluna1Text", null);
+                        $arquivo1 = isset($oColuna["arquivo1"]) ? $oColuna["arquivo1"][$i] : array();
+                        if ($arquivo1)
+                            $aArquivo[] = array_merge($arquivo1, array("coluna" => 1));
+                    }
+                    if (in_array($request_coluna->get("tipo2"), array("IMG", "VID"))) {
+                        $request_coluna->set("coluna2Text", null);
+                        $arquivo2 = isset($oColuna["arquivo2"]) ? $oColuna["arquivo2"][$i] : array();
+                        if ($arquivo2)
+                            $aArquivo[] = array_merge($arquivo2, array("coluna" => 2));
+                    }
+                    if ($request_coluna->get("id")) {
+                        $oColunaSave = $oAtividadeColunaAction->edit($request_coluna, false, true);
+                    } else {
+                        $oColunaSave = $oAtividadeColunaAction->add($request_coluna, false, true);
+                    }
+                    # parte arquivo
+                    if ($aArquivo) {
+                        foreach ($aArquivo as $arquivo) {
+                            if ($arquivo["error"] == 0) {
+                                $request_coluna_arquivo = new Request(FALSE);
+                                $request_coluna_arquivo->set("AtividadeColuna", $oColunaSave->getId());
+                                $request_coluna_arquivo->set("coluna", $arquivo["coluna"]);
+                                $request_coluna_arquivo->set("nome", $arquivo["name"]);
+                                $request_coluna_arquivo->set("tipo", $arquivo["type"]);
+
+                                # salva o arquivo no banco
+                                $request_coluna_arquivo->set("arquivo", file_get_contents($arquivo['tmp_name']));
+                                if ($arquivo["id"]) {
+                                    $request_coluna_arquivo->set("id", $arquivo["id"]);
+                                    $oColunaArquivoSave = $oAtividadeColunaArquivoAction->edit($request_coluna_arquivo, false, true);
+                                } else {
+                                    $oColunaArquivoSave = $oAtividadeColunaArquivoAction->add($request_coluna_arquivo, false, true);
+                                }
+                            }
+                        }
+                    }
+                    $j++;
+                }
+            }
+        }
+
+
         # adição de conteudo
         $tituloConteudo = $request->get('tituloConteudo');
         $arquivoConteudo = $request->get('arquivoConteudo');
@@ -76,10 +210,10 @@ class AtividadeAction extends AtividadeActionParent {
                         $request_conteudo->set('Atividade', $oAtividade);
                         $request_conteudo->set('titulo', $tc);
                         $oConteudo = $oConteudoAction->add($request_conteudo, false, true);
-                        
+
                         # inserir ConteudoArquivo
                         $request_arquivo = new Request(FALSE);
-                        if(!file_get_contents($arquivoConteudo['tmp_name'][$key])){
+                        if (!file_get_contents($arquivoConteudo['tmp_name'][$key])) {
                             throw new Exception("Por favor, informe o arquivo do conteúdo : " . $key);
                         }
                         $request_arquivo->set('arquivo', file_get_contents($arquivoConteudo['tmp_name'][$key]));
@@ -247,40 +381,105 @@ class AtividadeAction extends AtividadeActionParent {
         $oAlunoAtividadeEnviosAction->add($request_at, true);
     }
 
-    public function alteraTipo($id, $tipo) {
-        $oAtividade = $this->em->find('Atividade', array('id' => $id));
-        $oAtividade->setTipo($tipo);
-        try {
-            $this->em->beginTransaction();
-
-            $this->em->persist($oAtividade);
-            $this->em->flush($oAtividade);
-
-            ## LOG BEGIN ##
-            $oLog = new LogAction($this->em);
-            $oLog->register("O", "Editada Atividade com o índice {$id} - Tipo: {$tipo}", FALSE);
-            ## LOG END ##
-
-            $this->em->commit();
-        } catch (Exception $e) {
-            throw $e;
-            $this->setMsg($e);
-            $this->em->rollback();
-            return false;
-        }
-
-        return true;
-    }
-
     public function filterConditions(&$request, &$response, &$orderPageConditions, $alias = "o", $conditions = array()) {
         $request->set("TemaSuggest", false);
         return parent::filterConditions($request, $response, $orderPageConditions, $alias, $conditions);
     }
 
     protected function delTransaction($id) {
+        // apaga os idiomas
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.Atividade' => $id), $qb);
         $qb->delete()->from("AtividadeIdioma", "o")->where($where)->getQuery()->execute();
+
+        // apaga as opções
+        $qb = $this->em->createQueryBuilder();
+        $where = QueryHelper::getAndEquals(array('o.Atividade' => $id), $qb);
+        $qb->delete()->from("AtividadeOpcao", "o")->where($where)->getQuery()->execute();
+
+        // apaga os arquivos das colunas
+//        $qb = $this->em->createQueryBuilder();
+//        $where = QueryHelper::getAndEquals(array('u.Atividade' => $id), $qb);
+//        $qb->delete()->from("AtividadeColunaArquivo", "o")->leftJoin('o.AtividadeColuna', 'u')->where($where)->getQuery()->execute();
+
+        $oAtividadeColunaAction = new AtividadeColunaAction($this->em);
+        $aAtividadeColuna = $oAtividadeColunaAction->collection(array("id"), "o.Atividade = '{$id}'");
+        if ($aAtividadeColuna) {
+            $oAtividadeColunaArquivoAction = new AtividadeColunaArquivoAction($this->em);
+            foreach ($aAtividadeColuna as $oAtividadeColuna) {
+                $oAtividadeColunaArquivoAction->delPhysicalByAtividadeColuna($oAtividadeColuna["id"], false);
+            }
+        }
+
+        // apaga as colunas
+        $qb = $this->em->createQueryBuilder();
+        $where = QueryHelper::getAndEquals(array('o.Atividade' => $id), $qb);
+        $qb->delete()->from("AtividadeColuna", "o")->where($where)->getQuery()->execute();
+    }
+
+    function validaImagem($arquivo, $bValida = true) {
+        if ($bValida) {
+            if ($arquivo['error'] != 0 && $arquivo['size'] <= 0) {
+                throw new Exception("Por favor, informe o arquivo!");
+            } elseif ($arquivo['error'] === 0 && $arquivo['size'] > 0) {
+                $filename = basename($arquivo['name']);
+                $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
+                $extensions = array('jpeg', 'jpg', 'gif', 'png');
+                $mimes = array('image/jpeg', 'image/gif', 'image/png', 'image/x-png', 'image/pjpeg');
+                $fileMaxSizeMB = (int) ini_get('upload_max_filesize');
+                $fileMaxSize = $fileMaxSizeMB * 1024 * 1024;
+                if ($arquivo["size"] > $fileMaxSize) {
+                    throw new Exception("Atenção: Somente arquivos de imagem com no máximo {$fileMaxSizeMB}MB são aceitos para upload!");
+                }
+                if (!in_array($ext, $extensions) || !in_array($arquivo['type'], $mimes)) {
+                    throw new Exception("Atenção: Somente arquivos de imagem com a extensão " . join(', ', $extensions) . " são aceitos para upload!");
+                }
+            }
+        }
+        return true;
+    }
+
+    function validaVideo($arquivo, $bValida = true) {
+        if ($bValida) {
+            if ($arquivo['error'] != 0 && $arquivo['size'] <= 0) {
+                throw new Exception("Por favor, informe o arquivo!");
+            } elseif ($arquivo['error'] === 0 && $arquivo['size'] > 0) {
+                $filename = basename($arquivo['name']);
+                $ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
+                $extensions = array('mp4');
+                $mimes = array('video/mp4');
+                $fileMaxSizeMB = (int) ini_get('upload_max_filesize');
+                $fileMaxSize = $fileMaxSizeMB * 1024 * 1024;
+                if ($arquivo["size"] > $fileMaxSize) {
+                    throw new Exception("Atenção: Somente arquivos de vídeo com no máximo {$fileMaxSizeMB}MB são aceitos para upload!");
+                }
+                if (!in_array($ext, $extensions) || !in_array($arquivo['type'], $mimes)) {
+                    throw new Exception("Atenção: Somente arquivos de vídeo com a extensão " . join(', ', $extensions) . " são aceitos para upload!");
+                }
+            }
+        }
+        return true;
+    }
+
+    function getColunas($id) {
+        $aColuna = array();
+        $oAtividadeColunaAction = new AtividadeColunaAction();
+        $aAtividadeColuna = $oAtividadeColunaAction->collection(null, "o.Atividade='{$id}'");
+        $oAtividadeColunaArquivoAction = new AtividadeColunaArquivoAction();
+        $nColunaCount = 0;
+        if ($aAtividadeColuna) {
+            foreach ($aAtividadeColuna as $oAtividadeColuna) {
+                $aColuna[$oAtividadeColuna->getIdioma()->getId()][$oAtividadeColuna->getId()]["coluna"] = $oAtividadeColunaAction->toArray($oAtividadeColuna);
+                $aAtividadeColunaArquivo = $oAtividadeColunaArquivoAction->collection(array("id", "coluna", "nome", "tipo"), "o.AtividadeColuna = '{$oAtividadeColuna->getId()}'");
+                if ($aAtividadeColunaArquivo) {
+                    foreach ($aAtividadeColunaArquivo as $oAtividadeColunaArquivo) {
+                        $aColuna[$oAtividadeColuna->getIdioma()->getId()][$oAtividadeColuna->getId()]["arquivo"][$oAtividadeColunaArquivo["coluna"]] = $oAtividadeColunaArquivo;
+                    }
+                }
+                $nColunaCount++;
+            }
+        }
+        return array_merge(array("coluna" => $aColuna), array("count" => ($aColuna ? round($nColunaCount / count(array_keys($aColuna))) : 0)));
     }
 
 }

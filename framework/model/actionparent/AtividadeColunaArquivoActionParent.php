@@ -1,6 +1,6 @@
 <?php
-require dirname(__FILE__) . '/../doctrine/Entities/Atividade.php';
-class AtividadeActionParent {
+require dirname(__FILE__) . '/../doctrine/Entities/AtividadeColunaArquivo.php';
+class AtividadeColunaArquivoActionParent {
 
     protected $msg;
     protected $em;
@@ -22,27 +22,60 @@ class AtividadeActionParent {
     }
     
     public function validateParent(&$request,$edicao = false){
-		$aFieldsStructure = AtividadeAction::getFieldsStructure(); # estrutura da tabela
+		$aFieldsStructure = AtividadeColunaArquivoAction::getFieldsStructure(); # estrutura da tabela
 	
-        if ($request->get("Tema") == '') {
-            throw new Exception("Por favor, informe o campo Tema!");
+        if ($request->get("AtividadeColuna") == '') {
+            throw new Exception("Por favor, informe o campo Atividade de Coluna!");
         }
 
 
-if(isset($aFieldsStructure["Tema"]) && !isset($aFieldsStructure["Tema"]["isFk"]) && $aFieldsStructure["Tema"]["length"]){
-    if (strlen($request->get("Tema")) > $aFieldsStructure["Tema"]["length"]) {
-        $this->setMsg("Por favor, informe o campo Tema corretamente, o tamanho do campo é {$aFieldsStructure["Tema"]["length"]}!");
+if(isset($aFieldsStructure["AtividadeColuna"]) && !isset($aFieldsStructure["AtividadeColuna"]["isFk"]) && $aFieldsStructure["AtividadeColuna"]["length"]){
+    if (strlen($request->get("AtividadeColuna")) > $aFieldsStructure["AtividadeColuna"]["length"]) {
+        $this->setMsg("Por favor, informe o campo Atividade de Coluna corretamente, o tamanho do campo é {$aFieldsStructure["AtividadeColuna"]["length"]}!");
         return false;
     }
 }
-	if ($request->get("titulo") == '') {
-            throw new Exception("Por favor, informe o campo Título!");
+	if ($request->get("coluna") == '') {
+            throw new Exception("Por favor, informe o campo Coluna!");
         }
 
 
-if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isFk"]) && $aFieldsStructure["titulo"]["length"]){
-    if (strlen($request->get("titulo")) > $aFieldsStructure["titulo"]["length"]) {
-        $this->setMsg("Por favor, informe o campo Título corretamente, o tamanho do campo é {$aFieldsStructure["titulo"]["length"]}!");
+if(isset($aFieldsStructure["coluna"]) && !isset($aFieldsStructure["coluna"]["isFk"]) && $aFieldsStructure["coluna"]["length"]){
+    if (strlen($request->get("coluna")) > $aFieldsStructure["coluna"]["length"]) {
+        $this->setMsg("Por favor, informe o campo Coluna corretamente, o tamanho do campo é {$aFieldsStructure["coluna"]["length"]}!");
+        return false;
+    }
+}
+	if ($request->get("arquivo") == '') {
+            throw new Exception("Por favor, informe o campo Arquivo!");
+        }
+
+
+if(isset($aFieldsStructure["arquivo"]) && !isset($aFieldsStructure["arquivo"]["isFk"]) && $aFieldsStructure["arquivo"]["length"]){
+    if (strlen($request->get("arquivo")) > $aFieldsStructure["arquivo"]["length"]) {
+        $this->setMsg("Por favor, informe o campo Arquivo corretamente, o tamanho do campo é {$aFieldsStructure["arquivo"]["length"]}!");
+        return false;
+    }
+}
+	if ($request->get("nome") == '') {
+            throw new Exception("Por favor, informe o campo Nome!");
+        }
+
+
+if(isset($aFieldsStructure["nome"]) && !isset($aFieldsStructure["nome"]["isFk"]) && $aFieldsStructure["nome"]["length"]){
+    if (strlen($request->get("nome")) > $aFieldsStructure["nome"]["length"]) {
+        $this->setMsg("Por favor, informe o campo Nome corretamente, o tamanho do campo é {$aFieldsStructure["nome"]["length"]}!");
+        return false;
+    }
+}
+	if ($request->get("tipo") == '') {
+            throw new Exception("Por favor, informe o campo Tipo!");
+        }
+
+
+if(isset($aFieldsStructure["tipo"]) && !isset($aFieldsStructure["tipo"]["isFk"]) && $aFieldsStructure["tipo"]["length"]){
+    if (strlen($request->get("tipo")) > $aFieldsStructure["tipo"]["length"]) {
+        $this->setMsg("Por favor, informe o campo Tipo corretamente, o tamanho do campo é {$aFieldsStructure["tipo"]["length"]}!");
         return false;
     }
 }
@@ -55,29 +88,24 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
         foreach ($request->getParameters() as $i => $v) 
             $$i = $v;
         
-        $oAtividade = new Atividade();
-        $oAtividade->setTema(QueryHelper::verifyObject($Tema, 'Tema', $this->em));
-	$oAtividade->setTitulo($titulo);
-	$oAtividade->setDescricao($descricao);
-	$oAtividade->setTipo($tipo);
-	$oAtividade->setLogDel("N");
-	$oAtividade->setOrdem($ordem);
+        $oAtividadeColunaArquivo = new AtividadeColunaArquivo();
+        $oAtividadeColunaArquivo->setAtividadeColuna(QueryHelper::verifyObject($AtividadeColuna, 'AtividadeColuna', $this->em));
+	$oAtividadeColunaArquivo->setColuna($coluna);
+	$oAtividadeColunaArquivo->setArquivo($arquivo);
+	$oAtividadeColunaArquivo->setNome($nome);
+	$oAtividadeColunaArquivo->setTipo($tipo);
 	
         try {
             if ($commitable) {
                 $this->em->beginTransaction();
             }
-            $this->em->persist($oAtividade);
-            $this->em->flush($oAtividade);
-            $this->addTransaction($oAtividade, $request);
+            $this->em->persist($oAtividadeColunaArquivo);
+            $this->em->flush($oAtividadeColunaArquivo);
+            $this->addTransaction($oAtividadeColunaArquivo, $request);
             
 			
 			if($doLog){
 				
-            ## LOG BEGIN ##
-            $oLog = new LogAction($this->em);
-            $oLog->register("O", "Adicionado Atividade com o índice '{$oAtividade->getId()}'", FALSE);
-            ## LOG END ##
 			}
 			
             if ($commitable) {
@@ -91,40 +119,37 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
             throw $e;
         }
         if($returnObject === true){
-            return $oAtividade;
+            return $oAtividadeColunaArquivo;
         }
         return true;
     }
 
-    protected function addTransaction($oAtividade, $request){
+    protected function addTransaction($oAtividadeColunaArquivo, $request){
     }
 
     public function edit($request, $commitable = true, $returnObject = false, $doLog = true) {
         foreach ($request->getParameters() as $i => $v) 
             $$i = $v;
         
-        $oAtividade = $this->em->find('Atividade',array('id' => $id));
-        $oAtividade->setTema(QueryHelper::verifyObject($Tema, 'Tema', $this->em));
-	$oAtividade->setTitulo($titulo);
-	$oAtividade->setDescricao($descricao);
-	$oAtividade->setOrdem($ordem);
+        $oAtividadeColunaArquivo = $this->em->find('AtividadeColunaArquivo',array('id' => $id));
+        $oAtividadeColunaArquivo->setAtividadeColuna(QueryHelper::verifyObject($AtividadeColuna, 'AtividadeColuna', $this->em));
+	$oAtividadeColunaArquivo->setColuna($coluna);
+	$oAtividadeColunaArquivo->setArquivo($arquivo);
+	$oAtividadeColunaArquivo->setNome($nome);
+	$oAtividadeColunaArquivo->setTipo($tipo);
 	
 
         try {
             if ($commitable) {
                 $this->em->beginTransaction();
             }
-            $this->em->persist($oAtividade);
-            $this->em->flush($oAtividade);
-            $this->editTransaction($oAtividade, $request);
+            $this->em->persist($oAtividadeColunaArquivo);
+            $this->em->flush($oAtividadeColunaArquivo);
+            $this->editTransaction($oAtividadeColunaArquivo, $request);
             
 			
 			if($doLog){
 				
-            ## LOG BEGIN ##
-            $oLog = new LogAction($this->em);
-            $oLog->register("O", "Editado Atividade com o índice {$id}", FALSE);
-            ## LOG END ##
 			}
 			
             if ($commitable) {
@@ -137,12 +162,12 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
             throw $e;
         }
         if($returnObject === true){
-            return $oAtividade;
+            return $oAtividadeColunaArquivo;
         }
         return true;
     }
 
-    protected function editTransaction($oAtividade, $request){
+    protected function editTransaction($oAtividadeColunaArquivo, $request){
     }
 
     
@@ -155,7 +180,7 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
 
         $qb = $this->em->createQueryBuilder();
         $query = $qb->select($fieldsToSelect)
-            ->from('Atividade', 'o');
+            ->from('AtividadeColunaArquivo', 'o');
 		$query->distinct($distinct);
 
         if ($conditions) {
@@ -165,8 +190,8 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
             }
         }
 		
-        $query->andWhere("o.logDel = 'N'");
-        if(AtividadeAction::manualOrder($query, $order) === FALSE){
+        
+        if(AtividadeColunaArquivoAction::manualOrder($query, $order) === FALSE){
             if($order) {
                 if(strpos($order, " ") >= 0 && strpos($order, " ") !== FALSE){
                     list($order,$orderType) = explode(" ", $order, 2);
@@ -174,10 +199,10 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
                     $orderType = "ASC";
                 }
                 $entityPrefix = "o";
-                if($order == 'Tema') {
-                    $query->leftJoin('o.Tema', 'u');
+                if($order == 'AtividadeColuna') {
+                    $query->leftJoin('o.AtividadeColuna', 'u');
                     $entityPrefix = "u";
-                    $order = 'titulo';
+                    $order = 'id';
                 }
                 $query->addOrderBy("{$entityPrefix}.{$order}",$orderType);
             }
@@ -198,7 +223,7 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
 
         $qb = $this->em->createQueryBuilder();
         $query = $qb->select($fieldsToSelect)
-            ->from('Atividade', 'o');
+            ->from('AtividadeColunaArquivo', 'o');
 		$query->distinct($distinct);
 
         if ($conditions) {
@@ -208,8 +233,8 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
             }
         }
 		
-        $query->andWhere("o.logDel = 'N'");
-        if(AtividadeAction::manualOrder($query, $order) === FALSE){
+        
+        if(AtividadeColunaArquivoAction::manualOrder($query, $order) === FALSE){
             if($order) {
                 if(strpos($order, " ") >= 0 && strpos($order, " ") !== FALSE){
                     list($order,$orderType) = explode(" ", $order, 2);
@@ -217,10 +242,10 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
                     $orderType = "ASC";
                 }
                 $entityPrefix = "o";
-if($order == 'Tema') {
-                    $query->leftJoin('o.Tema', 'u');
+if($order == 'AtividadeColuna') {
+                    $query->leftJoin('o.AtividadeColuna', 'u');
                     $entityPrefix = "u";
-                    $order = 'titulo';
+                    $order = 'id';
                 }
                 $query->addOrderBy("{$entityPrefix}.{$order}",$orderType);
             }
@@ -240,8 +265,8 @@ if($order == 'Tema') {
 
         $qb = $this->em->createQueryBuilder();
         $query = $qb->select('count(o)')
-            ->from('Atividade', 'o');
-        $query->andWhere("o.logDel = 'N'");
+            ->from('AtividadeColunaArquivo', 'o');
+        
         
 		if ($conditions) {
 			$aConditions = is_array($conditions)?$conditions:array($conditions);			
@@ -262,11 +287,11 @@ if($order == 'Tema') {
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.id' => $id), $qb);
         $query = $qb->select($fieldsToSelect)
-            ->from('Atividade', 'o')
+            ->from('AtividadeColunaArquivo', 'o')
             ->where( $where );
-        $query->andWhere("o.logDel = 'N'");
-        $oAtividade = $query->getQuery()->getOneOrNullResult();
-        return $oAtividade;
+        
+        $oAtividadeColunaArquivo = $query->getQuery()->getOneOrNullResult();
+        return $oAtividadeColunaArquivo;
     }
 	
 	public function selectHistorico($id) {
@@ -276,10 +301,10 @@ if($order == 'Tema') {
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.id' => $id), $qb);
         $query = $qb->select('o')
-            ->from('Atividade', 'o')
+            ->from('AtividadeColunaArquivo', 'o')
             ->where( $where );
-        $oAtividade = $query->getQuery()->getOneOrNullResult();
-        return $oAtividade;
+        $oAtividadeColunaArquivo = $query->getQuery()->getOneOrNullResult();
+        return $oAtividadeColunaArquivo;
     }
 
     public function delLogical($id, $commitable = true, $doLog = true) {
@@ -287,8 +312,8 @@ if($order == 'Tema') {
 
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.id' => $id), $qb);
-        $query = $qb->update("Atividade o")
-            ->set('o.logDel', "'S'")
+        $query = $qb->update("AtividadeColunaArquivo o")
+            //->set([nome_atributo], 0)
             ->where( $where )->getQuery();
 
         try {
@@ -300,10 +325,6 @@ if($order == 'Tema') {
 			
 			if($doLog){
 				
-            ## LOG BEGIN ##
-            $oLog = new LogAction($this->em);
-            $oLog->register("O", "Excluído Atividade com o índice {$id}", FALSE);
-            ## LOG END ##
 			}
 			
             if ($commitable) {
@@ -323,7 +344,7 @@ if($order == 'Tema') {
 
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.id' => $id), $qb);
-        $query = $qb->delete()->from("Atividade", "o")
+        $query = $qb->delete()->from("AtividadeColunaArquivo", "o")
                 ->where( $where )->getQuery();
         try {
             if ($commitable) {
@@ -334,10 +355,6 @@ if($order == 'Tema') {
 			
 			if($doLog){
 				
-            ## LOG BEGIN ##
-            $oLog = new LogAction($this->em);
-            $oLog->register("O", "Excluído Atividade com o índice {$id}", FALSE);
-            ## LOG END ##
 			}
 
             
@@ -398,23 +415,23 @@ if($order == 'Tema') {
     }
 
     public static function getEntityName(){
-        return 'Atividade';
+        return 'Arquivo da Atividade de Coluna';
     }
 
     public static function getTableName(){
-        return 'atividade';
+        return 'atividade_coluna_arquivo';
     }
 
     public static function getModuleName() {
-        return 'laboratoriovirtual';
+        return '';
     }
     
     public static function getClassName() {
-        return 'Atividade';
+        return 'AtividadeColunaArquivo';
     }
     
     public static function getBaseUrl() {
-        return URL . AtividadeAction::getModuleName(). "/Atividade/";
+        return URL . AtividadeColunaArquivoAction::getModuleName(). "/AtividadeColunaArquivo/";
     }
 
     public static function manualOrder(&$query, $order) {
@@ -422,7 +439,7 @@ if($order == 'Tema') {
     }
 	
     public static function suggestDesc($o){
-        return $o->getTitulo();
+        return NULL;
     }
 	
     public static function suggestDescHtml($o){
@@ -430,31 +447,29 @@ if($order == 'Tema') {
     }
 
     public static function validateFields(){
-        $aValidateFields = array('id_tema' => 'Tema', 'titulo' => 'titulo', 'log_del' => 'logDel');
+        $aValidateFields = array('id_atividade_coluna' => 'AtividadeColuna', 'coluna' => 'coluna', 'arquivo' => 'arquivo', 'nome' => 'nome', 'tipo' => 'tipo');
         return (join(",", $aValidateFields));
     }
 
     public function toObject($v){
-        $o = new Atividade();
+        $o = new AtividadeColunaArquivo();
         $o->setId((isset($v['id']) ? $v['id'] : NULL));
-        $o->setTema((isset($v['Tema']) ? $this->em->find("Tema",array( 'id' => $v['Tema'])) : NULL));
-        $o->setTitulo((isset($v['titulo']) ? $v['titulo'] : NULL));
-        $o->setDescricao((isset($v['descricao']) ? $v['descricao'] : NULL));
+        $o->setAtividadeColuna((isset($v['AtividadeColuna']) ? $this->em->find("AtividadeColuna",array( 'id' => $v['AtividadeColuna'])) : NULL));
+        $o->setColuna((isset($v['coluna']) ? $v['coluna'] : NULL));
+        $o->setArquivo((isset($v['arquivo']) ? $v['arquivo'] : NULL));
+        $o->setNome((isset($v['nome']) ? $v['nome'] : NULL));
         $o->setTipo((isset($v['tipo']) ? $v['tipo'] : NULL));
-        $o->setLogDel((isset($v['logDel']) ? $v['logDel'] : NULL));
-        $o->setOrdem((isset($v['ordem']) ? $v['ordem'] : NULL));
         return $o;
     }
 
     public static function toArray($o){
         $v = array();
         $v['id'] = $o->getId();
-        $v['Tema'] = (($o->getTema()) ? TemaAction::toArray($o->getTema()) : NULL);
-        $v['titulo'] = $o->getTitulo();
-        $v['descricao'] = $o->getDescricao();
+        $v['AtividadeColuna'] = (($o->getAtividadeColuna()) ? AtividadeColunaAction::toArray($o->getAtividadeColuna()) : NULL);
+        $v['coluna'] = $o->getColuna();
+        $v['arquivo'] = $o->getArquivo();
+        $v['nome'] = $o->getNome();
         $v['tipo'] = $o->getTipo();
-        $v['logDel'] = $o->getLogDel();
-        $v['ordem'] = $o->getOrdem();
         return $v;
     }
 
@@ -466,18 +481,16 @@ if($order == 'Tema') {
         # tenta dar o replace nos campos ou retorna os campos senão tiver que substituir
         	$aFields['id'] = "id";
 	$conditions = preg_replace('~^id$~',"id",$conditions);
-	$aFields['Tema'] = "id_tema";
-	$conditions = preg_replace('~^Tema$~',"id_tema",$conditions);
-	$aFields['titulo'] = "titulo";
-	$conditions = preg_replace('~^titulo$~',"titulo",$conditions);
-	$aFields['descricao'] = "descricao";
-	$conditions = preg_replace('~^descricao$~',"descricao",$conditions);
+	$aFields['AtividadeColuna'] = "id_atividade_coluna";
+	$conditions = preg_replace('~^AtividadeColuna$~',"id_atividade_coluna",$conditions);
+	$aFields['coluna'] = "coluna";
+	$conditions = preg_replace('~^coluna$~',"coluna",$conditions);
+	$aFields['arquivo'] = "arquivo";
+	$conditions = preg_replace('~^arquivo$~',"arquivo",$conditions);
+	$aFields['nome'] = "nome";
+	$conditions = preg_replace('~^nome$~',"nome",$conditions);
 	$aFields['tipo'] = "tipo";
 	$conditions = preg_replace('~^tipo$~',"tipo",$conditions);
-	$aFields['logDel'] = "log_del";
-	$conditions = preg_replace('~^logDel$~',"log_del",$conditions);
-	$aFields['ordem'] = "ordem";
-	$conditions = preg_replace('~^ordem$~',"ordem",$conditions);
         if(!$conditions){
             return $aFields;
         }
@@ -492,7 +505,7 @@ if($order == 'Tema') {
         foreach ($aCamposId as $o) {
             $attr = str_replace("o.", "", $o);
             $aRet["A"][] = $attr;
-            $aRet["F"][] = AtividadeAction::transformaColunas($attr);
+            $aRet["F"][] = AtividadeColunaArquivoAction::transformaColunas($attr);
         }
         if ($tipo == "F") {
             return implode(", ", $aRet["F"]);
@@ -506,12 +519,11 @@ if($order == 'Tema') {
         # mostra o atributo que foi utilizado dos types do genial
 		$aFields = array();
         	$aFields['id'] = "autoinc";
-	$aFields['Tema'] = array("suggest","titulo");
-	$aFields['titulo'] = "str";
-	$aFields['descricao'] = "editor";
-	$aFields['tipo'] = "sim/nao";
-	$aFields['logDel'] = "log_del";
-	$aFields['ordem'] = "int";
+	$aFields['AtividadeColuna'] = array("suggest","id");
+	$aFields['coluna'] = "int";
+	$aFields['arquivo'] = "str";
+	$aFields['nome'] = "str";
+	$aFields['tipo'] = "str";
         if($field){
             return $aFields[$field];
         }
@@ -521,70 +533,7 @@ if($order == 'Tema') {
     
 
     
-        public static function getValueForTipo($v) {
-        switch($v){
-	case 'RPT': 
-		$value = 'Escuta e repetição dos diálogos';
-	break;
-	case 'PRC': 
-		$value = 'Preenchimento de balões em branco';
-	break;
-	case 'VID': 
-		$value = 'Vídeo com explicação';
-	break;
-	case 'PRN': 
-		$value = 'Exercício de pronúncias';
-	break;
-	case 'MUL': 
-		$value = 'Conteúdo multimídia (textual, auditivo ou audiovisual)';
-	break;
-	case 'EMO': 
-		$value = 'Detecção da Emoção';
-	break;
-	case 'EMI': 
-		$value = 'Análise de Emoção(Imagem)';
-	break;
-	case 'REL': 
-		$value = 'Relacionar Colunas';
-	break;
-
-            default:
-                $value = "N/D";
-                break;
-        }
-        return $value;
-    }
     
-    public static function getValuesForTipo() {
-        return array('RPT' => 'Escuta e repetição dos diálogos', 'PRC' => 'Preenchimento de balões em branco', 'VID' => 'Vídeo com explicação', 'PRN' => 'Exercício de pronúncias', 'MUL' => 'Conteúdo multimídia (textual, auditivo ou audiovisual)', 'EMO' => 'Detecção da Emoção', 'EMI' => 'Análise de Emoção(Imagem)', 'REL' => 'Relacionar Colunas');
-    }
-
-    public static function getComboBoxForTipo($v = NULL, $tabindex = "", $emptyDefaultText = false, $events = "", $name = 'tipo') {
-        $valores = self::getValuesForTipo();
-        $select = '<select ' . $events . ' id="'.$name.'" name="'.$name.'" tabindex="' . $tabindex . '" class="form-control input-sm">';
-        if($emptyDefaultText){
-            $select .= "<option value=''>{$emptyDefaultText}</option>";
-        }
-        foreach($valores as $key => $value){
-            $selected = '';
-            if( ($v) == ($key) ) $selected = 'selected';
-            $select .= "<option value='{$key}' {$selected}>{$value}</option>";
-        }
-        $select .= "</select>";
-        return $select;
-    }
-
-    public static function getRadioButtonForTipo($v = NULL, $tabindex = "", $event = "", $name = 'tipo') {
-        $valores = self::getValuesForTipo();
-        $radio = "";
-        foreach($valores as $key => $value){
-            $checked = '';
-            if( ($v) == ($key) ) $checked = 'checked="checked"';
-            $radio .= "<label class='radio'><input {$event} type='radio' id='".$name."' name='".$name."' value='{$key}' tabindex='{$tabindex}' {$checked}><i></i>{$value}</label>";
-        }
-        return $radio;
-    }
-
 
     public function validateDel($id, $isSingleDel = true){
 		#$ids = is_array($id) ? $id : array($id);
@@ -599,23 +548,33 @@ if($order == 'Tema') {
     
     public function filterConditions(&$request, &$response, &$orderPageConditions, $alias = "o", $conditions = array()){
         
-        if($request->get('Tema')) {
-            $conditions[] = "{$alias}.Tema = " . $request->get('Tema')  . "";
-            $orderPageConditions .= "&Tema={$request->get('Tema')}";
-            $response->set('Tema',  $request->get("Tema"));
+        if($request->get('AtividadeColuna')) {
+            $conditions[] = "{$alias}.AtividadeColuna = " . $request->get('AtividadeColuna')  . "";
+            $orderPageConditions .= "&AtividadeColuna={$request->get('AtividadeColuna')}";
+            $response->set('AtividadeColuna',  $request->get("AtividadeColuna"));
         }
-        if($request->get('TemaSuggest')) {
-            $conditions[] = $response->get('TemaSuggestSQL'); // sql do campo mas ainda é necessário alterar o manualOrder e fazer join com a tabela
-            $orderPageConditions .= "&TemaSuggest={$request->get('TemaSuggest')}";
-            $response->set('TemaSuggest',  $request->get("TemaSuggest"));
+        if($request->get('AtividadeColunaSuggest')) {
+            $conditions[] = $response->get('AtividadeColunaSuggestSQL'); // sql do campo mas ainda é necessário alterar o manualOrder e fazer join com a tabela
+            $orderPageConditions .= "&AtividadeColunaSuggest={$request->get('AtividadeColunaSuggest')}";
+            $response->set('AtividadeColunaSuggest',  $request->get("AtividadeColunaSuggest"));
         }
-        if($request->get('titulo')) {
-            $conditions[] = "{$alias}.titulo LIKE '%" . ($request->get('titulo') ) . "%'";
-            $orderPageConditions .= "&titulo={$request->get('titulo')}";
-            $response->set('titulo',  $request->get("titulo"));
+        if($request->get('coluna')) {
+            $conditions[] = "{$alias}.coluna = '" . $request->get('coluna')  . "'";
+            $orderPageConditions .= "&coluna={$request->get('coluna')}";
+            $response->set('coluna',  $request->get("coluna"));
+        }
+        if($request->get('arquivo')) {
+            $conditions[] = "{$alias}.arquivo LIKE '%" . ($request->get('arquivo') ) . "%'";
+            $orderPageConditions .= "&arquivo={$request->get('arquivo')}";
+            $response->set('arquivo',  $request->get("arquivo"));
+        }
+        if($request->get('nome')) {
+            $conditions[] = "{$alias}.nome LIKE '%" . ($request->get('nome') ) . "%'";
+            $orderPageConditions .= "&nome={$request->get('nome')}";
+            $response->set('nome',  $request->get("nome"));
         }
         if($request->get('tipo')) {
-            $conditions[] = "{$alias}.tipo = '" . $request->get('tipo')  . "'";
+            $conditions[] = "{$alias}.tipo LIKE '%" . ($request->get('tipo') ) . "%'";
             $orderPageConditions .= "&tipo={$request->get('tipo')}";
             $response->set('tipo',  $request->get("tipo"));
         }
@@ -625,7 +584,7 @@ if($order == 'Tema') {
 	
 	public static function getFieldsStructure($field = null){
         // ex: $aFieldsStructure = (Action::getFieldsStructure());
-        $oAction = new AtividadeAction();
+        $oAction = new AtividadeColunaArquivoAction();
         $entityManager = $oAction->getConnection();
         $aFields = QueryHelper::getFieldsForClass($oAction->getClassName(),$entityManager);
         if ($field) {
@@ -638,7 +597,7 @@ if($order == 'Tema') {
     }
 	
 	public static function maxlengthFields() {
-        $aFields = AtividadeAction::getFieldsStructure();
+        $aFields = AtividadeColunaArquivoAction::getFieldsStructure();
         $aMaxlength = array();
         foreach ($aFields as $k => $o) {
             $aMaxlength[$k] = isset($o["length"]) ? $o["length"] : "";

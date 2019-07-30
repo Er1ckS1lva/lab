@@ -14,9 +14,9 @@ class AtividadeController extends AtividadeControllerParent {
         if ($this->request->get('tipo') == "EMO" || $this->request->get('tipo') == "EMI") {
             $arquivo = $this->request->get("data");
             #aqui a gravação será processada pela IA
-            $cmd = "java -cp \"weka.jar:gson-2.6.2.jar:/srv/www/htdocs/VoiceEmotionAnalyzer/VoiceEmotionAnalyzer.jar\" lab.VoiceEmotionAnalyzer {$arquivo['tmp_name']}";            
+            $cmd = "java -cp \"weka.jar:gson-2.6.2.jar:/srv/www/htdocs/VoiceEmotionAnalyzer/VoiceEmotionAnalyzer.jar\" lab.VoiceEmotionAnalyzer {$arquivo['tmp_name']}";
             $output = Util::doLogFile($cmd);
-            
+
             $aRetorno = json_decode($output, true);
 //            $aRetorno = json_decode('{"emotionDetection":"angry","emotionsProbabilities":[{"Name":"angry","Valor":0.0},{"Name":"happiness","Valor":0.5},{"Name":"sadness","Valor":0.3333333333333333},{"Name":"surprised","Valor":0.16666666666666666}]}', true);
 
@@ -43,7 +43,6 @@ class AtividadeController extends AtividadeControllerParent {
             );
         }
 
-
         // salva o áudio no banco
         $oAtividadeAction = new AtividadeAction();
         $msg = $oAtividadeAction->saveGravacao($this->request, $score);
@@ -51,25 +50,46 @@ class AtividadeController extends AtividadeControllerParent {
         return new View(json_encode($aRetorno), null, 'specificHeader');
     }
 
-    public function alteraTipo() {
-        $oUtilAuth = new UtilAuth();
-        if (!$oUtilAuth->usuarioAutenticado($this->request->get("action")))
-            return $oUtilAuth->retornaViewLogin($this->response);
-
-        $id = (int) $this->request->get("pk");
-        $tipo = $this->request->get("value");
-
-        $oAtividadeAction = new AtividadeAction();
-        if (!$oAtividadeAction->alteraTipo($id, $tipo)) {
-            return new View($oAtividadeAction->getMsg(), $this->response, 'print');
+    public function form() {
+        $oIdiomaAction = new IdiomaAction();
+        $aIdioma = $oIdiomaAction->collection(null, null, 'padrao ASC');
+        $kIdioma = array();
+        if ($aIdioma) {
+            foreach ($aIdioma as $oIdioma) {
+                $kIdioma[$oIdioma->getId()] = $oIdioma->getSigla();
+            }
         }
-        return new View('OK', $this->response, 'print');
+        $this->response->set("aIdioma", $aIdioma);
+        $this->response->set("kIdioma", $kIdioma);
+
+        return parent::form();
     }
 
     public function edit() {
+        $oIdiomaAction = new IdiomaAction();
+        $aIdioma = $oIdiomaAction->collection(null, null, 'padrao ASC');
+        $kIdioma = array();
+        if ($aIdioma) {
+            foreach ($aIdioma as $oIdioma) {
+                $kIdioma[$oIdioma->getId()] = $oIdioma->getSigla();
+            }
+        }
+        $this->response->set("aIdioma", $aIdioma);
+        $this->response->set("kIdioma", $kIdioma);
+
+        $ret = parent::edit();
+
         $id = (int) $this->request->get("id");
+        $object = $this->response->get("object");
+        if ($object && $object->getTipo() == "REL") {
+            $oAtividadeAction = new AtividadeAction();
+            $aColuna = $oAtividadeAction->getColunas($id);
+            $this->response->set("aColuna", $aColuna["coluna"]);
+            $this->response->set("aColunaCount", $aColuna["count"]);
+        }
+
         $oConteudoAction = new ConteudoAction();
-        $aConteudo = $oConteudoAction->collection(null, "o.Atividade={$id}");
+        $aConteudo = $oConteudoAction->collection(null, "o.Atividade='{$id}'");
         $this->response->set("aConteudo", $aConteudo);
 
         $aConteudoArquivo = array();
@@ -89,16 +109,24 @@ class AtividadeController extends AtividadeControllerParent {
         $this->response->set("aOpcao", $aOpcao);
         $this->response->set("aConteudoArquivo", $aConteudoArquivo);
         $this->response->set("aConteudoFormulario", $aConteudoFormulario);
-        return parent::edit();
+
+        return $ret;
     }
 
     public function conteudoDownload() {
         $oUtilAuth = new UtilAuth();
         if (!$oUtilAuth->usuarioAutenticado($this->request->get("action")))
             return $oUtilAuth->retornaViewLogin($this->response);
-        $oConteudoArquivoAction = new ConteudoArquivoAction();
+
+        $classe = "ConteudoArquivo";
+        if ($this->request->get("classe")) {
+            $classe = $this->request->get("classe");
+        }
+        eval("\$oAction = new {$classe}Action();");
+
+
         $id = (int) $this->request->get("id");
-        $o = $oConteudoArquivoAction->select($id);
+        $o = $oAction->select($id);
         if ($o === null) {
             return new View('O arquivo não foi encontrado ou é inválido.', $this->response, "print");
         }

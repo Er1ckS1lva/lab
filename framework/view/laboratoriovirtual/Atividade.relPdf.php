@@ -17,19 +17,25 @@ if ($response->get("total") == 0) {
                         <table class="table table-bordered table-striped with-check table-hover">
                             <thead>
                                 <tr>
-                                    <th><a href="?order=Tema<?= $allFilters ?>">Tema</a></th>
-<th><a href="?order=titulo<?= $allFilters ?>">Título</a></th>
-<th><a href="?order=descricao<?= $allFilters ?>">Descrição</a></th>
-<th><a href="?order=tipo<?= $allFilters ?>">Tipo</a></th>
+                                    <th>Tema</th>
+                                    <th>Título</th>
+                                    <th>Descrição</th>
+                                    <th>Tipo</th>
+                                    <th>Ordem</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <? foreach ($objects as $o) { ?>
                                     <tr>
-                                        <td><?=$o->getTema()->getTitulo()?></td>
-<td><?=$o->getTitulo()?></td>
-<td><?=$o->getDescricao()?></td>
-<td><?= AtividadeAction::getValueForTipo($o->getTipo()); ?></td>
+                                        <td><?= $o->getTema()->getTitulo() ?></td>
+                                        <td><?= $o->getTitulo() ?></td>
+                                        <td>
+                                            <?= ($o->getDescricao()) ?>
+                                        </td>
+                                        <td>
+                                            <?= AtividadeAction::getValueForTipo($o->getTipo()); ?>                                            
+                                        </td>
+                                        <td><?= $o->getOrdem() ?></td>                                        
                                     </tr>
                                 <? } ?>
                             </tbody>

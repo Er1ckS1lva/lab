@@ -51,7 +51,7 @@
                                                 <video controls style="width: 100%">
                                                     <source src="<?php echo $video ?>" type="video/mp4">
                                                     <source src="<?php echo $video ?>" type="video/ogg">
-                                                    Seu browser não suporta tag de vídeo
+                                                    <?php echo Lang::GERAL_video_not ?>
                                                 </video> 
                                             <?php } ?>
 
@@ -115,6 +115,8 @@
                                                         }
                                                         ?>
                                                     </div>
+
+                                                    <?php include dirname(__FILE__) . "/inc/Atividade.all.rel.php"; ?>                                                    
 
                                                     <?php if ($aConteudo[$oAtividade->getId()]) { ?>
                                                         <div class="tipo-atividade lacunas">

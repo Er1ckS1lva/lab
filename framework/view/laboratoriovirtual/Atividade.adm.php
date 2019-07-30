@@ -63,9 +63,7 @@ if ($response->get("total") == 0) {
                                             </a>
                                         </td>
                                         <td>
-                                            <!--<a href="form-x-editable.html#" data-url="<?= URL_APP ?><?= $this->module ?>/Atividade/alteraTipo" class="tipo" data-type="select" data-pk="<?= $o->getId() ?>" data-value="<?= $o->getTipo() ?>" data-original-title="Selecione o tipo desta atividade">-->
-                                                <?= AtividadeAction::getValueForTipo($o->getTipo()); ?>
-                                            <!--</a>-->
+                                            <?= AtividadeAction::getValueForTipo($o->getTipo()); ?>                                            
                                         </td>
                                         <td><?= $o->getOrdem() ?></td>
                                         <td class="edicao">

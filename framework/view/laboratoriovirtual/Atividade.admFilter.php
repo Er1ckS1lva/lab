@@ -11,7 +11,7 @@
                     <form class="smart-form" action="<?= URL_APP ?><?= $this->module ?>/Atividade/admFilter" id="frm" method="GET" autocomplete="off">
                         <fieldset>
                             <div class="row">
-                                <section class="col col-6">
+                                <section class="col col-3">
                                     <label class="label" for="Tema">Tema</label>
                                     <label class="input">
                                         <suggest id='Tema' entity='Tema' hasComboBox='true' hasPageLoad='false' tabindex='<?= ( ++$tabindex) ?>' value='<?= $response->get('Tema') ?>' />
@@ -21,6 +21,12 @@
                                     <label class="label" for="titulo">Título</label>
                                     <label class="input">
                                         <input class='form-control input-sm' type='text' id='titulo' name='titulo' mask='' tabindex='<?= ( ++$tabindex) ?>' value='<?= $response->get('titulo') ?>'/>
+                                    </label>
+                                </section>
+                                <section class="col col-3">
+                                    <label class="label" for="tipo">Tipo</label>
+                                    <label class="input">
+                                        <?= AtividadeAction::getComboBoxForTipo($response->get("tipo"), ( ++$tabindex), '-Todos-'); ?>
                                     </label>
                                 </section>
                             </div>
