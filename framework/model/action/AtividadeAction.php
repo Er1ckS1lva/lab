@@ -15,7 +15,7 @@ class AtividadeAction extends AtividadeActionParent {
         $aIdSigla = $oIdiomaAction->getIdSigla(null, null, 'padrao ASC');
 
 
-        if ($request->get("tipo") === "REL") {
+        if ($request->get("tipo") === "REL") { // aColuna somente para o tipo REL
             $aColunaTmp = $_REQUEST["aColunaTmp"]; # $_REQUEST array para niveis
             $aColunaTmpFiles = $_FILES["aColunaTmp"]; # $_REQUEST array para niveis para arquivos
             $aColuna = array();
@@ -88,6 +88,9 @@ class AtividadeAction extends AtividadeActionParent {
                 }
             }
             $request->set('aColuna', $aColuna);
+        } else {
+            $request->destroy('aColunaTmp');
+            $request->destroy('aColuna');
         }
 
 
@@ -103,6 +106,33 @@ class AtividadeAction extends AtividadeActionParent {
                 throw new Exception("Por favor, informe o título do idioma: " . $aIdSigla[$nIdIdioma]);
             }
         }
+
+        // validando ao menos uma correta para os tipos: 
+        $tituloConteudo = $edicao ? $request->get('tituloConteudoEdit') : $request->get('tituloConteudo');
+        $tipoConteudo = $edicao ? $request->get('tipoConteudoEdit') : $request->get('tipoConteudo');
+        $aCorretas = array();
+        $bValidaCorretas = false;
+        if ($tituloConteudo) {
+            $opcaoConteudoCorreta = $request->get('opcaoConteudoCorreta');
+            foreach ($tituloConteudo as $key => $tc) {
+                if (in_array($tipoConteudo[$key], array("MEI", "MEV"))) {
+                    $bValidaCorretas = true;
+                    $i = $tc - 1;
+                    foreach ($opcaoConteudoCorreta[$i] as $k => $v) {
+                        $aCorretas[$key][] = $v;
+                    }
+                }
+            }
+        }
+        if ($bValidaCorretas) {
+            if (count(array_keys($aCorretas)) != count($tituloConteudo)) {
+                $aDiff = array_diff(array_keys($tituloConteudo), array_keys($aCorretas));
+                foreach ($aDiff as $k => $v) {
+                    throw new Exception("Por favor, informe ao menos uma opção correta na posição " . ($k + 1) . "° para aos tipos de Múltipla escolhas!");
+                }
+            }
+        }
+
         return true;
     }
 
@@ -136,7 +166,7 @@ class AtividadeAction extends AtividadeActionParent {
 
         # adição de colunas
         $aColuna = $request->get('aColuna');
-        if ($oAtividade->getTipo() == "REL" && $aColuna) {
+        if ($aColuna) {
             $oAtividadeColunaAction = new AtividadeColunaAction($this->em);
             $oAtividadeColunaArquivoAction = new AtividadeColunaArquivoAction($this->em);
             foreach ($aColuna as $id_idioma => $oColuna) {
@@ -185,7 +215,6 @@ class AtividadeAction extends AtividadeActionParent {
                             }
                         }
                     }
-                    $j++;
                 }
             }
         }

@@ -96,7 +96,7 @@
                                                     <section class="col col-md-1">
                                                         <label class="label" for="opcaoConteudo">Correta</label>
                                                         <label class="radio">
-                                                            <input class="check-conteudo" value="<?php echo $keyF; ?>" <?php echo $oFO->getCorreta() == 'S' ? 'checked="checked"' : ''; ?> type="radio" name="opcaoConteudoCorretaEdit[<?php echo $key ?>][]">
+                                                            <input class="check-conteudo" value="<?php echo $keyF; ?>" <?php echo $oFO->getCorreta() == 'S' ? 'checked="checked"' : ''; ?> type="radio" name="opcaoConteudoCorreta[<?php echo $key ?>][]">
                                                             <i></i>
                                                         </label>
                                                     </section>
