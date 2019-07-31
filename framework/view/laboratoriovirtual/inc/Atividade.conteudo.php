@@ -64,7 +64,7 @@
                                         <section class="col col-md-6">
                                             <label class="label" for="enunciado">Enunciado</label>
                                             <label class="input">
-                                                <input class="form-control"  type="text" id="titulo" name="enunciadoConteudoEdit[<?php echo $oConteudo->getId(); ?>]" maxlength='100' mask='' tabindex='<?= ( ++$tabindex) ?>' value="<?php echo $oConteudoFormulario->getEnunciado() ?? $oConteudoFormulario->getEnunciado(); ?>"/>
+                                                <input class="form-control"  type="text" id="titulo" name="enunciadoConteudoEdit[<?php echo $oConteudo->getId(); ?>]" maxlength='1000' mask='' tabindex='<?= ( ++$tabindex) ?>' value="<?php echo $oConteudoFormulario->getEnunciado() ?? $oConteudoFormulario->getEnunciado(); ?>"/>
                                             </label>
                                         </section>
 

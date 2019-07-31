@@ -94,7 +94,7 @@
                                 <section class="col col-md-6">
                                     <label class="label" for="enunciado">Enunciado</label>
                                     <label class="input">
-                                        <input class="form-control"  type="text" id="titulo" name="enunciadoConteudo[]" maxlength='500' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
+                                        <input class="form-control"  type="text" id="titulo" name="enunciadoConteudo[]" maxlength='1000' mask='' tabindex='<?= ( ++$tabindex) ?>'/>
                                     </label>
                                 </section>
 

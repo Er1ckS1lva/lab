@@ -8,7 +8,7 @@
                         <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/ILEEL.png" alt="logo ileel" class="" width="200" height="46" /></a>
                         <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/ELLA PNG.png" alt="logo ella" class=""  width="200" height="46" /></a>
                         <h6 class="link-quem-somos">
-                            ELLA: English Learning Laboratory
+                            ELLA: English Language Learning Laboratory
                             <br/>Instituto de Letras e Linguística
                             <br/>Universidade Federal de Uberlândia
                         </h6>                        
