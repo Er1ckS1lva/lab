@@ -3,6 +3,8 @@ $aIdioma = $response->get("aIdioma");
 $kIdioma = $response->get("kIdioma");
 ?>
 
+<?php include("inc/Atividade.modeloConteudo.php"); ?>
+
 <div class="row">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false">
@@ -125,7 +127,7 @@ $kIdioma = $response->get("kIdioma");
 
                                 </label>
                             </section>
-                            
+
                             <?php include("inc/Atividade.PRC.php"); ?>
                             <?php include("inc/Atividade.REL.php"); ?>                        
                         </fieldset>

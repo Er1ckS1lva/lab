@@ -4,6 +4,7 @@ $kIdioma = $response->get("kIdioma");
 
 $o = $response->get("object");
 ?>
+<?php include("inc/Atividade.modeloConteudo.php"); ?>
 
 <div class="row">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

@@ -289,7 +289,8 @@ class AtividadeAction extends AtividadeActionParent {
             $enunciadoConteudoEdit = $request->get('enunciadoConteudoEdit');
 
             $aIdFormulario = $request->get("aIdFormulario"); # para pegar o id
-
+            # valor das opções
+            $valorConteudo = $request->get('valorConteudo');
             foreach ($aIdConteudo as $key => $aId) {
                 #excluir/editar conteudo e seus arquivos 
                 if (!key_exists($aId['id'], $tituloConteudoEdit)) {
@@ -324,7 +325,24 @@ class AtividadeAction extends AtividadeActionParent {
                         $request_formulario->set('tipo', $tipoConteudoEdit[$aId['id']]);
                         $request_formulario->set('enunciado', $enunciadoConteudoEdit[$aId['id']]);
                         $oConteudoFormulario = $oConteudoFormularioAction->edit($request_formulario, false, true);
+
+//                        # editar FormularioOpcao
+                        if ($valorConteudo) {
+                            $aIdOpcaoForm = $oFormularioOpcaoAction->collection(array('id'), "o.ConteudoFormulario = {$oConteudoFormulario->getId()}");
+                            $opcaoConteudoCorreta = $request->get('opcaoConteudoCorreta');
+                            foreach ($valorConteudo[$key] as $keyVC => $oVC) {
+                                $request_form_opcao = new Request(FALSE);
+                                $request_form_opcao->set('id', $aIdOpcaoForm[$keyVC]['id']);
+                                $request_form_opcao->set('ConteudoFormulario', $oConteudoFormulario->getId());
+                                $request_form_opcao->set('valor', $oVC);
+
+                                $request_form_opcao->set('correta', in_array($keyVC, $opcaoConteudoCorreta[$key]) ? "S" : "N");
+                                $oFormularioOpcaoAction->edit($request_form_opcao, false, true);
+                            }
+                        }
                     }
+
+//                   
                 }
             }
         }

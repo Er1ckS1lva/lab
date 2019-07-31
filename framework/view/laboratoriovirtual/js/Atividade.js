@@ -114,7 +114,7 @@ function AtividadeSelecionaTipo(tipo) {
 
 function AtividadeSelecionaTipoFormulario(tipo, object, clear) {
     $conteudo = object;
-    var conteudo_atual = $conteudo.prevAll().length + 1;
+    var conteudo_atual = $conteudo.prevAll().length;
     if (clear == 1)
         $conteudo.find('.opcao-conteudo').html('');
     if (tipo == "MEI" || tipo == "MEV") {
