@@ -116,7 +116,7 @@
                                                         ?>
                                                     </div>
 
-                                                    <?php include dirname(__FILE__) . "/inc/Atividade.all.rel.php"; ?>                                                    
+                                                    <?php include dirname(__FILE__) . "/inc/Atividade.all.REL.php"; ?>                                                    
 
                                                     <?php if ($aConteudo[$oAtividade->getId()]) { ?>
                                                         <div class="tipo-atividade lacunas">
