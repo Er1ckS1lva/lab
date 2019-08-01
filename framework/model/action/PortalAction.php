@@ -27,7 +27,7 @@ class PortalAction {
 
     public function home(&$request, &$response) {
         $oTemaAction = new TemaAction($this->em);
-        $aTema = $oTemaAction->collection(null, null, 'ordem ASC');
+        $aTema = $oTemaAction->collection(null, "o.logDel = 'N'", 'ordem ASC');
 
         $aTema = Util::IdiomaGetDados($aTema, "TemaIdioma");
 

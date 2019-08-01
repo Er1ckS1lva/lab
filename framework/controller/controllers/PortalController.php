@@ -222,7 +222,7 @@ class PortalController {
 
         $idAtividade = (int) $this->request->get('idAtividade');
         $oAtividadeAction = new AtividadeAction();
-        $aAtividade = $oAtividadeAction->collection(null, "o.Tema = {$idTema}", 'ordem ASC');
+        $aAtividade = $oAtividadeAction->collection(null, "o.Tema = {$idTema} AND o.logDel = 'N'", 'ordem ASC');
 
         $aAtividade = Util::IdiomaGetDados($aAtividade, "AtividadeIdioma");
 

@@ -123,7 +123,7 @@ class TemaControllerParent {
             $id = (int) $this->request->get("id");
             $oTemaAction = new TemaAction();
             $oTemaAction->validateDel($id);
-            $oTemaAction->delPhysical($id);
+            $oTemaAction->delLogical($id);
         } catch (Exception $ex) {
             return new View(ExceptionHandler::getMessage($ex),$this->response,'print');
         }
@@ -140,7 +140,7 @@ class TemaControllerParent {
                 throw new Exception(NO_SELECTED_MSG);
             }
             $oTemaAction->validateDel($ids, false);
-            $oTemaAction->delPhysicalSelected($ids);
+            $oTemaAction->delLogicalSelected($ids);
         } catch (Exception $ex) {
             return new View(ExceptionHandler::getMessage($ex),$this->response,'print');
         }

@@ -31,6 +31,10 @@ class Tema {
     * @Column(name="ordem", type="integer", length=11, nullable=TRUE ,unique=FALSE, columnDefinition="Ordem")
     **/
     protected $ordem;
+    /** 
+    * @Column(name="log_del", type="string", length=1, nullable=FALSE ,unique=FALSE, columnDefinition="Log deleção")
+    **/
+    protected $logDel;
 
 
     public function getId() {
@@ -77,6 +81,15 @@ class Tema {
     }
     public function setOrdem($ordem) {
         $this->ordem = $ordem;
+    }
+
+    public function getLogDel() {
+        return $this->logDel;
+    }
+    public function setLogDel($logDel) {
+        if($logDel) {
+        $this->logDel = $logDel;
+        }
     }
 
 

@@ -99,6 +99,8 @@ class TemaAction extends TemaActionParent {
     }
 
     protected function delTransaction($id) {
+        return true; // deleção lógica pode deixar
+        
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.Tema' => $id), $qb);
         $qb->delete()->from("TemaIdioma", "o")->where($where)->getQuery()->execute();

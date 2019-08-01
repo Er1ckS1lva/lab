@@ -434,6 +434,8 @@ class AtividadeAction extends AtividadeActionParent {
     }
 
     protected function delTransaction($id) {
+        return true; // deleção lógica pode deixar
+        //
         // apaga os idiomas
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.Atividade' => $id), $qb);

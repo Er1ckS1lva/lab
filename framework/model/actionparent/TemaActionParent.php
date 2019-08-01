@@ -78,6 +78,7 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
 	$oTema->setDescricao($descricao);
 	if (isset($imagemCapa['error']) && $imagemCapa['error'] == 0)$oTema->setImagemCapa($imagemCapa['name']);
 	$oTema->setOrdem($ordem);
+	$oTema->setLogDel("N");
 	
         try {
             if ($commitable) {
@@ -183,7 +184,7 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
             }
         }
 		
-        
+        $query->andWhere("o.logDel = 'N'");
         if(TemaAction::manualOrder($query, $order) === FALSE){
             if($order) {
                 if(strpos($order, " ") >= 0 && strpos($order, " ") !== FALSE){
@@ -226,7 +227,7 @@ if(isset($aFieldsStructure["titulo"]) && !isset($aFieldsStructure["titulo"]["isF
             }
         }
 		
-        
+        $query->andWhere("o.logDel = 'N'");
         if(TemaAction::manualOrder($query, $order) === FALSE){
             if($order) {
                 if(strpos($order, " ") >= 0 && strpos($order, " ") !== FALSE){
@@ -259,7 +260,7 @@ if($order == 'Laboratorio') {
         $qb = $this->em->createQueryBuilder();
         $query = $qb->select('count(o)')
             ->from('Tema', 'o');
-        
+        $query->andWhere("o.logDel = 'N'");
         
 		if ($conditions) {
 			$aConditions = is_array($conditions)?$conditions:array($conditions);			
@@ -282,7 +283,7 @@ if($order == 'Laboratorio') {
         $query = $qb->select($fieldsToSelect)
             ->from('Tema', 'o')
             ->where( $where );
-        
+        $query->andWhere("o.logDel = 'N'");
         $oTema = $query->getQuery()->getOneOrNullResult();
         return $oTema;
     }
@@ -306,7 +307,7 @@ if($order == 'Laboratorio') {
         $qb = $this->em->createQueryBuilder();
         $where = QueryHelper::getAndEquals(array('o.id' => $id), $qb);
         $query = $qb->update("Tema o")
-            //->set([nome_atributo], 0)
+            ->set('o.logDel', "'S'")
             ->where( $where )->getQuery();
 
         try {
@@ -451,7 +452,7 @@ if($order == 'Laboratorio') {
     }
 
     public static function validateFields(){
-        $aValidateFields = array('id_laboratorio' => 'Laboratorio', 'titulo' => 'titulo');
+        $aValidateFields = array('id_laboratorio' => 'Laboratorio', 'titulo' => 'titulo', 'log_del' => 'logDel');
         return (join(",", $aValidateFields));
     }
 
@@ -463,6 +464,7 @@ if($order == 'Laboratorio') {
         $o->setDescricao((isset($v['descricao']) ? $v['descricao'] : NULL));
         $o->setImagemCapa((isset($v['imagemCapa']) ? $v['imagemCapa'] : NULL));
         $o->setOrdem((isset($v['ordem']) ? $v['ordem'] : NULL));
+        $o->setLogDel((isset($v['logDel']) ? $v['logDel'] : NULL));
         return $o;
     }
 
@@ -474,6 +476,7 @@ if($order == 'Laboratorio') {
         $v['descricao'] = $o->getDescricao();
         $v['imagemCapa'] = $o->getImagemCapa();
         $v['ordem'] = $o->getOrdem();
+        $v['logDel'] = $o->getLogDel();
         return $v;
     }
 
@@ -495,6 +498,8 @@ if($order == 'Laboratorio') {
 	$conditions = preg_replace('~^imagemCapa$~',"imagem_capa",$conditions);
 	$aFields['ordem'] = "ordem";
 	$conditions = preg_replace('~^ordem$~',"ordem",$conditions);
+	$aFields['logDel'] = "log_del";
+	$conditions = preg_replace('~^logDel$~',"log_del",$conditions);
         if(!$conditions){
             return $aFields;
         }
@@ -528,6 +533,7 @@ if($order == 'Laboratorio') {
 	$aFields['descricao'] = "editor";
 	$aFields['imagemCapa'] = "file";
 	$aFields['ordem'] = "int";
+	$aFields['logDel'] = "log_del";
         if($field){
             return $aFields[$field];
         }
