@@ -53,9 +53,9 @@ class Util extends UtilParent {
     public static function doLogFile($cmd) {
         error_reporting(E_ALL); # volta ao padrao
         try {
-//            $output = shell_exec($cmd);
+            $output = shell_exec($cmd);
             
-            exec($cmd, $output, $return_var);
+            //exec($cmd, $output, $return_var);
             var_dump($output);
             var_dump($return_var); 
             
