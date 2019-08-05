@@ -73,6 +73,7 @@
         recorder.onstreamerror = function (e) {
             screenLogger('<?php echo ATIVIDADE_recursoErro ?> ' + e.message);
         };
+        
         recorder.ondataavailable = function (typedArray) {
             var tipoAtividade = "<?= $oAtividade->getTipo() ?>";
             var dataBlob = new Blob([typedArray], {type: 'audio/wav'});
@@ -90,7 +91,7 @@
                 contentType: false,
                 processData: false,
                 success: function (json) {
-                    URL = "<?= URL ?>";
+//                    URL = "<?= URL ?>";
                     recordingslist.innerHTML = "";
 
                     var audio = document.createElement('audio');
