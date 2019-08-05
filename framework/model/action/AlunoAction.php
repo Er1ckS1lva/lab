@@ -325,7 +325,7 @@ class AlunoAction extends AlunoActionParent {
             $foto = $request->get('afotoUpload');
 //            $cmd = "sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings upload/encodings/{$oAluno->getId()}/encodings.pickle --image {$foto['tmp_name']} --login {$oAluno->getId()}";
             #2727 abaixo teste estático
-            $cmd = "sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/59/encodings.pickle --image Fabiano.png --login 59";                        
+            $cmd = "docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/59/encodings.pickle --image Fabiano.png --login 59";                        
             $output = Util::doLogFile($cmd);
 
             $aRetorno = json_decode($output, true);
