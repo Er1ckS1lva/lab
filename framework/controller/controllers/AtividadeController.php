@@ -17,7 +17,7 @@ class AtividadeController extends AtividadeControllerParent {
             //$cmd = "java -cp \"weka.jar:gson-2.6.2.jar:/home/html/EmotionAnalyzer/EmotionAnalyzer.jar\" lab.EmotionAnalyzer {$arquivo['tmp_name']}";
 
             //teste estático
-            $cmd = "java -cp \"weka.jar:gson-2.6.2.jar:/home/html/EmotionAnalyzer/EmotionAnalyzer.jar\" lab.EmotionAnalyzer 03-01-08-01-02-02-12.wav";
+            $cmd = "java -cp \"/home/html/EmotionAnalyzer/weka.jar:/home/html/EmotionAnalyzer/gson-2.6.2.jar:/home/html/EmotionAnalyzer/EmotionAnalyzer.jar\" lab.EmotionAnalyzer 03-01-08-01-02-02-12.wav";
 
             $output = Util::doLogFile($cmd);
 
