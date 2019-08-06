@@ -83,7 +83,8 @@ class AtividadeAction extends AtividadeActionParent {
                 }
             }
             foreach ($aColunaTmp as $id_idioma => $oColuna) {
-                if (count($aColuna[$id_idioma]) < 2) {
+                # há um array de coluna estava aqui por isso adicionei ele na linha abaixo (Tarefa http://redmine.equilibriumweb.com/redmine/issues/2807)
+                if (count($aColuna[$id_idioma]['coluna']) < 2) {
                     throw new Exception("Por favor, informe ao menos 2 colunas para esse tipo do idioma: " . $aIdSigla[$id_idioma]);
                 }
             }
