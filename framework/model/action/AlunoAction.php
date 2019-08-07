@@ -323,9 +323,10 @@ class AlunoAction extends AlunoActionParent {
 
         if ($request->get('loginFacial')) {
             $foto = $request->get('afotoUpload');
-//            $cmd = "sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings upload/encodings/{$oAluno->getId()}/encodings.pickle --image {$foto['tmp_name']} --login {$oAluno->getId()}";
-            #2727 abaixo teste estático
-            $cmd = "sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/59/encodings.pickle --image Fabiano.png --login 59";                        
+            
+            $filename = FileUtil::makeFileUploadRoot("tmp/{$oAluno->getId()}", 1, 'afotoUpload', false);
+
+            $cmd = "docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/{$oAluno->getId()}/encodings.pickle --image tmp/{$oAluno->getId()}/{$filename} --login {$oAluno->getId()}";
             $output = Util::doLogFile($cmd);
 
             $aRetorno = json_decode($output, true);
@@ -502,7 +503,8 @@ class AlunoAction extends AlunoActionParent {
 
                     # gerar o pickle - function que gera o codigo em python
 //                    $pickle = shell_exec("sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset upload/dataset/1_Fabiano --encodings upload~/encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog");
-                    $cmd = "sudo docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset dataset/{$oAluno->getId()} --encodings encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog sudo docker exec facialrecognitionlogin python3 facial_recognition_login_image.py --cascade haarcascade_frontalface_default.xml --encodings encodings/{$oAluno->getId()}/encodings.pickle --image {$oAluno->getId()}.{$ext} --login {$oAluno->getId()}";
+                    $cmd = shell_exec("docker exec facialrecognitionlogin python3 decodificador_faces.py --dataset dataset/{$oAluno->getId()} --encodings encodings/{$oAluno->getId()}/encodings.pickle --detection-method hog");
+
                     $pickle = shell_exec($cmd);
 //                echo $cmd;
 //                Util::debug($pickle);
