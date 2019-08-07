@@ -16,8 +16,11 @@ class AtividadeController extends AtividadeControllerParent {
             #aqui a gravação será processada pela IA
             //$cmd = "java -cp \"weka.jar:gson-2.6.2.jar:/home/html/EmotionAnalyzer/EmotionAnalyzer.jar\" lab.EmotionAnalyzer {$arquivo['tmp_name']}";
 
-            //teste estático
+            //teste estático produção
             $cmd = "java -cp \"/home/html/EmotionAnalyzer/weka.jar:/home/html/EmotionAnalyzer/gson-2.6.2.jar:/home/html/EmotionAnalyzer/EmotionAnalyzer.jar\" lab.EmotionAnalyzer 03-01-08-01-02-02-12.wav";
+
+            //teste estático desenvolvimento
+            //$cmd = "java -cp \"/home/fabiano/Documentos/lab/Sistemas/EmotionAnalyzer/weka.jar:/home/fabiano/Documentos/lab/Sistemas/EmotionAnalyzer/gson-2.6.2.jar:/home/fabiano/Documentos/lab/Sistemas/EmotionAnalyzer/EmotionAnalyzer.jar\" lab.EmotionAnalyzer 03-01-08-01-02-02-12.wav";
 
             $output = Util::doLogFile($cmd);
 
