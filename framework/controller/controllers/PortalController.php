@@ -293,6 +293,21 @@ class PortalController {
         $this->response->set('oPagina', $oPagina[0]);
         return new View('portal/Portal.pagina.php', $this->response, 'include');
     }
+    
+    public function verificarResposta() {
+        $this->setAllFixo();
+
+        if (!$this->authPortal())
+            return $this->view;
+
+        $oAtividadeAction = new AtividadeAction();
+        try {
+            $oAtividadeAction->verificarResposta($this->request, $this->response);
+        } catch (Exception $e) {
+            return new View($e->getMessage(), $this->response, 'print');
+        }
+        return new View('OK', $this->response, "print");
+    }
 
 }
 

@@ -73,50 +73,55 @@
                     $aSaida[$k]["B"] = $colunaB;
                 }
                 ?>
-                <table class="table-bordered">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center;">N°</th>
-                            <th style="text-align: center;">Coluna A</th>
-                            <th style="text-align: center;">Coluna B</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        sort($aColunaRandomB);
-                        sort($aColunaRandomA);
-                        foreach ($aSaida as $k => $val) {
-                            ?>
+                <div class='div-resposta'>
+                    <table class="table-bordered">
+                        <thead>
                             <tr>
-                                <th><?php echo ($k + 1) ?></th>
-                                <td>
-                                    <?php echo $val["A"] ?>
-                                    <br/>
-                                    <select id="lado_A<?php echo $k ?>" onchange="selecionaColuna('#lado_B<?php echo $k ?>', $(this).val());">
-                                        <option>-Selecione-</option>
-                                        <?php foreach ($aColunaRandomB as $v) { ?>
-                                            <option value="<?php echo $v ?>">Coluna - B<?php echo $v ?></option>
-                                        <?php } ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <?php echo $val["B"] ?>
-                                    <br/>
-                                    <select id="lado_B<?php echo $k ?>" onchange="selecionaColuna('#lado_A<?php echo $k ?>', $(this).val());">
-                                        <option>-Selecione-</option>
-                                        <?php foreach ($aColunaRandomA as $v) { ?>
-                                            <option value="<?php echo $v ?>">Coluna - A<?php echo $v ?></option>
-                                        <?php } ?>
-                                    </select>
-                                </td>
+                                <th style="text-align: center;">N°</th>
+                                <th style="text-align: center;">Coluna A</th>
+                                <th style="text-align: center;">Coluna B</th>
                             </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            sort($aColunaRandomB);
+                            sort($aColunaRandomA);
+                            foreach ($aSaida as $k => $val) {
+                                ?>
+                                <tr>
+                                    <th><?php echo ($k + 1) ?></th>
+                                    <td>
+                                        <?php echo $val["A"] ?>
+                                        <br/>
+                                        <select id="lado_A<?php echo $k ?>" onchange="selecionaColuna('#lado_B<?php echo $k ?>', $(this).val());">
+                                            <option>-Selecione-</option>
+                                            <?php foreach ($aColunaRandomB as $v) { ?>
+                                                <option value="<?php echo $v ?>">Coluna - B<?php echo $v ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <?php echo $val["B"] ?>
+                                        <br/>
+                                        <select id="lado_B<?php echo $k ?>" onchange="selecionaColuna('#lado_A<?php echo $k ?>', $(this).val());">
+                                            <option>-Selecione-</option>
+                                            <?php foreach ($aColunaRandomA as $v) { ?>
+                                                <option value="<?php echo $v ?>">Coluna - A<?php echo $v ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                    <br>
+                    <button onclick="enviarRespostaAtividade($(this).parent('.div-resposta'), 'atividade');" class="btn btn-info btn-sm btn-enviar-resposta"><?php echo Lang::ATIVIDADE_enviar ?></button>
+                    <img style="display: none" class="img-resposta-ok" src="<?php echo URL_PORTAL ?>img/check_verde.jpeg" width="33" height="33" />
+                </div>
 
                 <script type="text/javascript">
                     function selecionaColuna(elem, value) {
-//                        alert(elem + "/" + value);
+            //                        alert(elem + "/" + value);
                         $(elem).val(value);
                     }
                 </script>

@@ -15,7 +15,17 @@ $aId = array_keys($kIdioma);
     </header>
     <fieldset>
         <div class="padding-10" >
-            <?php if ($aIdioma) { ?>
+            <?php
+            if ($aIdioma) {
+                #exclusão de array para o idioma inglês Tarefa #2880 - Apenas no cadastro
+                $url = $_SERVER['REQUEST_URI'];
+                if (strrpos($url, 'Atividade/form')) {
+                    ?>
+                    <input type="hidden" name="idiomaIngles" value="<?php echo $aIdioma['1']->getId(); ?>"/>
+                    <?
+                    unset($aIdioma['1']);
+                }
+                ?>
                 <ul id="myTab2" class="nav nav-tabs bordered">
                     <?php
                     foreach ($aIdioma as $k => $oIdioma) {

@@ -102,22 +102,30 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-3">
-                                                    <div class="texto-atividade">
+                                                    <div class="texto-atividade div-resposta">
                                                         <?php echo $oAtividade->getDescricao(); ?>
                                                         <?php
                                                         $aOpcao = $response->get('aOpcao');
                                                         if ($aOpcao[$oAtividade->getId()]) {
-                                                            $alfabeto = range('A', 'Z');
+                                                            $alfabeto = range('a', 'z');
                                                             foreach ($aOpcao[$oAtividade->getId()] as $k => $oOpcao) {
+                                                                ?>
+                                                                <label class="radio">
+                                                                    <input type="radio" name="formulario_opcao">
+                                                                </label>
+                                                                <?php
                                                                 echo $alfabeto[$k] . ") " . $oOpcao->getValor();
                                                                 echo "<br>";
                                                             }
-                                                        }
+                                                            ?>
+                                                            <button onclick="enviarRespostaAtividade($(this).parent('.div-resposta'), 'atividade');" class="btn btn-info btn-sm btn-enviar-resposta"><?php echo Lang::ATIVIDADE_enviar ?></button>
+                                                            <img style="display: none" class="img-resposta-ok" src="<?php echo URL_PORTAL ?>img/check_verde.jpeg" width="33" height="33" />
+                                                        <?php }
                                                         ?>
                                                     </div>
 
                                                     <?php include dirname(__FILE__) . "/inc/Atividade.all.REL.php"; ?>                                                    
-
+                                                    <br>
                                                     <?php if ($aConteudo[$oAtividade->getId()]) { ?>
                                                         <div class="tipo-atividade lacunas">
                                                             <div class="cycle-slideshow"
@@ -126,13 +134,14 @@
                                                                  data-cycle-fx="scrollHorz"
                                                                  data-cycle-timeout="0"
                                                                  data-cycle-slides="> div"
-                                                                 >   
+                                                                 style="background-color: white; border: 1px solid grey;"
+                                                                 >
                                                                      <?php
                                                                      #MÍDIAS EXIBIDAS PARA TODOS OS TIPOS #jpeg; #png; #ogg #mp3 # mp4
 
                                                                      foreach ($aConteudo[$oAtividade->getId()] as $k => $oConteudo) {
                                                                          ?>
-                                                                    <div class="itens-slide" style="width: 100%; display: block">
+                                                                    <div class="itens-slide div-resposta" style="width: 100%; display: block;  padding: 3px">
                                                                         <?php
                                                                         switch ($aConteudoArquivo[$oConteudo->getId()]->getTipo()) {
                                                                             case 'video/mp4':
@@ -216,9 +225,14 @@
                                                                             <?php }
                                                                             ?>
                                                                         </div>
+                                                                        <button onclick="enviarRespostaAtividade($(this).parent('.div-resposta'), 'formulario');" class="btn btn-info btn-sm btn-enviar-resposta"><?php echo Lang::ATIVIDADE_enviar ?></button>
+                                                                        <img style="display: none" class="img-resposta-ok" src="<?php echo URL_PORTAL ?>img/check_verde.jpeg" width="33" height="33" />
                                                                     </div>
                                                                 <?php }
                                                                 ?>
+                                                                <br>
+                                                                <!--<button>Enviar</button>-->
+
                                                             </div>
 
                                                             <?php if (count($aConteudo[$oAtividade->getId()]) > 1) { ?>

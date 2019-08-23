@@ -5,6 +5,7 @@ include_once(dirname(__FILE__) . '/../actionparent/AtividadeActionParent.php');
 class AtividadeAction extends AtividadeActionParent {
 
     public function validate(&$request, $edicao = false) {
+//        Util::debug($request, false);
         # validação parent
         $validation = $this->validateParent($request, $edicao);
         if (!$validation) {
@@ -14,7 +15,7 @@ class AtividadeAction extends AtividadeActionParent {
         $oIdiomaAction = new IdiomaAction();
         $aIdSigla = $oIdiomaAction->getIdSigla(null, null, 'padrao ASC');
 
-
+        $id_ingles = $request->get('idiomaIngles');
         if ($request->get("tipo") === "REL") { // aColuna somente para o tipo REL
             $aColunaTmp = $_REQUEST["aColunaTmp"]; # $_REQUEST array para niveis
             $aColunaTmpFiles = $_FILES["aColunaTmp"]; # $_REQUEST array para niveis para arquivos
@@ -31,6 +32,18 @@ class AtividadeAction extends AtividadeActionParent {
                         "coluna1Text" => $oColuna["TEX1"][$i],
                         "coluna2Text" => $oColuna["TEX2"][$i],
                     );
+                    # DUPLICAÇÃO PARA O INGLÊS
+                    $aColuna[$id_ingles]["coluna"][$i] = array(
+                        "id" => ($oColuna["id"] ? $oColuna["id"][$i] : 0),
+                        "Idioma" => $id_ingles,
+                        "coluna1" => $i + 1,
+                        "coluna2" => $i + 1,
+                        "tipo1" => ($tipo1 = $oColuna["tipo1"][$i]),
+                        "tipo2" => ($tipo2 = $oColuna["tipo2"][$i]),
+                        "coluna1Text" => $oColuna["TEX1"][$i],
+                        "coluna2Text" => $oColuna["TEX2"][$i],
+                    );
+
 
                     if ($tipo1 === "IMG") {
                         $aArquivo1 = array(
@@ -43,6 +56,7 @@ class AtividadeAction extends AtividadeActionParent {
                         );
                         $this->validaImagem($aArquivo1, !$edicao);
                         $aColuna[$id_idioma]["arquivo1"][$i] = $aArquivo1;
+                        $aColuna[$id_ingles]["arquivo1"][$i] = $aArquivo1;
                     }
                     if ($tipo2 === "IMG") {
                         $aArquivo2 = array(
@@ -55,6 +69,7 @@ class AtividadeAction extends AtividadeActionParent {
                         );
                         $this->validaImagem($aArquivo2, !$edicao);
                         $aColuna[$id_idioma]["arquivo2"][$i] = $aArquivo2;
+                        $aColuna[$id_ingles]["arquivo2"][$i] = $aArquivo2;
                     }
                     if ($tipo1 === "VID") {
                         $aArquivo1 = array(
@@ -67,6 +82,7 @@ class AtividadeAction extends AtividadeActionParent {
                         );
                         $this->validaVideo($aArquivo1, !$edicao);
                         $aColuna[$id_idioma]["arquivo1"][$i] = $aArquivo1;
+                        $aColuna[$id_ingles]["arquivo1"][$i] = $aArquivo1;
                     }
                     if ($tipo2 === "VID") {
                         $aArquivo2 = array(
@@ -79,6 +95,7 @@ class AtividadeAction extends AtividadeActionParent {
                         );
                         $this->validaVideo($aArquivo2, !$edicao);
                         $aColuna[$id_idioma]["arquivo2"][$i] = $aArquivo2;
+                        $aColuna[$id_ingles]["arquivo2"][$i] = $aArquivo2;
                     }
                 }
             }
@@ -141,7 +158,7 @@ class AtividadeAction extends AtividadeActionParent {
         $oConteudoAction = new ConteudoAction($this->em);
         $oConteudoArquivoAction = new ConteudoArquivoAction($this->em);
 
-        # adição de opções
+        # adição de opções (tipo de atividade: Preenchimento de balões em branco)
         $aValorOpcao = $request->get('valorOpcao');
         if ($oAtividade->getTipo() == "PRC" && $aValorOpcao) {
             $aFoneticoOpcao = $request->get('valorFoneticoOpcao');
@@ -164,10 +181,12 @@ class AtividadeAction extends AtividadeActionParent {
             }
         }
 
-
-        # adição de colunas
+        # adição de colunas (tipo de atividade: Relacionar Colunas)
         $aColuna = $request->get('aColuna');
         if ($aColuna) {
+            #duplicação de array para o idioma inglês Tarefa #2880
+
+
             $oAtividadeColunaAction = new AtividadeColunaAction($this->em);
             $oAtividadeColunaArquivoAction = new AtividadeColunaArquivoAction($this->em);
             foreach ($aColuna as $id_idioma => $oColuna) {
@@ -221,7 +240,7 @@ class AtividadeAction extends AtividadeActionParent {
         }
 
 
-        # adição de conteudo
+        # adição de conteudo (Arquivo de multimidia)
         $tituloConteudo = $request->get('tituloConteudo');
         $arquivoConteudo = $request->get('arquivoConteudo');
         if ($tituloConteudo) {
@@ -530,6 +549,11 @@ class AtividadeAction extends AtividadeActionParent {
             }
         }
         return array_merge(array("coluna" => $aColuna), array("count" => ($aColuna ? round($nColunaCount / count(array_keys($aColuna))) : 0)));
+    }
+
+    function verificarResposta() {
+
+        return false;
     }
 
 }

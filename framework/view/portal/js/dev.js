@@ -181,3 +181,23 @@ function excluiFotoReload(div) {
     var id = (div.parent().attr('class'));
     $("#" + id).remove();
 }
+
+function enviarRespostaAtividade(object, tipo) {
+    $.ajax({
+        url: URL_NOVA + "?action=Portal.verificarResposta",
+        beforeSend: function () {
+        },
+        success: function (msg) {
+            if (msg == "OK") {
+                $(object).find('.img-resposta-ok').show();
+            } else {
+                $(object).find('.btn-enviar-resposta').html('Try Again');
+            }
+        },
+        error: function (msg) {
+            console.log(msg);
+
+        }
+    });
+
+}
