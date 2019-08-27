@@ -5,7 +5,7 @@
                 <header class="d-flex flex-column flex-md-row justify-content-between align-items-center my-3">
                     <div class="logo d-flex flex-column flex-md-row align-items-center">
                         <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/logo-small.png" alt="logo ufu" class="" width="200" height="46" /></a>
-                        <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/ILEEL.png" alt="logo ileel" class="" width="200" height="46" /></a>
+                        <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/ILEEL.png" alt="logo ileel" class="" width="" height="57" style=" margin-left: 35px;" /></a>
                         <a href="<?php echo URL ?>"><img src="<?php echo URL_PORTAL ?>img/ELLA PNG.png" alt="logo ella" class=""  width="200" height="46" /></a>
                         <h6 class="link-quem-somos">
                             ELLA: English Language Learning Laboratory

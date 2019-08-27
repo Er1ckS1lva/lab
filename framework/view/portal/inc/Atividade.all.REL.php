@@ -93,8 +93,8 @@
                                     <td>
                                         <?php echo $val["A"] ?>
                                         <br/>
-                                        <select id="lado_A<?php echo $k ?>" onchange="selecionaColuna('#lado_B<?php echo $k ?>', $(this).val());">
-                                            <option>-Selecione-</option>
+                                        <select class="colunaA" data-col="colunaA" id="lado_A<?php echo $k + 1 ?>" onchange="selecionaColuna(<?php echo $k + 1 ?>, $(this).val());">
+                                            <option value="">-Selecione-</option>
                                             <?php foreach ($aColunaRandomB as $v) { ?>
                                                 <option value="<?php echo $v ?>">Coluna - B<?php echo $v ?></option>
                                             <?php } ?>
@@ -103,12 +103,11 @@
                                     <td>
                                         <?php echo $val["B"] ?>
                                         <br/>
-                                        <select id="lado_B<?php echo $k ?>" onchange="selecionaColuna('#lado_A<?php echo $k ?>', $(this).val());">
-                                            <option>-Selecione-</option>
-                                            <?php foreach ($aColunaRandomA as $v) { ?>
-                                                <option value="<?php echo $v ?>">Coluna - A<?php echo $v ?></option>
-                                            <?php } ?>
-                                        </select>
+                                        <div style="text-align: center; font-weight: bold;">
+                                            <input type="hidden" name="lado_B<?php echo $k + 1 ?>" value=""/>
+                                            <span id="lado_<?php echo $k + 1 ?>" style="color: #D63031; display: inline"><?php echo Lang::ATIVIDADE_atividadeNoRelacionar ?></span>
+                                            <span id="lado_B<?php echo $k + 1 ?>" style="color: #0984E3; display: none"><?php echo Lang::ATIVIDADE_atividadeRelacionar ?> <b id="escolha"></b></span>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -120,9 +119,32 @@
                 </div>
 
                 <script type="text/javascript">
-                    function selecionaColuna(elem, value) {
-            //                        alert(elem + "/" + value);
-                        $(elem).val(value);
+                    function selecionaColuna(ladoA, value) {
+                        // limpando o lado B caso esteja selecionado e o Lado A ao qual estava relacionado
+                        var ladoASelect = $("#lado_B" + value).children().html();
+                        if (ladoASelect) {
+                            $("#lado_" + ladoASelect).val('');
+
+                            ladoASelect = ladoASelect.substring(1, 2);
+
+                            $("#escolha" + ladoASelect).html('');
+                            $("#escolha" + ladoASelect).parent().hide();
+                            $("#escolha" + ladoASelect).parent().siblings().show();
+                            $("#escolha" + ladoASelect).attr('id', "escolha");
+                        }
+                        // limpar primeiro
+                        $("#escolha" + ladoA).html('');
+                        $("#escolha" + ladoA).parent().hide();
+                        $("#escolha" + ladoA).parent().siblings().show();
+                        $("#escolha" + ladoA).attr('id', "escolha");
+                        if (value) {
+                            $("#escolha" + ladoA).html('');
+                            $("#lado_B" + value).find('#escolha').html("A" + ladoA);
+                            $("#lado_B" + value).find('#escolha').attr('id', "escolha" + ladoA);
+                            $("#lado_B" + value).show();
+                            $("input[name*='lado_B" + value + "']").val(ladoA);
+                            $("#lado_" + value).hide();
+                        }
                     }
                 </script>
 
