@@ -13,4 +13,8 @@
 <script type="text/javascript" src="<?= URL ?>framework/view/laboratoriovirtual/js/AlunoAtividadeEnvios.js"></script>
 <script type="text/javascript" src="<?= URL ?>framework/view/laboratoriovirtual/js/Idioma.js"></script>
 <script type="text/javascript" src="<?= URL ?>framework/view/laboratoriovirtual/js/Pagina.js"></script>
+<script type="text/javascript" src="<?= URL ?>framework/view/laboratoriovirtual/js/AlunoAtividadeTipo.js"></script>
+<script type="text/javascript" src="<?= URL ?>framework/view/laboratoriovirtual/js/AlunoAtividadeTipoEnvios.js"></script>
+<script type="text/javascript" src="<?= URL ?>framework/view/laboratoriovirtual/js/AlunoOpcao.js"></script>
+<script type="text/javascript" src="<?= URL ?>framework/view/laboratoriovirtual/js/AlunoOpcaoEnvios.js"></script>
 

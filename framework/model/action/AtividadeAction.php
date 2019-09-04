@@ -444,7 +444,7 @@ class AtividadeAction extends AtividadeActionParent {
                 $oAlunoAtividadeAction->edit($request_at, true);
         }
 
-        $oAlunoAtividadeEnviosAction = new AlunoAtividadeenviosAction($this->em, true);
+        $oAlunoAtividadeEnviosAction = new AlunoAtividadeEnviosAction($this->em, true);
         $oAlunoAtividadeEnviosAction->add($request_at, true);
     }
 
@@ -551,9 +551,59 @@ class AtividadeAction extends AtividadeActionParent {
         return array_merge(array("coluna" => $aColuna), array("count" => ($aColuna ? round($nColunaCount / count(array_keys($aColuna))) : 0)));
     }
 
-    function verificarResposta() {
+    function verificarResposta($dados, $tipo, $id) {
+        if ($tipo == "PRC") {
+            $aCorreta = $this->getCorreta($id);
+            if ($dados == $aCorreta) {
+                return true;
+            } else {
+                throw new Exception("Resposta Errada!");
+            }
+        } else if ($tipo == "REL") {
+            $colunaA;
+            $colunaB;
+            foreach ($dados as $oDado) {
+                $explode = explode('_', $oDado);
+                $colunaA[] = $explode[0];
+                $colunaB[] = $explode[1];
+            }
 
-        return false;
+            # Se for igual estão corretas, não é necessário verificar no banco
+            if ($colunaA == $colunaB) {
+                return true;
+            } else {
+                throw new Exception("Resposta errada");
+            }
+        }
+    }
+
+    function getCorreta($id) {
+        $sql = "SELECT fo.id FROM atividade_opcao fo"
+                . " WHERE fo.id_atividade = {$id}"
+                . " AND fo.correta = 'S'";
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $aCorreta = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        return $aCorreta;
+    }
+
+    function saveResposta($dados, $tipo, $id) {
+        $oAlunoAtividadeTipoEnviosAction = new AlunoAtividadeTipoEnviosAction($this->em, true);
+        $oAlunoAtividadeTipoAction = new AlunoAtividadeTipoEnviosAction($this->em, true);
+        $oAluno = unserialize($_SESSION['serAlunoSessao']);
+        $oAlunoAtividade = $oAlunoAtividadeTipoAction->select($oAluno->getId(), $id);
+        $request_at = new Request();
+        $request_at->set('Aluno', $oAluno->getId());
+        $request_at->set('Atividade', (int) $id);
+        $request_at->set('valor', join(';', $dados));
+        $request_at->set('tipo', $tipo);
+        if (!$oAlunoAtividade)
+            $oAlunoAtividadeTipoEnviosAction->add($request_at, true);
+        else
+            $oAlunoAtividadeTipoAction->edit($request_at, true);
+        return true;
     }
 
 }

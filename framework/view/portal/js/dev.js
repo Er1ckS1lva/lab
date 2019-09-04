@@ -182,22 +182,53 @@ function excluiFotoReload(div) {
     $("#" + id).remove();
 }
 
-function enviarRespostaAtividade(object, tipo) {
-    $.ajax({
-        url: URL_NOVA + "?action=Portal.verificarResposta",
-        beforeSend: function () {
-        },
-        success: function (msg) {
-            if (msg == "OK") {
-                $(object).find('.img-resposta-ok').show();
-            } else {
-                $(object).find('.btn-enviar-resposta').html('Try Again');
+function enviarRespostaAtividade(object, tipo, id) {
+    var dados = [];
+    switch (tipo) {
+        case 'PRC':
+            dados.push($('[name^="' + tipo + '"]:checked').val());
+            break;
+        case 'REL':
+            $('.aResposta').each(function () {
+                dados.push($(this).attr('name') + "_" + $(this).val());
+            });
+            break;
+        case 'MEI':
+            dados.push($('[name^="' + tipo + '"]:checked').val());
+            break;
+        case 'MEV':
+            $('[name^="' + tipo + '"]:checked').each(function () {
+                dados.push($(this).val());
+            });
+            break;
+        default:
+            break;
+    }
+
+    if (dados) {
+        $.ajax({
+            url: URL_NOVA + "?action=Portal.verificarResposta",
+            data: {
+                dados: dados,
+                tipo: tipo,
+                id: id
+            },
+            beforeSend: function () {
+            },
+            success: function (msg) {
+                if (msg == "OK") {
+                    $(object).find('.img-resposta-ok').show();
+                    $(object).find('.btn-enviar-resposta').hide();
+                } else {
+                    $(object).find('.btn-enviar-resposta').html('Try Again');
+                }
+            },
+            error: function (msg) {
+                console.log(msg);
+
             }
-        },
-        error: function (msg) {
-            console.log(msg);
-
-        }
-    });
-
+        });
+    } else {
+        alert('Primeiro você deve responder!');
+    }
 }

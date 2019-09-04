@@ -139,9 +139,9 @@ class PortalController {
 
     public function logout() {
         $this->setAllFixo();
-        unset($_SESSION['serAlunoSessao']);        
+        unset($_SESSION['serAlunoSessao']);
 //        session_destroy();
-        
+
         return new View(URL . "login", $this->response, 'redirectFriendly');
     }
 
@@ -293,16 +293,27 @@ class PortalController {
         $this->response->set('oPagina', $oPagina[0]);
         return new View('portal/Portal.pagina.php', $this->response, 'include');
     }
-    
+
     public function verificarResposta() {
+        $dados = $this->request->get('dados');
+        $tipo = $this->request->get('tipo');
+        $id = $this->request->get('id');
+//        Util::debug($dados);
         $this->setAllFixo();
 
         if (!$this->authPortal())
             return $this->view;
 
         $oAtividadeAction = new AtividadeAction();
+        $oConteudoFormularioAction = new ConteudoFormularioAction();
         try {
-            $oAtividadeAction->verificarResposta($this->request, $this->response);
+            if ($tipo == 'MEI' || $tipo == 'MEV') {
+                $oConteudoFormularioAction->verificarResposta($dados, $id);
+                $oConteudoFormularioAction->saveResposta($dados, $id);
+            } else {
+                $oAtividadeAction->verificarResposta($dados, $tipo, $id);
+                $oAtividadeAction->saveResposta($dados, $tipo, $id);
+            }
         } catch (Exception $e) {
             return new View($e->getMessage(), $this->response, 'print');
         }

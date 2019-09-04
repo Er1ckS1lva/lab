@@ -111,14 +111,14 @@
                                                             foreach ($aOpcao[$oAtividade->getId()] as $k => $oOpcao) {
                                                                 ?>
                                                                 <label class="radio">
-                                                                    <input type="radio" name="formulario_opcao">
+                                                                    <input value="<?php echo $oOpcao->getId(); ?>" type="radio" name="PRC">
                                                                 </label>
                                                                 <?php
                                                                 echo $alfabeto[$k] . ") " . $oOpcao->getValor();
                                                                 echo "<br>";
                                                             }
                                                             ?>
-                                                            <button onclick="enviarRespostaAtividade($(this).parent('.div-resposta'), 'atividade');" class="btn btn-info btn-sm btn-enviar-resposta"><?php echo Lang::ATIVIDADE_enviar ?></button>
+                                                            <button onclick="enviarRespostaAtividade($(this).parent('.div-resposta'), 'PRC', <?php echo $oAtividade->getId(); ?>);" class="btn btn-info btn-sm btn-enviar-resposta"><?php echo Lang::ATIVIDADE_enviar ?></button>
                                                             <img style="display: none" class="img-resposta-ok" src="<?php echo URL_PORTAL ?>img/check_verde.jpeg" width="33" height="33" />
                                                         <?php }
                                                         ?>
@@ -198,7 +198,7 @@
                                                                                 foreach ($aFormularioOpcao as $key => $oFO) {
                                                                                     ?>
                                                                                     <label class="radio">
-                                                                                        <input type="checkbox" name="formulario_opcao">
+                                                                                        <input value="<?php echo $oFO->getId(); ?>" type="checkbox" name="MEV">
                                                                                         <i><?php echo $oFO->getValor(); ?></i>
                                                                                     </label>
                                                                                     <br/>
@@ -211,7 +211,7 @@
                                                                                     foreach ($aFormularioOpcao as $key => $oFO) {
                                                                                         ?>
                                                                                         <label class="radio">
-                                                                                            <input type="radio" name="formulario_opcao">
+                                                                                            <input value="<?php echo $oFO->getId(); ?>" type="radio" name="MEI">
                                                                                             <i><?php echo $oFO->getValor(); ?></i>
                                                                                         </label>
                                                                                         <br/>
@@ -225,7 +225,7 @@
                                                                             <?php }
                                                                             ?>
                                                                         </div>
-                                                                        <button onclick="enviarRespostaAtividade($(this).parent('.div-resposta'), 'formulario');" class="btn btn-info btn-sm btn-enviar-resposta"><?php echo Lang::ATIVIDADE_enviar ?></button>
+                                                                        <button onclick="enviarRespostaAtividade($(this).parent('.div-resposta'), '<?php echo $aConteudoFormulario[$oConteudo->getId()]->getTipo(); ?>', <?php echo $aConteudoFormulario[$oConteudo->getId()]->getId(); ?>);" class="btn btn-info btn-sm btn-enviar-resposta"><?php echo Lang::ATIVIDADE_enviar ?></button>
                                                                         <img style="display: none" class="img-resposta-ok" src="<?php echo URL_PORTAL ?>img/check_verde.jpeg" width="33" height="33" />
                                                                     </div>
                                                                 <?php }

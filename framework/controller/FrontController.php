@@ -29,6 +29,10 @@ include_once(dirname(__FILE__).'/../model/action/AtividadeColunaArquivoAction.ph
 include_once(dirname(__FILE__).'/controllers/IdiomaController.php');
 include_once(dirname(__FILE__).'/controllers/PaginaController.php');
 include_once(dirname(__FILE__).'/../model/action/PaginaIdiomaAction.php');
+include_once(dirname(__FILE__).'/../model/action/AlunoAtividadeTipoAction.php');
+include_once(dirname(__FILE__).'/../model/action/AlunoAtividadeTipoEnviosAction.php');
+include_once(dirname(__FILE__).'/../model/action/AlunoOpcaoAction.php');
+include_once(dirname(__FILE__).'/../model/action/AlunoOpcaoEnviosAction.php');
 include_once(dirname(__FILE__).'/controllers/BibliotecaMusicaController.php');
 include_once(dirname(__FILE__).'/controllers/BibliotecaObraArteController.php');
 include_once(dirname(__FILE__).'/controllers/BibliotecaVideoController.php');
