@@ -126,8 +126,9 @@ class AtividadeAction extends AtividadeActionParent {
         }
 
         // validando ao menos uma correta para os tipos: 
-        $tituloConteudo = $edicao ? $request->get('tituloConteudoEdit') : $request->get('tituloConteudo');
-        $tipoConteudo = $edicao ? $request->get('tipoConteudoEdit') : $request->get('tipoConteudo');
+//        $tituloConteudo = $edicao ? $request->get('tituloConteudoEdit') : $request->get('tituloConteudo');
+        $tituloConteudo = array_merge($request->get('tituloConteudoEdit'), $request->get('tituloConteudo'));
+        $tipoConteudo = array_merge($request->get('tipoConteudoEdit'), $request->get('tipoConteudo'));
         $aCorretas = array();
         $bValidaCorretas = false;
         if ($tituloConteudo) {
@@ -142,9 +143,12 @@ class AtividadeAction extends AtividadeActionParent {
                 }
             }
         }
+        
         if ($bValidaCorretas) {
             if (count(array_keys($aCorretas)) != count($tituloConteudo)) {
                 $aDiff = array_diff(array_keys($tituloConteudo), array_keys($aCorretas));
+                Util::debug($tituloConteudo, false);
+                Util::debug($tituloConteudo, $aCorretas);
                 foreach ($aDiff as $k => $v) {
                     throw new Exception("Por favor, informe ao menos uma opção correta na posição " . ($k + 1) . "° para aos tipos de Múltipla escolhas!");
                 }
