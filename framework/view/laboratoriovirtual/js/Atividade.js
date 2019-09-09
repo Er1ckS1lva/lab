@@ -75,7 +75,7 @@ function uniqueId() {
 ;
 
 function AtividadeAdicionarConteudo() {
-    var div = $('#Atividade-conteudo-model').children('.conteudo-model').clone();
+    var div = $('#Atividade-conteudo-model').children('.conteudo-model-form').clone();
     var id = uniqueId();
     div.find('a[data-toggle="collapse"]').first().attr('href', "#" + id).attr('aria-controls', id);
     div.find('div[role="tabpanel"]').first().attr('id', id);
@@ -146,7 +146,7 @@ function AtividadeSelecionaTipoFormulario(tipo, object, clear) {
 
 function AtividadeRecontarConteudo() {
     $count = 1;
-    $('.conteudo-model').each(function () {
+    $('.conteudo-model-form').each(function () {
         $conteudo = $(this);
         $conteudo.find('.check-conteudo').each(function () {
             $(this).attr('name', 'opcaoConteudoCorreta[' + $count + '][]');

@@ -136,19 +136,17 @@ class AtividadeAction extends AtividadeActionParent {
             foreach ($tituloConteudo as $key => $tc) {
                 if (in_array($tipoConteudo[$key], array("MEI", "MEV"))) {
                     $bValidaCorretas = true;
-                    $i = $tc - 1;
+                    $i = $key;
                     foreach ($opcaoConteudoCorreta[$i] as $k => $v) {
                         $aCorretas[$key][] = $v;
                     }
                 }
             }
         }
-        
+
         if ($bValidaCorretas) {
             if (count(array_keys($aCorretas)) != count($tituloConteudo)) {
                 $aDiff = array_diff(array_keys($tituloConteudo), array_keys($aCorretas));
-                Util::debug($tituloConteudo, false);
-                Util::debug($tituloConteudo, $aCorretas);
                 foreach ($aDiff as $k => $v) {
                     throw new Exception("Por favor, informe ao menos uma opção correta na posição " . ($k + 1) . "° para aos tipos de Múltipla escolhas!");
                 }
@@ -159,6 +157,7 @@ class AtividadeAction extends AtividadeActionParent {
     }
 
     protected function addTransaction($oAtividade, $request) {
+
         $oConteudoAction = new ConteudoAction($this->em);
         $oConteudoArquivoAction = new ConteudoArquivoAction($this->em);
 
@@ -384,6 +383,9 @@ class AtividadeAction extends AtividadeActionParent {
                             $aIdOpcaoForm = $oFormularioOpcaoAction->collection(array('id'), "o.ConteudoFormulario = {$oConteudoFormulario->getId()}");
                             $opcaoConteudoCorreta = $request->get('opcaoConteudoCorreta');
                             foreach ($valorConteudo[$key] as $keyVC => $oVC) {
+                                # deletar as edições
+
+
                                 $request_form_opcao = new Request(FALSE);
                                 $request_form_opcao->set('id', $aIdOpcaoForm[$keyVC]['id']);
                                 $request_form_opcao->set('ConteudoFormulario', $oConteudoFormulario->getId());
@@ -394,10 +396,15 @@ class AtividadeAction extends AtividadeActionParent {
                             }
                         }
                     }
-
-//                   
                 }
             }
+//            apagar edições
+            foreach ($aIdFormulario as $kEdit => $chave) {
+                unset($opcaoConteudoCorreta[$kEdit]);
+                unset($valorConteudo[$kEdit]);
+            }
+            $request->set('opcaoConteudoCorreta', array_values($opcaoConteudoCorreta));
+            $request->set('valorConteudo', array_values($valorConteudo));
         }
 
         # edição de opções
@@ -611,5 +618,4 @@ class AtividadeAction extends AtividadeActionParent {
     }
 
 }
-
 ?>

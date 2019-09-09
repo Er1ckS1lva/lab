@@ -55,7 +55,7 @@
 
 <!--MODELO DO CONTEUDO-->
         <div id="Atividade-conteudo-model" style="display: none;">
-            <div class="panel panel-default conteudo-model">
+            <div class="panel panel-default conteudo-model-form">
                 <div class="panel-heading" role="tab" id="headingOne">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-parent="#Atividade-conteudo-append" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -66,7 +66,7 @@
                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body padding-10">
                         <div>
-                            <button class="btn btn-danger btn-sm bt-person pull-right" onclick="$(this).closest('.conteudo-model').remove(); countConteudo--; AtividadeRecontarConteudo();"><i class="fa fa-trash-o"></i></button>
+                            <button class="btn btn-danger btn-sm bt-person pull-right" onclick="$(this).closest('.conteudo-model-form').remove(); countConteudo--; AtividadeRecontarConteudo();"><i class="fa fa-trash-o"></i></button>
 
                             <div class="row">
                                 <section class="col col-md-6">
@@ -103,14 +103,14 @@
                                         Tipo
                                     </label>
                                     <div class="input">
-                                        <?= ConteudoFormularioAction::getComboBoxForTipo(null, ( ++$tabindex), false, "onchange=\"AtividadeSelecionaTipoFormulario(this.value, $(this).closest('div.conteudo-model'), 1)\"", 'tipoConteudo[]'); ?>
+                                        <?= ConteudoFormularioAction::getComboBoxForTipo(null, ( ++$tabindex), false, "onchange=\"AtividadeSelecionaTipoFormulario(this.value, $(this).closest('div.conteudo-model-form'), 1)\"", 'tipoConteudo[]'); ?>
                                     </div>
                                 </section>
 
                                 <section class="col col-md-2" style="display: none" id='mais-opcao'>
                                     <label class="label">&nbsp;</label>
                                     <div class="input input-file">
-                                        <button onclick="AtividadeSelecionaTipoFormulario($(this).closest('div.conteudo-model').find('option:selected').val(), $(this).closest('div.conteudo-model'), 0)" type="button" class="btn btn-primary btn-sm" ><i class="fa fa-plus"> opção</i></button>
+                                        <button onclick="AtividadeSelecionaTipoFormulario($(this).closest('div.conteudo-model-form').find('option:selected').val(), $(this).closest('div.conteudo-model-form'), 0)" type="button" class="btn btn-primary btn-sm" ><i class="fa fa-plus"> opção</i></button>
                                     </div>
                                 </section>
                             </div>

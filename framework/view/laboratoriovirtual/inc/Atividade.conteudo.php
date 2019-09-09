@@ -1,6 +1,6 @@
 <!--css do botão de apagar conteudo-->
 <style type="text/css">
-    .conteudo-model .panel-heading {padding: 8px;}
+    .conteudo-model-form .panel-heading {padding: 8px;}
 </style>
 
 
@@ -23,9 +23,10 @@
                     $oConteudoFormulario = $aConteudoFormulario[$oConteudo->getId()]; /* @var $oConteudoFormulario ConteudoFormulario */
                     ?>
 
-                    <input type="hidden" value="<?php echo $oConteudoFormulario->getId() ?>" name="aIdFormulario[]" />
+                    
 
-                    <div class="panel panel-default conteudo-model">
+                    <div class="panel panel-default conteudo-model-form">
+                        <input type="hidden" value="<?php echo $oConteudoFormulario->getId() ?>" name="aIdFormulario[]" />
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#Atividade-conteudo-append" href="#collapse-<?php echo $key ?>" aria-expanded="true" aria-controls="collapse-<?php echo $key ?>">
@@ -37,7 +38,7 @@
                             <div class="panel-body padding-10">
                                 <input type="hidden" value="">
                                 <div>
-                                    <button class="btn btn-danger btn-sm bt-person pull-right" onclick="$(this).closest('.conteudo-model').remove(); countConteudo--; AtividadeRecontarConteudo();"><i class="fa fa-trash-o"></i></button>
+                                    <button class="btn btn-danger btn-sm bt-person pull-right" onclick="$(this).closest('.conteudo-model-form').remove(); countConteudo--; AtividadeRecontarConteudo();"><i class="fa fa-trash-o"></i></button>
                                     <div class="row">
                                         <section class="col col-md-6">
                                             <label class="label" for="tituloConteudo">Título</label>
@@ -73,14 +74,14 @@
                                                 Tipo
                                             </label>
                                             <div class="input">
-                                                <?= ConteudoFormularioAction::getComboBoxForTipo($oConteudoFormulario ? $oConteudoFormulario->getTipo() : null, ( ++$tabindex), false, "onchange=\"AtividadeSelecionaTipoFormulario(this.value, $(this).closest('div.conteudo-model'), 1)\"", 'tipoConteudoEdit[' . $oConteudo->getId() . ']'); ?>
+                                                <?= ConteudoFormularioAction::getComboBoxForTipo($oConteudoFormulario ? $oConteudoFormulario->getTipo() : null, ( ++$tabindex), false, "onchange=\"AtividadeSelecionaTipoFormulario(this.value, $(this).closest('div.conteudo-model-form'), 1)\"", 'tipoConteudoEdit[' . $oConteudo->getId() . ']'); ?>
                                             </div>
                                         </section>
 
                                         <section class="col col-md-2"  <?php echo ($oConteudoFormulario->getTipo() == "MEI" || $oConteudoFormulario->getTipo() == "MEV") ?? 'style="display: none"'; ?> id='mais-opcao'>
                                             <label class="label">&nbsp;</label>
                                             <div class="input input-file">
-                                                <button onclick="AtividadeSelecionaTipoFormulario($(this).closest('div.conteudo-model').find('option:selected').val(), $(this).closest('div.conteudo-model'), 0)" type="button" class="btn btn-primary btn-sm" ><i class="fa fa-plus"> opção</i></button>
+                                                <button onclick="AtividadeSelecionaTipoFormulario($(this).closest('div.conteudo-model-form').find('option:selected').val(), $(this).closest('div.conteudo-model-form'), 0)" type="button" class="btn btn-primary btn-sm" ><i class="fa fa-plus"> opção</i></button>
                                             </div>
                                         </section>
                                     </div>
