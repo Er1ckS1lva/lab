@@ -54,7 +54,7 @@ class ConteudoFormularioAction extends ConteudoFormularioActionParent {
         $oAlunoOpcaoEnviosAction = new AlunoOpcaoEnviosAction($this->em, true);
         $oAlunoOpcaoAction = new AlunoOpcaoEnviosAction($this->em, true);
         $oAluno = unserialize($_SESSION['serAlunoSessao']);
-        $oAlunoAtividade = $oAlunoOpcaoAction->select($oAluno->getId(), $id);
+        $oAlunoAtividade = $oAlunoOpcaoAction->select($oAluno->getId(), array('id'));
         $request_at = new Request();
         $request_at->set('Aluno', $oAluno->getId());
         $request_at->set('ConteudoFormulario', (int) $id);

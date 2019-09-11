@@ -604,7 +604,7 @@ class AtividadeAction extends AtividadeActionParent {
         $oAlunoAtividadeTipoEnviosAction = new AlunoAtividadeTipoEnviosAction($this->em, true);
         $oAlunoAtividadeTipoAction = new AlunoAtividadeTipoEnviosAction($this->em, true);
         $oAluno = unserialize($_SESSION['serAlunoSessao']);
-        $oAlunoAtividade = $oAlunoAtividadeTipoAction->select($oAluno->getId(), $id);
+        $oAlunoAtividade = $oAlunoAtividadeTipoAction->select($oAluno->getId(), array('id'));
         $request_at = new Request();
         $request_at->set('Aluno', $oAluno->getId());
         $request_at->set('Atividade', (int) $id);

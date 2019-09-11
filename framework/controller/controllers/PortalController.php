@@ -298,7 +298,6 @@ class PortalController {
         $dados = $this->request->get('dados');
         $tipo = $this->request->get('tipo');
         $id = $this->request->get('id');
-//        Util::debug($dados);
         $this->setAllFixo();
 
         if (!$this->authPortal())
